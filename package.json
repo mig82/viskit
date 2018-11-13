@@ -1,0 +1,28 @@
+{
+	"name": "viskit",
+	"version": "1.0.0",
+	"description": "A command line helper for Kony Visualizer projects.",
+	"main": "viskit.js",
+	"preferGlobal": true,
+	"scripts": {
+		"test": "bash test.sh"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/mig82/viskit.git"
+	},
+	"keywords": [
+		"kony",
+		"visualizer"
+	],
+	"author": "Miguelangel Fernandez <miguelangelxfm@gmail.com> (https://www.linkedin.com/in/mfernandez82/)",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/mig82/viskit/issues"
+	},
+	"homepage": "https://github.com/mig82/viskit#readme",
+	"dependencies": {
+		"colors": "^1.3.2",
+		"commander": "^2.19.0"
+	}
+}
