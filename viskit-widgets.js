@@ -11,23 +11,86 @@ const colors = require('colors');
 const theme = require('./viskit').theme;
 colors.setTheme(theme);
 
-//var uiTypes = ['forms', 'templates', 'userwidgets'];
-var uiTypes = [
+const uiTypes = [
 	'forms',
 	'popups',
 	'templates',
 	'userwidgets'
 ];
 
-var result = {
-	'form-count': 0,
-};
+const containerTypes = [
+	"kony.ui.FlexContainer",
+	"kony.ui.FlexScrollContainer"
+];
 
 program
 	.command('count <project>')
 	.description('Produce a count of widgets per form')
 	.action(countProjectWidgets);
+program
+	.command('redundant <project>')
+	.option('-a, --all', 'Show all, including containers with more than one child')
+	.description('Find any containers with just one child')
+	.action(findRedundantContainers);
 
+/**
+* Find containers with one or no children objects.
+*/
+function findRedundantContainers(project, command){
+
+	if(project.substr(-1) !== '/'){
+		project += '/';
+	}
+	console.log('Finding redundant widgets for project %s'.info, project);
+
+	uiTypes.forEach(uiType => {
+		//Search in path/to/project/forms, path/to/project/templates, etc.
+		var uiTypePath = project + uiType + "/";
+
+		fs.pathExists(uiTypePath)
+		.then(exists => {
+			if(exists){
+
+				var uiTypePathRegex = new RegExp("^" + uiTypePath);
+
+				find.eachfile(/\.json$/, uiTypePath, (widgetPath) => {
+
+					var widgetDisplayName = widgetPath.replace(uiTypePathRegex, '');
+
+					fs.readJson(widgetPath)
+					.then(widget => {
+						if(containerTypes.indexOf(widget.name) >= 0){
+
+							var childCount = widget.children.length;
+							switch (childCount) {
+								case 0:
+									console.log("\t%s\t%s:\t%s:\t%d".red, widgetDisplayName, widget.wType, widget.id, childCount);
+									break;
+								case 1:
+									console.log("\t%s\t%s:\t%s:\t%d".yellow, widgetDisplayName, widget.wType, widget.id, childCount);
+									break;
+								default:
+									if(command.all)
+									console.log("\t%s\t%s:\t%s:\t%d".green, widgetDisplayName, widget.wType, widget.id, childCount);
+							}
+
+						}
+					})
+					.catch(err => {
+						console.error(err)
+					})
+				});
+			}
+			else{
+				console.log("Path %s does NOT exist".warn, uiTypePath);
+			}
+		});
+	});
+}
+
+/**
+* Count the widgets for each form according to the project structure.
+*/
 function countProjectWidgets(project){
 
 	if(project.substr(-1) !== '/'){
