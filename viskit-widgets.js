@@ -24,14 +24,109 @@ const containerTypes = [
 ];
 
 program
+	.usage('[options] <subcommand> <project>');
+
+program
 	.command('count <project>')
 	.description('Produce a count of widgets per form')
 	.action(countProjectWidgets);
+
 program
 	.command('redundant <project>')
 	.option('-a, --all', 'Show all, including containers with more than one child')
 	.description('Find any containers with just one child')
 	.action(findRedundantContainers);
+
+program
+	.command('autogrow <project>')
+	.option('-a, --all', 'Show all, including non-autogrow widgets')
+	//.option('-c, --channel <channel>', 'Analyse this channel only', /^(mobile|tablet|desktop)$/i, 'mobile')
+	.description('Find any widgets with preferred height or width')
+	.action(findAutogrowWidgets);
+
+function findAutogrowWidgets(project, command){
+
+	if(project.substr(-1) !== '/'){
+		project += '/';
+	}
+	console.log('Finding auto-grow widgets for project %s'.info, project);
+
+	uiTypes.forEach(uiType => {
+		//Search in path/to/project/forms, path/to/project/templates, etc.
+		var uiTypePath = project + uiType + "/";
+
+		fs.pathExists(uiTypePath)
+		.then(exists => {
+			if(exists){
+
+				var uiTypePathRegex = new RegExp("^" + uiTypePath);
+
+				find.eachfile(/\.json$/, uiTypePath, (widgetPath) => {
+
+					var widgetDisplayName = widgetPath.replace(uiTypePathRegex, '');
+
+					fs.readJson(widgetPath)
+					.then(widget => {
+
+						if(process.env.VERBOSE)
+						console.log("\t%s\tw: %o\th: %o".debug, widgetDisplayName, widget._width_, widget._height_);
+
+						if(!isForm(widget)){
+							if(!isWidgetWidthDefined(widget) && !isWidgetHeightDefined(widget)){
+								console.log("\t%s\tw: %s\th: %s".red, widgetDisplayName, getWidgetWidth(widget), getWidgetHeight(widget));
+							}
+							else if(!isWidgetWidthDefined(widget)){
+								console.log("\t%s\tw: %s".yellow, widgetDisplayName, getWidgetWidth(widget));
+							}
+							else if(!isWidgetHeightDefined(widget)){
+								console.log("\t%s\th: %s".yellow, widgetDisplayName, getWidgetHeight(widget));
+							}
+							else{
+								if(command.all)
+								console.log("\t%s\tw: %s\th: %s".green, widgetDisplayName, getWidgetWidth(widget), getWidgetHeight(widget));
+							}
+						}
+					})
+					.catch(err => {
+						console.error(err)
+					})
+				});
+			}
+			else{
+				console.log("Path %s does NOT exist".warn, uiTypePath);
+			}
+		});
+	});
+}
+
+function isForm(widget){
+	return widget.wType === "Form" || widget.name === "kony.ui.Form2";
+}
+function isWidgetHeightDefined(widget){
+	return widget && widget._height_ && widget._height_.type !== "ref" && widget._height_.value !== "preferred";
+}
+
+function isWidgetWidthDefined(widget){
+	return widget && widget._width_ && widget._width_.type !== "ref" && widget._width_.value !== "preferred";
+}
+
+function getWidgetHeight(widget){
+	if(widget && widget._height_){
+		return widget._height_.value;
+	}
+	else {
+		return undefined;
+	}
+}
+
+function getWidgetWidth(widget){
+	if(widget && widget._width_){
+		return widget._width_.value;
+	}
+	else {
+		return undefined;
+	}
+}
 
 /**
 * Find containers with one or no children objects.
