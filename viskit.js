@@ -46,6 +46,13 @@ program.on('option:verbose', function () {
 	process.env.VERBOSE = this.verbose;
 });
 
+program.on('--help', function(){
+		console.log(colors.info(
+			"\nSubcommands for 'widgets' command:\n" +
+			"\tcount\n" +
+			"\tredundant\n"
+		));
+	});
 
 if (!process.argv.slice(2).length) {
 	program.help(helpText => {
