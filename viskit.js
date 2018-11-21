@@ -14,10 +14,11 @@ const theme = {
 colors.setTheme(theme);
 
 program
-	.version('1.0.0', '-v, --version')
-	.option('-n, --noisy', 'Output everything');
+	.version('1.0.0')
+	.option('-v, --verbose', 'output everything');
 
 program
+	.usage('[options] [command] [project]')
 	//.option('-p, --project', 'Path to the Visualizer project')
 	/*.command(
 		'actions',
@@ -41,6 +42,9 @@ program
 		'widgets',
 		'Audit and help with widgets for a specific channel');
 
+program.on('option:verbose', function () {
+	process.env.VERBOSE = this.verbose;
+});
 
 
 if (!process.argv.slice(2).length) {
