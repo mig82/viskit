@@ -1,58 +1,58 @@
 #!/usr/bin/env node
 
-const program = require('commander');
-const colors = require('colors');
-
-//To be exported so that the theme can be defined once.
-const theme = {
-	prompt: 'grey',
-	debug: 'magenta',
-	info: 'cyan',
-	warn: 'yellow',
-	error: 'red'
-};
+const program = require("commander");
+const colors = require("colors");
+const theme = require("./config/theme.js");
 colors.setTheme(theme);
 
 program
 	.version('1.0.0')
+	.usage('[options] [command]')
 	.option('-v, --verbose', 'output everything');
 
 program
-	.usage('[options] [command] [project]')
-	//.option('-p, --project', 'Path to the Visualizer project')
-	/*.command(
-		'actions',
-		'Audit and help with actions for a specific channel')
-	.command(
-		'fonts',
-		'Audit and help with fonts for a specific channel')
-	.command(
-		'forms',
-		'Audit and help with forms for a specific channel')
-	.command(
-		'i18ns',
-		'Audit and help with i18n\'s')
-	.command(
-		'images',
-		'Audit and help with images')
-	.command(
-		'skins',
-		'Audit and help with skins for a specific theme')*/
-	.command(
-		'widgets',
-		'Audit and help with widgets for a specific channel');
+	.command("count-widgets <project>", "Count the number of widgets for a specific form factor or form")
+	.alias("cw");
+
+program
+	.command("find-redundant-containers <project>", "Find any containers with one or no children")
+	.alias("frc");
+
+program
+	.command("find-autogrow-widgets <project>", "Find any widgets with undefined or preferred width or height")
+	.alias("faw");
+
+//TODO: Count heavy widgets per form -e.g. segments, browsers, maps.
+//TODO: Detect non-page-level heavy widgets.
+//TODO: Find deprecated widgets: com.kony.gen.viz.model.container.KVizHBox/KVizVBox
 
 program.on('option:verbose', function () {
-	process.env.VERBOSE = this.verbose;
+	process.env.verbose = this.verbose;
 });
 
 program.on('--help', function(){
-		console.log(colors.info(
-			"\nSubcommands for 'widgets' command:\n" +
-			"\tcount\n" +
-			"\tredundant\n"
-		));
-	});
+	//Description
+	console.log(colors.info(
+		"\nWhat is Viskit?\n\n" +
+
+		"Viskit is a CLI meant to help " + "Kony Visualizer".emphasis + " developers work faster and keep\n" +
+		"their projects clear of junk.\n"
+	));
+	//Pun
+	console.log(colors.info(
+		"What is a biscuit?\n\n" +
+
+		"According to Wikipedia, \"a variety of primarily flour-based baked food products.\"\n" +
+		"Read more about biscuits at " + "https://en.wikipedia.org/wiki/Biscuit".underline + "\n"
+	));
+	//Disclaimer
+	console.log(colors.info(
+		"Disclaimer:\n\n" +
+
+		"Viskit is a community project, not part of the official " + "Kony".emphasis + " platform, and so\n" +
+		"it is " + "NOT supported".emphasis + " by Kony in any way.\n"
+	));
+});
 
 if (!process.argv.slice(2).length) {
 	program.help(helpText => {
@@ -65,9 +65,5 @@ if (!process.argv.slice(2).length) {
 	console.error('Invalid command: %s\nSee --help for a list of available commands.', program.args.join(' '));
 	process.exit(1);
 });*/
-
-module.exports = {
-	theme: theme
-};
 
 program.parse(process.argv);
