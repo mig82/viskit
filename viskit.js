@@ -22,6 +22,14 @@ program
 	.command("find-autogrow-widgets <project>", "Find any widgets with undefined or preferred width or height")
 	.alias("faw");
 
+program
+	.command("find-widgets <project>", "Find any widgets in the project of a specific type, channel, name")
+	.alias("fw");
+
+program
+	.command("find-orphan-widgets <project>", "Find any widgets in the project structure not linked to a form")
+	.alias("fow");
+
 //TODO: Count heavy widgets per form -e.g. segments, browsers, maps.
 //TODO: Detect non-page-level heavy widgets.
 //TODO: Find deprecated widgets: com.kony.gen.viz.model.container.KVizHBox/KVizVBox
