@@ -101,14 +101,12 @@ function onAction(project, options){
 			if(process.env.verbose){
 				console.log("%o".info, widget);
 			}
-			else{
-				console.log("%s\t%s\t%s\t%s".info,
-					widget.uiType,
-					widget.channel?widget.channel:"n/a",
-					widget.uiName,
-					widget.file
-				);
-			}
+			console.log("%s\t%s\t%s\t%s".info,
+				widget.uiType,
+				widget.channel?widget.channel:"n/a",
+				widget.uiName,
+				widget.file
+			);
 		});
 	});
 }
