@@ -37,11 +37,17 @@ function findWidgets(projectPath, uiType, channel, uiName, verbose){
 	var uiTypeOptions = searchAll(uiType) ? concatOptions(globals.uiSTypes) : uiType;
 
 	if(searchAll(uiType)) {
-		widgetPath = "^(" +
+		/*widgetPath = "^(" +
 			`${projectPath}/${uiTypeOptions}/${channelOptions}/${uiNameOptions}\\.sm/.*\\.json` +
 			"|" +
 			`${projectPath}/userwidgets/${uiNameOptions}/userwidgetmodel\\.sm/.*\\.json` +
 			")$";
+		*/
+		widgetPath = `^${projectPath}(` +
+			`/${uiTypeOptions}/${channelOptions}/${uiNameOptions}` +
+			"|" +
+			`/userwidgets/${uiNameOptions}/userwidgetmodel` +
+			")\\.sm/.*\\.json$";
 	}
 	else if(uiType === "userwidgets"){
 		widgetPath = `^${projectPath}/userwidgets/${uiNameOptions}/userwidgetmodel\\.sm/.*\\.json$`
@@ -86,6 +92,7 @@ function parseWidgetPath(widgetPath, projectPathRegex, uiExtensionRegex){
 	var channel, uiName;
 
 	if(pathParts[1] === "userwidgets" || parent === "userwidgetmodel.sm"){
+		channel = "all";
 		uiName = gParent;
 	}
 	else{
