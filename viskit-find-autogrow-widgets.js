@@ -3,11 +3,29 @@
 const program = require("commander");
 const colors = require("colors");
 const ctrl = require("./controllers/find-autogrow-widgets");
+const globals = require("./config/globals.js");
 const theme = require("./config/theme.js");
 colors.setTheme(theme);
 
+var uiTypeValues = globals.uiTypes.concat("all");
+var channelValues = globals.channels.concat("all");
+
+var uiTypeOptions = globals.uiTypes.join("|");
+var channelOptions = globals.channels.join("|");
+
+var uiTypesRegex = new RegExp(`^(${uiTypeOptions})$`);
+var channelsRegex = new RegExp(`^(${channelOptions}")$`);
+
 program
 	.usage("[options] <project>")
+	.option("-t, --ui-type <type>",
+		"The type of UI for which you want the count.",
+		uiTypesRegex)
+	.option("-c, --channel <channel>",
+		"The channel or form factory for which you want the count.",
+		channelsRegex)
+	.option("-n, --ui-name <name>",
+		"The name of the form, pop-up, segment template or component for which you want the count.")
 	.option('-a, --show-all', 'Show all, including widgets with a defined width and height')
 	.action(onAction);
 
@@ -45,7 +63,14 @@ if (!process.argv.slice(2).length) {
 }
 
 function onAction(project, options){
-	ctrl.findAutogrowWidgets(project, options.channel, options.showAll, process.env.verbose);
+	ctrl.findAutogrowWidgets(
+		project,
+		options.uiType,
+		options.channel,
+		options.uiName,
+		options.showAll,
+		process.env.verbose
+	);
 }
 
 program.parse(process.argv);
