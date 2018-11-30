@@ -3,9 +3,7 @@ const find = require('find');
 const fs = require('fs-extra');
 const colors = require('colors');
 const globals = require("../config/globals");
-
 const uiTypes = globals.uiTypes;
-const containerTypes = globals.containerTypes;
 
 /**
 * Count the widgets for each form according to the project structure.
