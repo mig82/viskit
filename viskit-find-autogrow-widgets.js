@@ -14,7 +14,7 @@ var uiTypeOptions = globals.uiTypes.join("|");
 var channelOptions = globals.channels.join("|");
 
 var uiTypesRegex = new RegExp(`^(${uiTypeOptions})$`);
-var channelsRegex = new RegExp(`^(${channelOptions}")$`);
+var channelsRegex = new RegExp(`^(${channelOptions})$`);
 
 program
 	.usage("[options] <project>")

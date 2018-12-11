@@ -20,22 +20,22 @@ var channelsRegex = new RegExp(`^(${channelOptions})$`);
 program
 	.usage("[options] <project>")
 	.option("-t, --ui-type <type>",
-		"The type of view for which you want to find the widgets.",
+		"The type of view you want to find.",
 		uiTypesRegex)
 	.option("-c, --channel <channel>",
-		"The channel or form factor for which you want the count.",
+		"The channel or form factor of the view you wish to find.",
 		channelsRegex)
 	.option("-n, --ui-name <name>",
-		"The name of the form, pop-up, segment template or component for which you want to find the widgets.")
+		"The name of the form, pop-up, segment template or component you wish to find.")
 	.action(onAction);
 
 program.on('--help', function(){
 	console.log(colors.info(
 		"\nExamples:\n" +
-		"\tviskit find-widgets path/to/workspace/FooProject\n" +
-		"\tviskit fw --ui-type forms path/to/workspace/FooProject\n" +
-		"\tviskit fw --channel mobile path/to/workspace/FooProject\n" +
-		"\tviskit fw --ui-name homeForm path/to/workspace/FooProject\n"
+		"\tviskit find-views path/to/workspace/FooProject\n" +
+		"\tviskit fv --ui-type forms path/to/workspace/FooProject\n" +
+		"\tviskit fv --channel mobile path/to/workspace/FooProject\n" +
+		"\tviskit fv --ui-name homeForm path/to/workspace/FooProject\n"
 	));
 	console.log(colors.info(
 		"Why?\n\n" +
@@ -82,13 +82,13 @@ function onAction(project, options){
 		process.exit(1);
 	}
 
-	ctrl.findWidgets(project, options.uiType, options.channel, options.uiName, process.env.verbose)
-	.then(widgets => {
+	ctrl.findViews(project, options.uiType, options.channel, options.uiName, process.env.verbose)
+	.then(views => {
 
-		if(widgets.length === 0){
+		if(views.length === 0){
 			//Add a flag to suppress this, in case the user wants to grep the output.
 			console.log(
-				colors.info("\nNo widgets found for options\n" +
+				colors.info("\nNo views found for options\n" +
 					"\ttype: %s\n" +
 					"\tchannel: %s\n" +
 					"\tname: %s\n"
@@ -98,15 +98,15 @@ function onAction(project, options){
 				options.uiName?options.uiName:"all"
 			);
 		}
-		widgets.forEach(widget => {
+		views.forEach(view => {
 			if(process.env.verbose){
-				console.log("%o".info, widget);
+				console.log("%o".info, view);
 			}
 			console.log("%s\t%s\t%s\t%s".info,
-				widget.uiType,
-				widget.channel?widget.channel:"n/a",
-				widget.uiName,
-				widget.file
+				view.uiType,
+				view.channel?view.channel:"n/a",
+				view.uiName,
+				view.file
 			);
 		});
 	});
