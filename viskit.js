@@ -27,6 +27,10 @@ program
 	.alias("fw");
 
 program
+	.command("find-views <project>", "Find any views in the project of a specific type, channel, name")
+	.alias("fv");
+
+program
 	.command("find-orphan-widgets <project>", "Find any widgets in the project structure not linked to a form")
 	.alias("fow");
 
@@ -57,8 +61,9 @@ program.on('--help', function(){
 	console.log(colors.info(
 		"Disclaimer:\n\n" +
 
-		"Viskit is a community project, not part of the official " + "Kony".emphasis + " platform, and so\n" +
-		"it is " + "NOT supported".emphasis + " by Kony in any way.\n"
+		"Viskit is a " + "community".emphasis + " project, " + "not".emphasis +" part of the official " +
+		"Kony".emphasis + " platform, and so\n" +
+		"it is " + "NOT supported by Kony in any way".emphasis + ".\n"
 	));
 });
 
