@@ -1,10 +1,8 @@
 const find = require('find');
 const Q = require('q');
 Q.longStackSupport = true;
-
+const parser = require("../common/path-parser.js");
 const globals = require("../config/globals");
-
-var uiExtensionRegex = new RegExp(".sm$");
 
 function searchAll(option){
 	return !option || option.trim() === "all" || option.trim() === "";
@@ -52,12 +50,14 @@ function findWidgets(projectPath, uiType, channel, uiName, verbose){
 
 	var widgetPathRegex = new RegExp(widgetPath);
 
+
 	return Q.Promise(function(resolve, reject, notify) {
 		try{
 			find.file(widgetPathRegex, projectPath, (filePaths) => {
 				//console.log("%o".debug, filePaths);
+				parser.setProjectPath(projectPath);
 				resolve(filePaths.map(filePath => {
-					return parseWidgetPath(filePath, projectPath);
+					return parser.parseWidgetPath(filePath, projectPath);
 				}));
 			})
 		}
@@ -125,8 +125,9 @@ function findViews(projectPath, uiType, channel, uiName, verbose) {
 		try{
 			find.dir(widgetPathRegex, projectPath, (dirPaths) => {
 				//console.log("%o".debug, dirPaths);
+				parser.setProjectPath(projectPath);
 				resolve(dirPaths.map(dirPath => {
-					return parseViewPath(dirPath, projectPath);
+					return parser.parseViewPath(dirPath, projectPath);
 				}));
 			})
 		}
@@ -136,69 +137,8 @@ function findViews(projectPath, uiType, channel, uiName, verbose) {
 	});
 }
 
-function parseViewPath(viewPath, projectPath){
-	var projectPathRegex = new RegExp("^" + projectPath + "/");
-	var relPath = viewPath.replace(projectPathRegex, "");
-	var pathParts = relPath.split('/');
-	var uiType = pathParts[0];
-	var lastDir = pathParts[pathParts.length - 1];
-
-	var file, channel, uiName;
-	if(uiType === "userwidgets" || lastDir === "userwidgetmodel.sm"){
-		channel = "all";
-		uiName = pathParts[pathParts.length - 2];
-		//uiName will be name-spaced -e.g. com.acme.FooComponent
-		//file = uiName.substring(uiName.lastIndexOf(".")+1) + ".json";
-		file = "userwidgetmodel.json"
-	}
-	else{
-		channel = pathParts[1];
-		uiName = lastDir.replace(uiExtensionRegex, "");
-		file = uiName + ".json";
-	}
-
-	return {
-		file: file,
-		uiName: uiName,
-		uiType: uiType,
-		channel: channel,
-		absDir: viewPath,
-		relPath: relPath += "/" + file,
-		absPath: viewPath += "/" + file
-	}
-}
-
-function parseWidgetPath(widgetPath, projectPath){
-	var projectPathRegex = new RegExp("^" + projectPath + "/");
-	var relPath = widgetPath.replace(projectPathRegex, "");
-	var pathParts = relPath.split('/');
-	var file = pathParts[pathParts.length - 1];
-	var parent = pathParts[pathParts.length - 2];
-	var gParent = pathParts[pathParts.length - 3];
-	var uiType = pathParts[0];
-
-	var channel, uiName;
-	if(uiType === "userwidgets" || parent === "userwidgetmodel.sm"){
-		channel = "all";
-		uiName = gParent;
-	}
-	else{
-		channel = pathParts[1];
-		uiName = parent.replace(uiExtensionRegex, "");
-	}
-
-	return {
-		file: file,
-		uiName: uiName,
-		uiType: uiType,
-		channel: channel,
-		relPath: relPath,
-		absPath: widgetPath
-	}
-}
 
 module.exports = {
 	findWidgets: findWidgets,
-	findViews: findViews,
-	parseWidgetPath: parseWidgetPath
+	findViews: findViews
 };

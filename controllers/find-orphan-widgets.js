@@ -3,22 +3,11 @@ const fs = require('fs-extra');
 const colors = require('colors');
 const globals = require("../config/globals");
 const widgetFinder = require("./find-widgets");
+const parser = require("../common/path-parser.js");
 const differenceBy = require('lodash.differenceby');
 
 const uiTypes = globals.uiTypes;
 const containerTypes = globals.containerTypes;
-
-
-/*function findOrphanWidgets_OLD(projectPath, uiType, channel, uiName, showAll, verbose){
-	return widgetFinder.findViews(projectPath, uiType, channel, uiName, verbose)
-	.then(views => {
-		views.forEach(view => {
-			//console.log("View: %o", view);
-			findViewDescendants(view, projectPath, verbose);
-		});
-	});
-}*/
-
 
 /**
  * findOrphanWidgets - description
@@ -79,7 +68,7 @@ async function findViewDescendants(view, projectPath, verbose){
 		if(widget.children){
 			descendants = descendants.concat(widget.children.map(child => {
 				var absPath = view.absDir + "/" + child + ".json";
-				return widgetFinder.parseWidgetPath(absPath, projectPath);
+				return parser.parseWidgetPath(absPath);
 			}));
 		}
 		if(verbose)console.log("\t\t%s".debug, JSON.stringify(descendants.map(desc=>{
@@ -94,7 +83,7 @@ async function findViewDescendants(view, projectPath, verbose){
 		if(widget.children){
 			descendants = descendants.concat(widget.children.map(child => {
 				var absPath = view.absDir + "/" + child + ".json";
-				return widgetFinder.parseWidgetPath(absPath, projectPath);
+				return parser.parseWidgetPath(absPath);
 			}));
 		}
 		if(verbose)logger.debug("\t\t%s", JSON.stringify(descendants.map(desc=>{
