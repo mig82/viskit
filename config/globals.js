@@ -32,7 +32,15 @@ const containerTypes = [
 	"kony.ui.FlexScrollContainer"
 ];
 
+const outputTypes = [
+	"a", //Print absolute paths.
+	"r", //Print relative paths.
+	"f", //Print file names.
+	"t", //Print tab-separated metadata.
+];
+
 module.exports = {
+	outputTypes: outputTypes,
 	uiTypes: uiTypes,
 	uiSTypes: uiSTypes,
 	uiCTypes: uiCTypes,

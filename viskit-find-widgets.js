@@ -17,6 +17,9 @@ var channelOptions = globals.channels.join("|");
 var uiTypesRegex = new RegExp(`^(${uiTypeOptions})$`);
 var channelsRegex = new RegExp(`^(${channelOptions})$`);
 
+var outputOptions = globals.outputTypes.join("|");
+var outputRegex = new RegExp(`^(${outputOptions})$`);
+
 program
 	.usage("[options] <project>")
 	.option("-t, --ui-type <type>",
@@ -27,6 +30,7 @@ program
 		channelsRegex)
 	.option("-n, --ui-name <name>",
 		"The name of the form, pop-up, segment template or component for which you want to find the widgets.")
+	.option('-o, --output <format>', 'The type of output required.', outputRegex)
 	.action(onAction);
 
 program.on('--help', function(){
@@ -82,6 +86,14 @@ function onAction(project, options){
 		process.exit(1);
 	}
 
+	if(options.output && !outputRegex.test(options.output)){
+		console.log(
+			"\nInvalid value for option " + "--output".emphasis +
+			". Use one of " + outputOptions.emphasis + " or don't use this option.\n"
+		);
+		process.exit(1);
+	}
+
 	findWidgets(project, options.uiType, options.channel, options.uiName, process.env.verbose)
 	.then(widgets => {
 
@@ -102,12 +114,25 @@ function onAction(project, options){
 			if(process.env.verbose){
 				console.log("%o".info, widget);
 			}
-			console.log("%s\t%s\t%s\t%s".info,
-				widget.uiType,
-				widget.channel?widget.channel:"n/a",
-				widget.uiName,
-				widget.file
-			);
+
+			switch (options.output) {
+				case "a":
+					console.log("%s".info, widget.absPath);
+					break;
+				case "r":
+					console.log("%s".info, widget.relPath);
+					break;
+				case "f":
+					console.log("%s".info, widget.file);
+					break;
+				default: //t
+					console.log("%s\t%s\t%s\t%s".info,
+						widget.uiType,
+						widget.channel?widget.channel:"n/a",
+						widget.uiName,
+						widget.file
+					);
+			}
 		});
 	});
 }
