@@ -1,7 +1,7 @@
 const finder = require("../common/finder.js");
 
 /**
- * findWidgets - Finds all widget files contained in all the forms, templates, popups
+ * findViews - Finds all the directories representing forms, templates, popups
  * and reusable components matching a specific criteria.
  *
  * @param  {type} projectPath description
@@ -11,15 +11,14 @@ const finder = require("../common/finder.js");
  * @param  {type} verbose     description
  * @return {type}             description
  */
-async function findWidgets(projectPath, viewType, channel, viewName, verbose){
-	if(verbose)console.debug(
-		"projectPath: %s\nviewType: %s\nchannel: %s\nviewName: %s".debug,
-		projectPath,
+async function findViews(projectPath, viewType, channel, viewName, verbose) {
+	if(verbose)console.log(
+		"viewType: %s\nchannel: %s\nviewName: %s".debug,
 		viewType,
 		channel,
 		viewName
 	);
-	return await finder.findWidgets(projectPath, viewType, channel, viewName, verbose);
+	return await finder.findViews(projectPath, viewType, channel, viewName, verbose);
 }
 
-module.exports = findWidgets;
+module.exports = findViews;

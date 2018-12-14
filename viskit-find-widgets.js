@@ -2,7 +2,7 @@
 
 const program = require("commander");
 const colors = require("colors");
-const ctrl = require("./controllers/find-widgets");
+const findWidgets = require("./controllers/find-widgets");
 const theme = require("./config/theme.js");
 const globals = require("./config/globals.js");
 
@@ -82,7 +82,7 @@ function onAction(project, options){
 		process.exit(1);
 	}
 
-	ctrl.findWidgets(project, options.uiType, options.channel, options.uiName, process.env.verbose)
+	findWidgets(project, options.uiType, options.channel, options.uiName, process.env.verbose)
 	.then(widgets => {
 
 		if(widgets.length === 0){

@@ -44,6 +44,7 @@ function parseWidgetPath(widgetPath){
 		throw new Error(noProjectPathErrorMsg.replace("${target}", "widget"));
 	}
 	var relPath = widgetPath.replace(projectPathRegex, "");
+
 	var pathParts = relPath.split('/');
 	var file = pathParts[pathParts.length - 1];
 	var parent = pathParts[pathParts.length - 2];
