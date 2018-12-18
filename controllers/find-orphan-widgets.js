@@ -1,28 +1,25 @@
 
 const colors = require('colors');
-const globals = require("../config/globals");
-
-const widgetFinder = require("./find-widgets");
+const views = require("../config/views");
+const widgets = require("../config/widgets");
 const finder = require("../common/finder");
-
 const differenceBy = require('lodash.differenceby');
-
-const uiTypes = globals.uiTypes;
-const containerTypes = globals.containerTypes;
+const viewTypes = views.types;
+const containerTypes = widgets.containerTypes;
 
 /**
- * findOrphanWidgets - description
+ * findOrphans - description
  *
  * @param  {type} projectPath description
- * @param  {type} uiType      description
+ * @param  {type} viewType      description
  * @param  {type} channel     description
- * @param  {type} uiName      description
+ * @param  {type} viewName      description
  * @param  {type} showAll     description
  * @param  {type} verbose     description
  * @return {type}             description
  */
-async function findOrphanWidgets(projectPath, uiType, channel, uiName, showAll, verbose){
-	const views = await widgetFinder.findViews(projectPath, uiType, channel, uiName, verbose);
+async function findOrphans(projectPath, viewType, channel, viewName, showAll, verbose){
+	const views = await finder.findViews(projectPath, viewType, channel, viewName, verbose);
 	var projectOrphans = {};
 
 	for(const view of views){
@@ -33,7 +30,7 @@ async function findOrphanWidgets(projectPath, uiType, channel, uiName, showAll, 
 				return d.file;
 			})
 		);
-		var widgets = await widgetFinder.findWidgets(projectPath, view.uiType, view.channel, view.uiName, verbose);
+		var widgets = await finder.findWidgets(projectPath, view.viewType, view.channel, view.viewName, verbose);
 		if(verbose)console.debug("Widgets of: %s\n%o".debug,
 			view.file,
 			widgets.map(w=>{
@@ -50,11 +47,9 @@ async function findOrphanWidgets(projectPath, uiType, channel, uiName, showAll, 
 				return o.file;
 			})
 		);
-		projectOrphans[view.uiName] = orphans;
+		projectOrphans[view.viewName] = orphans;
 	}
 	return projectOrphans;
 }
 
-module.exports = {
-	findOrphanWidgets: findOrphanWidgets
-};
+module.exports = findOrphans;

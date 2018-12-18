@@ -49,22 +49,22 @@ function parseWidgetPath(widgetPath){
 	var file = pathParts[pathParts.length - 1];
 	var parent = pathParts[pathParts.length - 2];
 	var gParent = pathParts[pathParts.length - 3];
-	var uiType = pathParts[0];
+	var viewType = pathParts[0];
 
-	var channel, uiName;
-	if(uiType === "userwidgets" || parent === "userwidgetmodel.sm"){
+	var channel, viewName;
+	if(viewType === "userwidgets" || parent === "userwidgetmodel.sm"){
 		channel = "all";
-		uiName = gParent;
+		viewName = gParent;
 	}
 	else{
 		channel = pathParts[1];
-		uiName = parent.replace(uiExtensionRegex, "");
+		viewName = parent.replace(uiExtensionRegex, "");
 	}
 
 	return {
 		file: file,
-		uiName: uiName,
-		uiType: uiType,
+		viewName: viewName,
+		viewType: viewType,
 		channel: channel,
 		relPath: relPath,
 		absPath: widgetPath
@@ -86,27 +86,27 @@ function parseViewPath(viewPath){
 
 	var relPath = viewPath.replace(projectPathRegex, "");
 	var pathParts = relPath.split('/');
-	var uiType = pathParts[0];
+	var viewType = pathParts[0];
 	var lastDir = pathParts[pathParts.length - 1];
 
-	var file, channel, uiName;
-	if(uiType === "userwidgets" || lastDir === "userwidgetmodel.sm"){
+	var file, channel, viewName;
+	if(viewType === "userwidgets" || lastDir === "userwidgetmodel.sm"){
 		channel = "all";
-		uiName = pathParts[pathParts.length - 2];
-		//uiName will be name-spaced -e.g. com.acme.FooComponent
-		//file = uiName.substring(uiName.lastIndexOf(".")+1) + ".json";
+		viewName = pathParts[pathParts.length - 2];
+		//viewName will be name-spaced -e.g. com.acme.FooComponent
+		//file = viewName.substring(viewName.lastIndexOf(".")+1) + ".json";
 		file = "userwidgetmodel.json"
 	}
 	else{
 		channel = pathParts[1];
-		uiName = lastDir.replace(uiExtensionRegex, "");
-		file = uiName + ".json";
+		viewName = lastDir.replace(uiExtensionRegex, "");
+		file = viewName + ".json";
 	}
 
 	return {
 		file: file,
-		uiName: uiName,
-		uiType: uiType,
+		viewName: viewName,
+		viewType: viewType,
 		channel: channel,
 		absDir: viewPath,
 		relPath: relPath += "/" + file,

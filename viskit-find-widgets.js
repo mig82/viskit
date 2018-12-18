@@ -4,42 +4,29 @@ const program = require("commander");
 const colors = require("colors");
 const findWidgets = require("./controllers/find-widgets");
 const theme = require("./config/theme.js");
-const globals = require("./config/globals.js");
+colors.setTheme(theme);
+const views = require("./config/views.js");
+const channels = require("./config/channels.js");
+const outputs = require("./config/outputs.js");
+const validateOptions = require("./validate-options");
 
 colors.setTheme(theme);
 
-var uiTypeValues = globals.uiTypes.concat("all");
-var channelValues = globals.channels.concat("all");
-
-var uiTypeOptions = globals.uiTypes.join("|");
-var channelOptions = globals.channels.join("|");
-
-var uiTypesRegex = new RegExp(`^(${uiTypeOptions})$`);
-var channelsRegex = new RegExp(`^(${channelOptions})$`);
-
-var outputOptions = globals.outputTypes.join("|");
-var outputRegex = new RegExp(`^(${outputOptions})$`);
-
 program
 	.usage("[options] <project>")
-	.option("-t, --ui-type <type>",
-		"The type of view for which you want to find the widgets.",
-		uiTypesRegex)
-	.option("-c, --channel <channel>",
-		"The channel or form factor for which you want the count.",
-		channelsRegex)
-	.option("-n, --ui-name <name>",
-		"The name of the form, pop-up, segment template or component for which you want to find the widgets.")
-	.option('-o, --output <format>', 'The type of output required.', outputRegex)
+	.option(views.cmdTypeOption.flag, views.cmdTypeOption.desc, views.regex)
+	.option(channels.cmdOption.flag, channels.cmdOption.desc, channels.regex)
+	.option(views.cmdNameOption.flag, views.cmdNameOption.desc)
+	.option(outputs.cmdOption.flag, outputs.cmdOption.desc, outputs.regex)
 	.action(onAction);
 
 program.on('--help', function(){
 	console.log(colors.info(
 		"\nExamples:\n" +
 		"\tviskit find-widgets path/to/workspace/FooProject\n" +
-		"\tviskit fw --ui-type forms path/to/workspace/FooProject\n" +
+		"\tviskit fw --view-type forms path/to/workspace/FooProject\n" +
 		"\tviskit fw --channel mobile path/to/workspace/FooProject\n" +
-		"\tviskit fw --ui-name homeForm path/to/workspace/FooProject\n"
+		"\tviskit fw --view-name homeForm path/to/workspace/FooProject\n"
 	));
 	console.log(colors.info(
 		"Why?\n\n" +
@@ -47,15 +34,15 @@ program.on('--help', function(){
 		"This just a utility command. The functionality behind it is meant to be used\n" +
 		"by other commands, but I've also exposed it here for testing and fun.\n\n" +
 
-		"The available values for the " + "ui-type".emphasis + " option are " +
-		uiTypeOptions.emphasis + "," + "where " +
+		"The available values for the " + "view-type".emphasis + " option are " +
+		views.options.emphasis + "," + "where " +
 		"userwidgets".emphasis + "\nrefers to reusable components.\n\n" +
 
 		"The available values for the " + "channel".emphasis + " option are " +
-		channelOptions.emphasis + "," + "where " +
+		channels.options.emphasis + "," + "where " +
 		"watch".emphasis + "\nrefers to Apple's iWatch.\n\n" +
 
-		"For the " + "ui-name".emphasis + " option you can use one of these:\n" +
+		"For the " + "view-name".emphasis + " option you can use one of these:\n" +
 		" * The name of a form.\n" +
 		" * The name of a pop-up.\n" +
 		" * The name of a segment's header or row template.\n" +
@@ -69,72 +56,25 @@ if (!process.argv.slice(2).length) {
 	});
 }
 
-function onAction(project, options){
+async function onAction(project, options){
 
-	if(options.uiType && uiTypeValues.indexOf(options.uiType) < 0){
-		console.log("\nInvalid value for option " + "--ui-type".emphasis +
-			". Use one of " + uiTypeOptions.emphasis + " or don't use this option.\n"
-		);
-		process.exit(1);
-	}
+	validateOptions(options);
 
-	if(options.channel && channelValues.indexOf(options.channel) < 0){
+	var widgets = await findWidgets(project, options.viewType, options.channel, options.viewName, process.env.verbose)
+	if(widgets.length === 0){
+		//Add a flag to suppress this, in case the user wants to grep the output.
 		console.log(
-			"\nInvalid value for option " + "--channel".emphasis +
-			". Use one of " + channelOptions.emphasis + " or don't use this option.\n"
+			colors.info("\nNo widgets found for options\n" +
+				"\ttype: %s\n" +
+				"\tchannel: %s\n" +
+				"\tname: %s\n"
+			),
+			options.viewType?options.viewType:"all",
+			options.channel?options.channel:"all",
+			options.viewName?options.viewName:"all"
 		);
-		process.exit(1);
 	}
-
-	if(options.output && !outputRegex.test(options.output)){
-		console.log(
-			"\nInvalid value for option " + "--output".emphasis +
-			". Use one of " + outputOptions.emphasis + " or don't use this option.\n"
-		);
-		process.exit(1);
-	}
-
-	findWidgets(project, options.uiType, options.channel, options.uiName, process.env.verbose)
-	.then(widgets => {
-
-		if(widgets.length === 0){
-			//Add a flag to suppress this, in case the user wants to grep the output.
-			console.log(
-				colors.info("\nNo widgets found for options\n" +
-					"\ttype: %s\n" +
-					"\tchannel: %s\n" +
-					"\tname: %s\n"
-				),
-				options.uiType?options.uiType:"all",
-				options.channel?options.channel:"all",
-				options.uiName?options.uiName:"all"
-			);
-		}
-		widgets.forEach(widget => {
-			if(process.env.verbose){
-				console.log("%o".info, widget);
-			}
-
-			switch (options.output) {
-				case "a":
-					console.log("%s".info, widget.absPath);
-					break;
-				case "r":
-					console.log("%s".info, widget.relPath);
-					break;
-				case "f":
-					console.log("%s".info, widget.file);
-					break;
-				default: //t
-					console.log("%s\t%s\t%s\t%s".info,
-						widget.uiType,
-						widget.channel?widget.channel:"n/a",
-						widget.uiName,
-						widget.file
-					);
-			}
-		});
-	});
+	widgets.forEach(widget => {outputs.print(options.output, widget)});
 }
 
 program.parse(process.argv);

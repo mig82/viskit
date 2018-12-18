@@ -3,7 +3,7 @@ const find = require('find');
 const fs = require('fs-extra');
 const colors = require('colors');
 const globals = require("../config/globals");
-const uiTypes = globals.uiTypes;
+const viewTypes = globals.viewTypes;
 
 /**
 * Count the widgets for each form according to the project structure.
@@ -21,34 +21,34 @@ function countWidgets(projectPath, channel, verbose){
 	//find.dir(/\.sm$/, project, exploreForms);
 
 	//TODO: Implement the option to explore the specified channel.
-	uiTypes.forEach(uiType => {
+	viewTypes.forEach(viewType => {
 		//Search in path/to/project/forms, path/to/project/templates, etc.
-		var uiTypePath = projectPath + uiType;
+		var viewTypePath = projectPath + viewType;
 
-		fs.pathExists(uiTypePath)
+		fs.pathExists(viewTypePath)
 		.then(exists => {
 			if(exists){
-				find.dir(/\.sm$/, uiTypePath, (forms) => {
-					console.log('%s: %d'.info, uiType, forms.length);
+				find.dir(/\.sm$/, viewTypePath, (forms) => {
+					console.log('%s: %d'.info, viewType, forms.length);
 					forms.forEach((formPath) => {
-						countFormWidgets(uiTypePath, formPath);
+						countFormWidgets(viewTypePath, formPath);
 					});
 				});
 			}
 			else{
-				console.log("Path %s does NOT exist".warn, uiTypePath);
+				console.log("Path %s does NOT exist".warn, viewTypePath);
 			}
 		});
 	});
 }
 
-function countFormWidgets(uiTypePath, formPath){
+function countFormWidgets(viewTypePath, formPath){
 
 	//var formSplit = formPath.split('/');
 	//var formDisplayName = formSplit[formSplit.length - 1];
 
-	var uiTypePathRegex = new RegExp("^" + uiTypePath);
-	var formDisplayName = formPath.replace(uiTypePathRegex, '');
+	var viewTypePathRegex = new RegExp("^" + viewTypePath);
+	var formDisplayName = formPath.replace(viewTypePathRegex, '');
 	//console.log('\t\t%s'.debug, formDisplayName);
 
 	find.file(formPath, (widgets) => {

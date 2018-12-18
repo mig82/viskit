@@ -4,29 +4,30 @@ const findFile = require('find').file;
 const findDir = require('find').dir;
 const Q = require('q');
 Q.longStackSupport = true;
-const globals = require("../config/globals");
+const channels = require("../config/channels");
+const views = require("../config/views");
 const parser = require("./path-parser.js");
 
-function buildSearchPath(searchFor, projectPath, uiType, channel, uiName){
+function buildSearchPath(searchFor, projectPath, viewType, channel, viewName){
 	var path;
 
-	var uiNameOptions = searchAll(uiName) ? ".*" : uiName;
-	var channelOptions = searchAll(channel) ? "(" + globals.channels.join("|") + ")" : channel;
-	var uiTypeOptions = searchAll(uiType) ? concatOptions(globals.uiSTypes) : uiType;
+	var viewNameOptions = searchAll(viewName) ? ".*" : viewName;
+	var channelOptions = searchAll(channel) ? "(" + channels.types.join("|") + ")" : channel;
+	var viewTypeOptions = searchAll(viewType) ? concatOptions(views.standardTypes) : viewType;
 
-	if(searchAll(uiType)) {
+	if(searchAll(viewType)) {
 		path = `^${projectPath}(` +
-			`/${uiTypeOptions}/${channelOptions}/${uiNameOptions}` +
+			`/${viewTypeOptions}/${channelOptions}/${viewNameOptions}` +
 			"|" +
-			`/userwidgets/${uiNameOptions}/userwidgetmodel` +
+			`/userwidgets/${viewNameOptions}/userwidgetmodel` +
 			")";
 	}
-	else if(uiType === "userwidgets"){
-		path = `^${projectPath}/userwidgets/${uiNameOptions}/userwidgetmodel`
+	else if(viewType === "userwidgets"){
+		path = `^${projectPath}/userwidgets/${viewNameOptions}/userwidgetmodel`
 	}
 	//Search forms, popups and templates only.
 	else{
-		path = `^${projectPath}/${uiTypeOptions}/${channelOptions}(/.*)*/${uiNameOptions}`;
+		path = `^${projectPath}/${viewTypeOptions}/${channelOptions}(/.*)*/${viewNameOptions}`;
 	}
 
 	if(searchFor === "w" || searchFor === "widget" || searchFor === "widgets"){

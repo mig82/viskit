@@ -4,7 +4,7 @@ const fs = require('fs-extra');
 const colors = require('colors');
 const globals = require("../config/globals");
 
-const uiTypes = globals.uiTypes;
+const viewTypes = globals.viewTypes;
 const containerTypes = globals.containerTypes;
 
 /**
@@ -17,19 +17,19 @@ function findRedundants(projectPath, showAll, ignoreEmpty, verbose){
 	}
 	console.log('Finding redundant containers for project %s'.info, projectPath);
 
-	uiTypes.forEach(uiType => {
+	viewTypes.forEach(viewType => {
 		//Search in path/to/project/forms, path/to/project/templates, etc.
-		var uiTypePath = projectPath + uiType + "/";
+		var viewTypePath = projectPath + viewType + "/";
 
-		fs.pathExists(uiTypePath)
+		fs.pathExists(viewTypePath)
 		.then(exists => {
 			if(exists){
 
-				var uiTypePathRegex = new RegExp("^" + uiTypePath);
+				var viewTypePathRegex = new RegExp("^" + viewTypePath);
 
-				find.eachfile(/\.json$/, uiTypePath, (widgetPath) => {
+				find.eachfile(/\.json$/, viewTypePath, (widgetPath) => {
 
-					var widgetDisplayName = widgetPath.replace(uiTypePathRegex, '');
+					var widgetDisplayName = widgetPath.replace(viewTypePathRegex, '');
 
 					fs.readJson(widgetPath)
 					.then(widget => {
@@ -57,7 +57,7 @@ function findRedundants(projectPath, showAll, ignoreEmpty, verbose){
 				});
 			}
 			else{
-				console.log("Path %s does NOT exist".warn, uiTypePath);
+				console.log("Path %s does NOT exist".warn, viewTypePath);
 			}
 		});
 	});

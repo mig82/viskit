@@ -2,31 +2,21 @@
 
 const program = require("commander");
 const colors = require("colors");
-const ctrl = require("./controllers/find-orphan-widgets");
-const globals = require("./config/globals.js");
+const findOrphans = require("./controllers/find-orphan-widgets");
 const theme = require("./config/theme.js");
 colors.setTheme(theme);
-var forOwn = require('lodash.forown');
-
-var uiTypeValues = globals.uiTypes.concat("all");
-var channelValues = globals.channels.concat("all");
-
-var uiTypeOptions = globals.uiTypes.join("|");
-var channelOptions = globals.channels.join("|");
-
-var uiTypesRegex = new RegExp(`^(${uiTypeOptions})$`);
-var channelsRegex = new RegExp(`^(${channelOptions})$`);
+const views = require("./config/views.js");
+const channels = require("./config/channels.js");
+const outputs = require("./config/outputs.js");
+const validateOptions = require("./validate-options");
+const forOwn = require('lodash.forown');
 
 program
 	.usage("[options] <project>")
-	.option("-t, --ui-type <type>",
-		"The type of UI for which you want the count.",
-		uiTypesRegex)
-	.option("-c, --channel <channel>",
-		"The channel or form factory for which you want the count.",
-		channelsRegex)
-	.option("-n, --ui-name <name>",
-		"The name of the form, pop-up, segment template or component for which you want the count.")
+	.option(views.cmdTypeOption.flag, views.cmdTypeOption.desc, views.regex)
+	.option(channels.cmdOption.flag, channels.cmdOption.desc, channels.regex)
+	.option(views.cmdNameOption.flag, views.cmdNameOption.desc)
+	.option(outputs.cmdOption.flag, outputs.cmdOption.desc, outputs.regex)
 	.option('-a, --show-all', 'Show all, including widgets with a defined width and height')
 	.action(onAction);
 
@@ -54,28 +44,24 @@ if (!process.argv.slice(2).length) {
 }
 
 async function onAction(project, options){
-	var projectOrphans = await ctrl.findOrphanWidgets(
+
+	validateOptions(options);
+
+	var orphans = await findOrphans(
 		project,
-		options.uiType,
+		options.viewType,
 		options.channel,
-		options.uiName,
+		options.viewName,
 		options.showAll,
 		process.env.verbose
 	);
-	//console.log("Orphans: %o".info, projectOrphans);
+	//console.log("Orphans: %o".info, orphans);
 
-	forOwn(projectOrphans, (viewOrphans, viewName) => {
+	forOwn(orphans, (viewOrphans, viewName) => {
 		var orphanCount = viewOrphans.length;
 		var message = "";
 		if (orphanCount > 0){
-			/*console.log("%s\tcount: %d\torphans: %s".error, viewName, orphanCount, viewOrphans.map(widget=>{
-				return widget.file;
-			}));*/
-			//console.log("%s\tcount: %d\torphans:".error, viewName, orphanCount);
-			viewOrphans.forEach(widget => {
-				//console.log("\t%s".error, widget.file);
-				console.log("\t%s".error, widget.relPath);
-			});
+			viewOrphans.forEach(widget => {outputs.print(options.output, widget, "error")});
 		}
 		else{
 			if(options.verbose)

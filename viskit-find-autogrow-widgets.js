@@ -2,30 +2,20 @@
 
 const program = require("commander");
 const colors = require("colors");
-const ctrl = require("./controllers/find-autogrow-widgets");
-const globals = require("./config/globals.js");
+const findAutogrowWidgets = require("./controllers/find-autogrow-widgets");
 const theme = require("./config/theme.js");
 colors.setTheme(theme);
-
-var uiTypeValues = globals.uiTypes.concat("all");
-var channelValues = globals.channels.concat("all");
-
-var uiTypeOptions = globals.uiTypes.join("|");
-var channelOptions = globals.channels.join("|");
-
-var uiTypesRegex = new RegExp(`^(${uiTypeOptions})$`);
-var channelsRegex = new RegExp(`^(${channelOptions})$`);
+const views = require("./config/views.js");
+const channels = require("./config/channels.js");
+const outputs = require("./config/outputs.js");
+const validateOptions = require("./validate-options");
 
 program
 	.usage("[options] <project>")
-	.option("-t, --ui-type <type>",
-		"The type of UI for which you want the count.",
-		uiTypesRegex)
-	.option("-c, --channel <channel>",
-		"The channel or form factory for which you want the count.",
-		channelsRegex)
-	.option("-n, --ui-name <name>",
-		"The name of the form, pop-up, segment template or component for which you want the count.")
+	.option(views.cmdTypeOption.flag, views.cmdTypeOption.desc, views.regex)
+	.option(channels.cmdOption.flag, channels.cmdOption.desc, channels.regex)
+	.option(views.cmdNameOption.flag, views.cmdNameOption.desc)
+	.option(outputs.cmdOption.flag, outputs.cmdOption.desc, outputs.regex)
 	.option('-a, --show-all', 'Show all, including widgets with a defined width and height')
 	.action(onAction);
 
@@ -62,15 +52,36 @@ if (!process.argv.slice(2).length) {
 	});
 }
 
-function onAction(project, options){
-	ctrl.findAutogrowWidgets(
+async function onAction(project, options){
+
+	validateOptions(options);
+
+	var widgets = await findAutogrowWidgets(
 		project,
-		options.uiType,
+		options.viewType,
 		options.channel,
-		options.uiName,
+		options.viewName,
 		options.showAll,
 		process.env.verbose
 	);
+
+	if(widgets.length === 0){
+		//Add a flag to suppress this, in case the user wants to grep the output.
+		console.log(
+			colors.info("\nNo widgets found for options\n" +
+				"\ttype: %s\n" +
+				"\tchannel: %s\n" +
+				"\tname: %s\n"
+			),
+			options.viewType?options.viewType:"all",
+			options.channel?options.channel:"all",
+			options.viewName?options.viewName:"all"
+		);
+	}
+
+	widgets.forEach(widget => {
+		outputs.print(options.output, widget, widget.color);
+	});
 }
 
 program.parse(process.argv);
