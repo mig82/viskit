@@ -2,67 +2,59 @@
 const find = require('find');
 const fs = require('fs-extra');
 const colors = require('colors');
-const globals = require("../config/globals");
-
-const viewTypes = globals.viewTypes;
-const containerTypes = globals.containerTypes;
+const views = require("../config/views");
+const widgets = require("../config/widgets");
+const viewTypes = views.types;
+const containerTypes = widgets.containerTypes;
+const findWidgets = require("../common/finder").findWidgets;
 
 /**
-* Find containers with one or no children objects.
-*/
-function findRedundants(projectPath, showAll, ignoreEmpty, verbose){
+ * findRedundantContainers - Find any container widgets -i.e. instances of
+ * FlexContainer and VBox or HBox- which contain one or no children widgets.
+ *
+ * @param  String projectPath The absolute path to the Visualizer project's root directory.
+ * @param  String viewType    The type of view to filter the search -i.e. forms, popups, templates, userwidgets.
+ * @param  String channel     The channel to filter the search -i.e. mobile, tablet, watch, androidwear, desktop.
+ * @param  String viewName    The name of the specific form, popup, template of userwidget to filter the search.
+ * @param  Boolean ignoreEmpty Whether to include the empty containers in the results or not.
+ * @param  Boolean showAll     Whether to include non redundant containers in the search or not.
+ * @param  Boolean verbose     Whether to print everything or not.
+ * @return Array             An array of instances of MetaWidget representing all container widgets containing
+ * fewer than two children widgets.
+ */
+async function findRedundantContainers(projectPath, viewType, channel, viewName, ignoreEmpty, showAll, verbose){
+	var metaWidgets = await findWidgets(projectPath, viewType, channel, viewName, verbose);
+	var redundantContainers = [];
+	for(const metaWidget of metaWidgets){
 
-	if(projectPath.substr(-1) !== '/'){
-		projectPath += '/';
+		var widget = await fs.readJson(metaWidget.absPath);
+
+console.log(JSON.stringify(containerTypes).debug)
+		if(containerTypes.indexOf(widget.name) >= 0){
+
+			var childCount = widget.children.length;
+			metaWidget.info = `type: ${widget.wType}\tcount: ${childCount}`;
+
+			switch (childCount) {
+				case 0:
+					if(!ignoreEmpty){
+						metaWidget.color = "red";
+						redundantContainers.push(metaWidget);
+					}
+					break;
+				case 1:
+					metaWidget.color = "yellow";
+					redundantContainers.push(metaWidget);
+					break;
+				default:
+					if(showAll){
+						metaWidget.color = "green";
+						redundantContainers.push(metaWidget);
+					}
+			}
+		}
 	}
-	console.log('Finding redundant containers for project %s'.info, projectPath);
-
-	viewTypes.forEach(viewType => {
-		//Search in path/to/project/forms, path/to/project/templates, etc.
-		var viewTypePath = projectPath + viewType + "/";
-
-		fs.pathExists(viewTypePath)
-		.then(exists => {
-			if(exists){
-
-				var viewTypePathRegex = new RegExp("^" + viewTypePath);
-
-				find.eachfile(/\.json$/, viewTypePath, (widgetPath) => {
-
-					var widgetDisplayName = widgetPath.replace(viewTypePathRegex, '');
-
-					fs.readJson(widgetPath)
-					.then(widget => {
-						if(containerTypes.indexOf(widget.name) >= 0){
-
-							var childCount = widget.children.length;
-							switch (childCount) {
-								case 0:
-									if(!ignoreEmpty)
-									console.log("\t%s\t%s:\t%s:\t%d".red, widgetDisplayName, widget.wType, widget.id, childCount);
-									break;
-								case 1:
-									console.log("\t%s\t%s:\t%s:\t%d".yellow, widgetDisplayName, widget.wType, widget.id, childCount);
-									break;
-								default:
-									if(showAll)
-									console.log("\t%s\t%s:\t%s:\t%d".green, widgetDisplayName, widget.wType, widget.id, childCount);
-							}
-
-						}
-					})
-					.catch(err => {
-						console.error(err)
-					})
-				});
-			}
-			else{
-				console.log("Path %s does NOT exist".warn, viewTypePath);
-			}
-		});
-	});
+	return redundantContainers;
 }
 
-module.exports = {
-	findRedundants: findRedundants
-};
+module.exports = findRedundantContainers;

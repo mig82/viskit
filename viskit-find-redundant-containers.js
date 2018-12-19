@@ -2,12 +2,20 @@
 
 const program = require("commander");
 const colors = require("colors");
-const ctrl = require("./controllers/find-redundant-containers");
+const findRedundantContainers = require("./controllers/find-redundant-containers");
 const theme = require("./config/theme.js");
 colors.setTheme(theme);
+const views = require("./config/views.js");
+const channels = require("./config/channels.js");
+const outputs = require("./config/outputs.js");
+const validateOptions = require("./validate-options");
 
 program
 	.usage("[options] <project>")
+	.option(views.cmdTypeOption.flag, views.cmdTypeOption.desc, views.regex)
+	.option(channels.cmdOption.flag, channels.cmdOption.desc, channels.regex)
+	.option(views.cmdNameOption.flag, views.cmdNameOption.desc)
+	.option(outputs.cmdOption.flag, outputs.cmdOption.desc, outputs.regex)
 	.option('-a, --show-all', 'Show all, including containers with more than one child')
 	.option('-e, --ignore-empty', 'Ignore empty containers')
 	.action(onAction);
@@ -47,8 +55,24 @@ if (!process.argv.slice(2).length) {
 	});
 }
 
-function onAction(project, options){
-	ctrl.findRedundants(project, options.showAll, options.ignoreEmpty, process.env.verbose);
+async function onAction(project, options){
+
+	validateOptions(options);
+
+	var containers = await findRedundantContainers(
+		project,
+		options.viewType,
+		options.channel,
+		options.viewName,
+		options.ignoreEmpty,
+		options.showAll,
+		process.env.verbose
+	);
+
+	console.info("Count: %d".info, containers.length);
+	containers.forEach(widget => {
+		outputs.print(options.output, widget, widget.color);
+	});
 }
 
 program.parse(process.argv);
