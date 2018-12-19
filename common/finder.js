@@ -6,7 +6,8 @@ const Q = require('q');
 Q.longStackSupport = true;
 const channels = require("../config/channels");
 const views = require("../config/views");
-const parser = require("./path-parser.js");
+const Widget = require("../models/widget");
+const View = require("../models/view");
 
 function buildSearchPath(searchFor, projectPath, viewType, channel, viewName){
 	var path;
@@ -44,26 +45,25 @@ function find(type, searchPath, projectPath, verbose){
 	console.log("Looking for:\n\t%s\n".debug, searchPath);
 
 	var searchPathRegex = new RegExp(searchPath);
-	parser.setProjectPath(projectPath, true);
-
+	
 	return Q.Promise(function(resolve, reject, notify) {
 
 		try{
 			if(type === "w" || type === "widget" || type === "widgets"){
 				findFile(searchPathRegex, projectPath, (filePaths) => {
 					//console.log("%o".debug, filePaths);
-					//parser.setProjectPath(projectPath);
+					Widget.setProjectPath(projectPath, true);
 					resolve(filePaths.map(filePath => {
-						return parser.parseWidgetPath(filePath);
+						return new Widget(filePath);
 					}));
 				})
 			}
 			else if(type === "v" || type === "view" || type === "views"){
 				findDir(searchPathRegex, projectPath, (dirPaths) => {
 					//console.log("%o".debug, dirPaths);
-					//parser.setProjectPath(projectPath);
+					View.setProjectPath(projectPath, true);
 					resolve(dirPaths.map(dirPath => {
-						return parser.parseViewPath(dirPath);
+						return new View(dirPath);
 					}));
 				})
 			}
@@ -156,9 +156,10 @@ async function findViewDescendants(view, projectPath, verbose){
 		var widget = fs.readJsonSync(descendants[k].absPath);
 		//console.log("\t\t%s".debug, widget.children);
 		if(widget.children){
+			Widget.setProjectPath(projectPath);
 			descendants = descendants.concat(widget.children.map(child => {
 				var absPath = view.absDir + "/" + child + ".json";
-				return parser.parseWidgetPath(absPath);
+				return new Widget(absPath);
 			}));
 		}
 		if(verbose)console.log("\t\t%s".debug, JSON.stringify(descendants.map(desc=>{
@@ -173,7 +174,7 @@ async function findViewDescendants(view, projectPath, verbose){
 		if(widget.children){
 			descendants = descendants.concat(widget.children.map(child => {
 				var absPath = view.absDir + "/" + child + ".json";
-				return parser.parseWidgetPath(absPath);
+				return new Widget(absPath);
 			}));
 		}
 		if(verbose)logger.debug("\t\t%s", JSON.stringify(descendants.map(desc=>{
