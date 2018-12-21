@@ -61,20 +61,8 @@ async function onAction(project, options){
 	validateOptions(options);
 
 	var views = await findViews(project, options.viewType, options.channel, options.viewName, process.env.verbose)
-	if(views.length === 0){
-		//Add a flag to suppress this, in case the user wants to grep the output.
-		console.log(
-			colors.info("\nNo views found for options\n" +
-				"\ttype: %s\n" +
-				"\tchannel: %s\n" +
-				"\tname: %s\n"
-			),
-			options.viewType?options.viewType:"all",
-			options.channel?options.channel:"all",
-			options.viewName?options.viewName:"all"
-		);
-	}
 	views.forEach(view => {outputs.print(options.output, view)});
+	console.info("Count: %d".info, views.length);
 }
 
 program.parse(process.argv);

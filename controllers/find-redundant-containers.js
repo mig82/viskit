@@ -29,7 +29,6 @@ async function findRedundantContainers(projectPath, viewType, channel, viewName,
 
 		var widget = await fs.readJson(metaWidget.absPath);
 
-console.log(JSON.stringify(containerTypes).debug)
 		if(containerTypes.indexOf(widget.name) >= 0){
 
 			var childCount = widget.children.length;

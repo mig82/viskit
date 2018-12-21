@@ -69,10 +69,10 @@ async function onAction(project, options){
 		process.env.verbose
 	);
 
-	console.info("Count: %d".info, containers.length);
 	containers.forEach(widget => {
 		outputs.print(options.output, widget, widget.color);
 	});
+	console.info("Count: %d".info, containers.length);
 }
 
 program.parse(process.argv);

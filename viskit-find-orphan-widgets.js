@@ -60,14 +60,8 @@ async function onAction(project, options){
 	forOwn(orphans, (viewOrphans, viewName) => {
 		var orphanCount = viewOrphans.length;
 		var message = "";
-		if (orphanCount > 0){
-			viewOrphans.forEach(widget => {outputs.print(options.output, widget, "error")});
-		}
-		else{
-			if(options.verbose)
-			console.log("%s\tcount: %d\torphans: ".info, viewName, orphanCount);
-		}
-
+		viewOrphans.forEach(widget => {outputs.print(options.output, widget, "error")});
+		console.info("Count for %s: %d".info, viewName, orphanCount);
 	})
 }
 

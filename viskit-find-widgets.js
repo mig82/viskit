@@ -61,20 +61,8 @@ async function onAction(project, options){
 	validateOptions(options);
 
 	var widgets = await findWidgets(project, options.viewType, options.channel, options.viewName, process.env.verbose)
-	if(widgets.length === 0){
-		//Add a flag to suppress this, in case the user wants to grep the output.
-		console.log(
-			colors.info("\nNo widgets found for options\n" +
-				"\ttype: %s\n" +
-				"\tchannel: %s\n" +
-				"\tname: %s\n"
-			),
-			options.viewType?options.viewType:"all",
-			options.channel?options.channel:"all",
-			options.viewName?options.viewName:"all"
-		);
-	}
 	widgets.forEach(widget => {outputs.print(options.output, widget)});
+	console.info("Count: %d".info, widgets.length);
 }
 
 program.parse(process.argv);

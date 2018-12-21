@@ -54,7 +54,7 @@ async function findOrphans(projectPath, viewType, channel, viewName, showAll, ve
 				return o.file;
 			})
 		);
-		projectOrphans[view.viewName] = orphans;
+		if(showAll || orphans.length > 0) projectOrphans[view.viewName] = orphans;
 	}
 	return projectOrphans;
 }
