@@ -8,15 +8,22 @@ const viewTypes = views.types;
 const containerTypes = widgets.containerTypes;
 
 /**
- * findOrphans - description
+ * findOrphans - Finds all widget JSON files which despite being part of the project structure are not a parent
+ * of the corresponding view's tree. Meaning, the widget's JSON file is contained inside the view's .sm directory
+ * but the widget is not a descendant of the view. So, for instance, a form fooForm.sm contains a fooForm.json files
+ * which declares a children property that lists the view's top level descendants. Each one of those descendants
+ * declares a children property of their own and so this builds a tree. If a widget's JSON file is not mentioned
+ * anywhere in said tree, then it is not a descendant of the view and thus it is considered an orphan. Which means
+ * it's not really part of the view nor the project, but rather just litter and so it should be removed.
  *
- * @param  {type} projectPath description
- * @param  {type} viewType      description
- * @param  {type} channel     description
- * @param  {type} viewName      description
- * @param  {type} showAll     description
- * @param  {type} verbose     description
- * @return {type}             description
+ * @param  String projectPath The absolute path to the Visualizer project's root directory.
+ * @param  String viewType    The type of view to filter the search -i.e. forms, popups, templates, userwidgets.
+ * @param  String channel     The channel to filter the search -i.e. mobile, tablet, watch, androidwear, desktop.
+ * @param  String viewName    The name of the specific form, popup, template of userwidget to filter the search.
+ * @param  Boolean showAll     Whether to include non redundant containers in the search or not.
+ * @param  Boolean verbose     Whether to print everything or not.
+ * @return Array             An array of instances of MetaWidget representing all widgets declaring a parent which
+ * does not declare them back as a child.
  */
 async function findOrphans(projectPath, viewType, channel, viewName, showAll, verbose){
 	const views = await finder.findViews(projectPath, viewType, channel, viewName, verbose);
