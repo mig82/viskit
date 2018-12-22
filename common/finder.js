@@ -45,35 +45,41 @@ function find(type, searchPath, projectPath, verbose){
 	console.log("Looking for:\n\t%s\n".debug, searchPath);
 
 	var searchPathRegex = new RegExp(searchPath);
-	
+
 	return Q.Promise(function(resolve, reject, notify) {
 
-		try{
-			if(type === "w" || type === "widget" || type === "widgets"){
-				findFile(searchPathRegex, projectPath, (filePaths) => {
-					//console.log("%o".debug, filePaths);
-					Widget.setProjectPath(projectPath, true);
-					resolve(filePaths.map(filePath => {
-						return new Widget(filePath);
-					}));
-				})
+		fs.pathExists(projectPath)
+		.then(exists => {
+			if(exists){
+				if(type === "w" || type === "widget" || type === "widgets"){
+					//console.log("Looking for widgets...".debug);
+					findFile(searchPathRegex, projectPath, (filePaths) => {
+						Widget.setProjectPath(projectPath, true);
+						resolve(filePaths.map(filePath => {
+							return new Widget(filePath);
+						}));
+					})
+				}
+				else if(type === "v" || type === "view" || type === "views"){
+					//console.log("Looking for views...".debug);
+					findDir(searchPathRegex, projectPath, (dirPaths) => {
+						View.setProjectPath(projectPath, true);
+						resolve(dirPaths.map(dirPath => {
+							return new View(dirPath);
+						}));
+					})
+				}
+				else{
+					reject(new Error("Unknown search type. Try 'views' or 'widgets'."));
+				}
 			}
-			else if(type === "v" || type === "view" || type === "views"){
-				findDir(searchPathRegex, projectPath, (dirPaths) => {
-					//console.log("%o".debug, dirPaths);
-					View.setProjectPath(projectPath, true);
-					resolve(dirPaths.map(dirPath => {
-						return new View(dirPath);
-					}));
-				})
+			else {
+				reject(new Error("Project path does not exist."));
 			}
-			else{
-				reject(new Error("Unknown search type. Try 'views' or 'widgets'."));
-			}
-		}
-		catch(e){
-			reject(e);
-		}
+		})
+		.catch(error => {
+			reject(error);
+		});
 	});
 }
 
