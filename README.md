@@ -6,6 +6,19 @@ A command line helper for Kony Visualizer projects.
 Viskit is meant to be a **community project**, not part of the official Kony platform, and so
 it is **NOT supported by Kony in any way.**
 
+# Installation
+
+If you already have NPM installed all you have to do is open a command prompt and run:
+
+    npm install -g viskit
+
+# Usage
+
+Once installed you'll be able to invoke **Viskit** from anywhere by simply typing in `viskit`
+in the command prompt -e.g.:
+
+    viskit --version
+
 ## Find Views
 
 Find any views in the project of a specific view type, channel, or name.
