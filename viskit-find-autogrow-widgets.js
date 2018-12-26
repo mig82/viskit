@@ -36,7 +36,7 @@ program.on('--help', function(){
 		"bottom".emphasis + " properties instead and letting it be as tall as it must to meet those.\n\n" +
 
 		"It's also possible to set a widget's " + "width".emphasis + " or " + "height".emphasis + " to " + "preferred".emphasis + ", and let it be\n" +
-		"as wide or tall as it must in order to accomodate its content.\n\n" +
+		"as wide or tall as it must in order to accommodate its content.\n\n" +
 
 		"Any of the scenarios above will cause additional overhead to calculate the resulting\n" +
 		"" + "width".emphasis + " or " + "height".emphasis + " of the widget. Ergo it is better to define both the " + "width".emphasis + " and " + "height".emphasis + " whenever\n" +

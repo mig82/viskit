@@ -10,33 +10,30 @@ program
 	.usage('[options] [command]')
 	.option('-v, --verbose', 'output everything');
 
+//IMPORTANT NOTE: Keep the commands listed in alphabetical order.
 program
-	.command("count-widgets <project>", "Count the number of widgets for a specific form factor or form")
+	.command("count-widgets <project>", "Count the number of widgets for each view.")
 	.alias("cw");
-
-program
-	.command("find-redundant-containers <project>", "Find any containers with one or no children")
-	.alias("frc");
 
 program
 	.command("find-autogrow-widgets <project>", "Find any widgets with undefined or preferred width or height")
 	.alias("faw");
 
 program
-	.command("find-widgets <project>", "Find any widgets in the project of a specific type, channel, name")
-	.alias("fw");
+	.command("find-orphan-widgets <project>", "Find any widgets in the project structure not linked to a view")
+	.alias("fow");
+
+program
+	.command("find-redundant-containers <project>", "Find any container widgets with one or no children")
+	.alias("frc");
 
 program
 	.command("find-views <project>", "Find any views in the project of a specific type, channel, name")
 	.alias("fv");
 
 program
-	.command("find-orphan-widgets <project>", "Find any widgets in the project structure not linked to a form")
-	.alias("fow");
-
-//TODO: Count heavy widgets per form -e.g. segments, browsers, maps.
-//TODO: Detect non-page-level heavy widgets.
-//TODO: Find deprecated widgets: com.kony.gen.viz.model.container.KVizHBox/KVizVBox
+	.command("find-widgets <project>", "Find any widgets in the project of a specific type, channel, name")
+	.alias("fw");
 
 program.on('option:verbose', function () {
 	process.env.verbose = this.verbose;

@@ -31,8 +31,11 @@ program.on('--help', function(){
 	console.log(colors.info(
 		"Why?\n\n" +
 
-		"This just a utility command. The functionality behind it is meant to be used\n" +
-		"by other commands, but I've also exposed it here for testing and fun.\n\n" +
+		"This useful to give you a rough idea of how big a project is in terms of the number\n" +
+		"of views it has. It's also a great way to see how reusable your work is, by comparing\n" +
+		"the count of forms and popups to the number of reusable components. Meaning if the\n" +
+		"count of views and popups is too high compared to the count of reusable components, then\n" +
+		"you could probably be doing a better job of harvesting reusable components from your app\n\n" +
 
 		"The available values for the " + "view-type".emphasis + " option are " +
 		views.options.emphasis + "," + "where " +

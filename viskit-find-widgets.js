@@ -31,8 +31,9 @@ program.on('--help', function(){
 	console.log(colors.info(
 		"Why?\n\n" +
 
-		"This just a utility command. The functionality behind it is meant to be used\n" +
-		"by other commands, but I've also exposed it here for testing and fun.\n\n" +
+		"This mostly a utility command on top of which others are built. It's still useful\n" +
+		"for resolving merge conflicts or if a project is broken by a reference to a widget\n" +
+		"which can't be found, perhaps because it has been renamed by another developer.\n\n" +
 
 		"The available values for the " + "view-type".emphasis + " option are " +
 		views.options.emphasis + "," + "where " +
