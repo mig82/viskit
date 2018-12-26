@@ -1,7 +1,10 @@
 {
 	"name": "viskit",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "A command line helper for Kony Visualizer projects.",
+	"bin": {
+		"viskit": "./viskit.js"
+	},
 	"main": "viskit.js",
 	"preferGlobal": true,
 	"scripts": {
