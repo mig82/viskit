@@ -2,15 +2,21 @@
 
 const program = require("commander");
 const colors = require("colors");
-const ctrl = require("./controllers/count-widgets");
+const countWidgets = require("./controllers/count-widgets");
 const theme = require("./config/theme.js");
 colors.setTheme(theme);
+const views = require("./config/views.js");
+const channels = require("./config/channels.js");
+const outputs = require("./config/outputs.js");
+const validateOptions = require("./validate-options");
+const forOwn = require('lodash.forown');
 
 program
 	.usage("[options] <project>")
-	/*.option("-c, --channel <channel>",
-		"The channel for which you want the count.",
-		/^(mobile|tablet|desktop|watch|all)$/i, "all")*/
+	.option(views.cmdTypeOption.flag, views.cmdTypeOption.desc, views.regex)
+	.option(channels.cmdOption.flag, channels.cmdOption.desc, channels.regex)
+	.option(views.cmdNameOption.flag, views.cmdNameOption.desc)
+	.option(outputs.cmdOption.flag, outputs.cmdOption.desc, outputs.regex)
 	.action(onAction);
 
 program.on('option:verbose', function () {
@@ -49,8 +55,25 @@ if (!process.argv.slice(2).length) {
 	});
 }
 
-function onAction(project, options){
-	ctrl.countWidgets(project, options.channel, process.env.verbose);
+async function onAction(project, options){
+
+	validateOptions(options);
+
+	var counts = await countWidgets(
+		project,
+		options.viewType,
+		options.channel,
+		options.viewName,
+		process.env.verbose
+	);
+
+	forOwn(counts, (typeViews, viewType) => {
+
+		typeViews.forEach(view => {
+			outputs.print(options.output, view, view.color);
+		});
+		console.info("Count of %s: %d".info, viewType, typeViews.length);
+	});
 }
 
 program.parse(process.argv);
