@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const program = require("commander");
+const path = require('path');
 const colors = require("colors");
 const findRedundantContainers = require("./controllers/find-redundant-containers");
 const theme = require("./config/theme.js");
@@ -60,7 +61,7 @@ async function onAction(project, options){
 	validateOptions(options);
 
 	var containers = await findRedundantContainers(
-		project,
+		path.resolve(project),
 		options.viewType,
 		options.channel,
 		options.viewName,

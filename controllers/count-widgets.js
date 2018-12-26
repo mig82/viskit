@@ -34,7 +34,7 @@ async function countWidgets(projectPath, viewType, channel, viewName, verbose){
 
 	for(viewType of viewTypes){
 
-		var viewTypePath = projectPath + viewType;
+		var viewTypePath = projectPath + "/" + viewType;
 		var viewTypePathExists = await fs.pathExists(viewTypePath);
 		if(viewTypePathExists){
 
