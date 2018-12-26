@@ -28,7 +28,7 @@ This mostly a utility command on top of which others are built. It's still usefu
 for resolving merge conflicts or if a project is broken by a reference to a widget
 which can't be found, perhaps because it has been renamed by another developer.
 
-## Count Widgets
+## Count Widgets
 
 Count the number of widgets for each view.
 
