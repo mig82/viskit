@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const program = require("commander");
+const path = require('path');
 const colors = require("colors");
 const findAutogrowWidgets = require("./controllers/find-autogrow-widgets");
 const theme = require("./config/theme.js");
@@ -57,7 +58,7 @@ async function onAction(project, options){
 	validateOptions(options);
 
 	var widgets = await findAutogrowWidgets(
-		project,
+		path.resolve(project),
 		options.viewType,
 		options.channel,
 		options.viewName,

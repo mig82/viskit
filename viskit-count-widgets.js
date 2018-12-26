@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const program = require("commander");
+const path = require('path');
 const colors = require("colors");
 const countWidgets = require("./controllers/count-widgets");
 const theme = require("./config/theme.js");
@@ -60,7 +61,7 @@ async function onAction(project, options){
 	validateOptions(options);
 
 	var counts = await countWidgets(
-		project,
+		path.resolve(project),
 		options.viewType,
 		options.channel,
 		options.viewName,

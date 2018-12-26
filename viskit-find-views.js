@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const program = require("commander");
+const path = require('path');
 const colors = require("colors");
 const findViews = require("./controllers/find-views");
 const theme = require("./config/theme.js");
@@ -63,7 +64,13 @@ async function onAction(project, options){
 
 	validateOptions(options);
 
-	var views = await findViews(project, options.viewType, options.channel, options.viewName, process.env.verbose)
+	var views = await findViews(
+		path.resolve(project),
+		options.viewType,
+		options.channel,
+		options.viewName,
+		process.env.verbose
+	);
 	views.forEach(view => {outputs.print(options.output, view)});
 	console.info("Count: %d".info, views.length);
 }

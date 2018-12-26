@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const program = require("commander");
+const path = require('path');
 const colors = require("colors");
 const findWidgets = require("./controllers/find-widgets");
 const theme = require("./config/theme.js");
@@ -61,7 +62,13 @@ async function onAction(project, options){
 
 	validateOptions(options);
 
-	var widgets = await findWidgets(project, options.viewType, options.channel, options.viewName, process.env.verbose)
+	var widgets = await findWidgets(
+		path.resolve(project),
+		options.viewType,
+		options.channel,
+		options.viewName,
+		process.env.verbose
+	);
 	widgets.forEach(widget => {outputs.print(options.output, widget)});
 	console.info("Count: %d".info, widgets.length);
 }

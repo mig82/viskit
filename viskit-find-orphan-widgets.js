@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const program = require("commander");
+const path = require('path');
 const colors = require("colors");
 const findOrphans = require("./controllers/find-orphan-widgets");
 const theme = require("./config/theme.js");
@@ -48,7 +49,7 @@ async function onAction(project, options){
 	validateOptions(options);
 
 	var orphans = await findOrphans(
-		project,
+		path.resolve(project),
 		options.viewType,
 		options.channel,
 		options.viewName,
