@@ -23,7 +23,7 @@ in the command prompt -e.g.:
 
 Find any views in the project of a specific view type, channel, or name.
 
-    find-views|fv <project>
+    find-views|fv path/to/workspace/FooApp
 
 This useful to give you a rough idea of how big a project is in terms of the number
 of views it has. It's also a great way to see how reusable your work is, by comparing
@@ -35,7 +35,7 @@ you could probably be doing a better job of harvesting reusable components from 
 
 Find any widgets in the project of a specific view type, channel or name.
 
-    find-widgets|fw <project>
+    find-widgets|fw path/to/workspace/FooApp
 
 This mostly a utility command on top of which others are built. It's still useful
 for resolving merge conflicts or if a project is broken by a reference to a widget
@@ -45,7 +45,7 @@ which can't be found, perhaps because it has been renamed by another developer.
 
 Count the number of widgets for each view.
 
-    count-widgets|cw <project>
+    count-widgets|cw path/to/workspace/FooApp
 
 The fewer widgets a form has, the less memory it will consume and the better it
 will perform.
@@ -61,7 +61,7 @@ give you a clue on why.
 
 Find any container widgets with one or no children.
 
-    find-redundant-containers|frc <project>
+    find-redundant-containers|frc path/to/workspace/FooApp
 
 Container widgets are usually necessary when positioning two or more widgets
 as a group.
@@ -76,7 +76,7 @@ shadows or place-holders.
 
 Find any widgets with undefined or preferred width or height.
 
-    find-autogrow-widgets|faw <project>
+    find-autogrow-widgets|faw path/to/workspace/FooApp
 
 It's possible to create a widget without a defined width, by setting its left and
 right properties instead and letting it be as wide as it must to meet those.
@@ -97,7 +97,7 @@ part of the problem.
 
 Find any widgets in the project structure not linked to a view.
 
-    find-orphan-widgets|fow <project>
+    find-orphan-widgets|fow path/to/workspace/FooApp
 
 A widget is considered an orphan when despite it being
 part of the project file structure, it is not in the corresponding form's
