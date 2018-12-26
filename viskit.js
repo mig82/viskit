@@ -28,6 +28,10 @@ program
 	.alias("frc");
 
 program
+	.command("find-unused-images <project>", "Find any images in the project structure not in use")
+	.alias("fui");
+
+program
 	.command("find-views <project>", "Find any views in the project of a specific type, channel, name")
 	.alias("fv");
 
