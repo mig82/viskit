@@ -1,6 +1,11 @@
 # viskit
 A command line helper for Kony Visualizer projects.
 
+## Disclaimer:
+
+Viskit is meant to be a **community project**, not part of the official Kony platform, and so
+it is **NOT supported by Kony in any way.**
+
 ## Find Views
 
 Find any views in the project of a specific view type, channel, or name.

@@ -13,7 +13,11 @@
 	},
 	"keywords": [
 		"kony",
-		"visualizer"
+		"visualizer",
+		"cli",
+		"mobile",
+		"cross-platform",
+		"code-review"
 	],
 	"author": "Miguelangel Fernandez <miguelangelxfm@gmail.com> (https://www.linkedin.com/in/mfernandez82/)",
 	"license": "MIT",

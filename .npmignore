@@ -1,0 +1,5 @@
+# EsLint
+/.eslintrc.yml
+
+# Jasmine
+/spec/*
