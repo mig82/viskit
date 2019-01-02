@@ -1,6 +1,19 @@
 const fs = require('fs-extra');
 const xsltProcessor = require('xslt-processor');
 
+
+/**
+ * isVisProject - Determines whether a given path points to the root of a
+ * Visualizer project or not by looking at the
+ * [Eclipse project description file]{@link http://help.eclipse.org/luna/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fmisc%2Fproject_description_file.html}
+ * in that location and checking that the <pre><code>nature</code></pre> element
+ * reads <pre><code>com.pat.tool.keditor.nature.kprojectnature</code></pre>.
+ *
+ * @param  String projectPath  The absolute path to the Visualizer project's root directory.
+ * @param  Boolean verbose     Whether to print everything or not.
+ * @return Boolean             Whether the path provided points to a Visualizer project or not.
+ */
+
 async function isVisProject(projectPath, verbose){
 
 	var isProject = false;

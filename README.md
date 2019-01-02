@@ -19,13 +19,22 @@ in the command prompt -e.g.:
 
     viskit --version
 
+## Is Project
+
+Determine whether a given directory is the root of a Visualizer project.
+
+    viskit is-vis-project path/to/workspace/FooApp
+
+This is mostly a utility command on top of which others are built. It simply determines
+whether the given path points to the root directory of a Visualizer project or not.
+
 ## Find Views
 
 Find any views in the project of a specific view type, channel, or name.
 
     viskit find-views|fv path/to/workspace/FooApp
 
-This useful to give you a rough idea of how big a project is in terms of the number
+This is useful to give you a rough idea of how big a project is in terms of the number
 of views it has. It's also a great way to see how reusable your work is, by comparing
 the count of forms and popups to the number of reusable components. Meaning if the
 count of views and popups is too high compared to the count of reusable components, then
