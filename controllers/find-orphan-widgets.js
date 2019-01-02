@@ -46,7 +46,7 @@ async function findOrphans(projectPath, viewType, channel, viewName, showAll, ve
 		);
 		var orphans = differenceBy(widgets, descendants, widget => {
 			//return widget.absPath;
-			return widget.absPath.toLowerCase();
+			return widget.relPath.toLowerCase();
 		});
 		if(verbose)console.debug("Orphans of: %s\n%o".debug,
 			view.file,
