@@ -35,6 +35,10 @@ program
 	.command("find-widgets <project>", "Find any widgets in the project of a specific type, channel, name")
 	.alias("fw");
 
+program
+	.command("is-vis-project <project>", "Determine whether a given directory is the root of a Visualizer project.")
+	.alias("ivp");
+
 program.on('option:verbose', function () {
 	process.env.verbose = this.verbose;
 });
