@@ -6,7 +6,7 @@ const theme = require("./config/theme.js");
 colors.setTheme(theme);
 
 program
-	.version('1.0.0')
+	.version('1.1.0')
 	.usage('[options] [command]')
 	.option('-v, --verbose', 'output everything');
 
@@ -38,6 +38,10 @@ program
 program
 	.command("is-vis-project <project>", "Determine whether a given directory is the root of a Visualizer project.")
 	.alias("ivp");
+
+program
+	.command("set-vis-version <visualizer-path> <project>", "Set the version of the Visualizer installation to match a given project.")
+	.alias("svv");
 
 program.on('option:verbose', function () {
 	process.env.verbose = this.verbose;

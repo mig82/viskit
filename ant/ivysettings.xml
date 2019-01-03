@@ -1,0 +1,23 @@
+<ivysettings>
+	<resolvers>
+		<chain name="plugins-resolver-chain" returnFirst="true">
+
+			<filesystem name="local">
+				<artifact pattern="${ivy.settings.dir}/lib/[artifact]-[revision].[ext]"/>
+			</filesystem>
+
+			<url name="v7">
+				<artifact pattern="http://download.kony.com/studio/70/plugins/[artifact]_[revision].[ext]" />
+			</url>
+
+			<url name="v8">
+				<artifact pattern="http://download.kony.com/visualizer_enterprise/80/plugins/[artifact]_[revision].[ext]" />
+			</url>
+
+			<url name="v9">
+				<artifact pattern="http://download.kony.com/visualizer_enterprise/90/plugins/[artifact]_[revision].[ext]" />
+			</url>
+		</chain>
+	</resolvers>
+	<settings defaultResolver="plugins-resolver-chain"/>
+</ivysettings>
