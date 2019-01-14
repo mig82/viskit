@@ -1,41 +1,15 @@
-const fs = require('fs-extra');
-
 const ivy = require('../common/ivy');
 const vProjects = require('../common/vis-projects');
+const vis = require('../common/visualizer');
 const bTools = require('../common/build-tools');
 const viskitDir = require('../config/config').viskitDir;
-
-async function isVisInstallation(visPath, verbose){
-	const isVisPath = await fs.pathExists(visPath);
-	if(!isVisPath){
-		console.log("Could not find %s".error, visPath);
-		return false;
-	}
-
-	const entPath = `${visPath}/Kony_Visualizer_Enterprise`;
-	const isEntPath = await fs.pathExists(entPath);
-	if(!isEntPath){
-		console.log("Could not find %s".error, entPath);
-		return false;
-	}
-
-	const entAppPath = `${entPath}/Kony Visualizer Enterprise.app`;
-	const isEntAppPath = await fs.pathExists(entAppPath);
-	if(!isEntAppPath){
-		console.log("Could not find %s".error, entAppPath);
-		return false;
-	}
-	if(verbose)console.debug("Found Vis installation at %s\n".debug, visPath);
-
-	return true;
-}
 
 async function setVisVersion(visPath, projectPath, verbose){
 
 	var visVersions = [];
 	if(verbose)console.debug("Attempting to set plugins at\n\t%s to match\n\t%s\n".debug, visPath, projectPath);
 
-	const isVis = await isVisInstallation(visPath, verbose);
+	const isVis = await vis.isInstallation(visPath, verbose);
 	if(isVis){
 
 		const projectPlugins = await vProjects.parseProjectPlugins(projectPath, verbose);
