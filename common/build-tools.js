@@ -22,6 +22,7 @@ async function downloadBuildTools(projectPath, visVersion, verbose){
 	const destinationDir = `${projectPath}/${viskitDir}/${toolName}`;
 	const destinationPath = `${destinationDir}/${zipName}`;
 
+	//TODO: Download only if destinationPath doesn't already exist.
 	try{
 		const byteCount = await download(url, destinationDir, destinationPath);
 		if(verbose)console.log("Downloaded CI tools: %d bytes to %s".debug, byteCount, destinationPath);

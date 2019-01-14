@@ -38,8 +38,10 @@ async function setVisVersion(visPath, projectPath, verbose){
 	const isVis = await isVisInstallation(visPath, verbose);
 	if(isVis){
 
+		const projectPlugins = await vProjects.parseProjectPlugins(projectPath, verbose);
+
 		// 1. Get Vis version according to the branding and keditor plugins.
-		const visVersion = await vProjects.getVersion(projectPath, verbose);
+		const visVersion = projectPlugins.projectVersion;
 
 		// 2. Download dependencies for the given version to list them for the user.
 		const buildToolPath = await bTools.downloadBuildTools(projectPath, visVersion, verbose);
@@ -51,9 +53,10 @@ async function setVisVersion(visPath, projectPath, verbose){
 		// 4. Remove prior versions of the plugins to be downlowaded from plugins dir.
 
 		// 5. Create ivy file.
-		const plugins = await vProjects.readPlugins(projectPath, verbose);
+		const pluginsDoc = projectPlugins.pluginsDoc;
 		const toIvy = await ivy.readIvyTransformation(verbose);
-		await ivy.createIvyFile(projectPath, plugins, toIvy, verbose);
+		await ivy.createIvyFile(projectPath, pluginsDoc, toIvy, verbose);
+
 		// 6. Remove dropins dir if it exists.
 		// 7. Resolve dependencies into new dropins directory.
 
