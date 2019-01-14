@@ -1,15 +1,14 @@
 const fs = require('fs-extra');
 const path = require('path');
 const xsltProcessor = require('xslt-processor');
-const util = require('util');
-//const exec = util.promisify(require('child_process').exec);
-const { spawn } = require('child_process');
+
 const Q = require('q');
 Q.longStackSupport = true;
+
 const unzip = require('unzip');
+const ivy = require('../common/ivy');
 const download = require('../common/download');
 const viskitDir = require('../config/config').viskitDir;
-const ivyFileName = require('../config/config').ivyFileName;
 const visExtDepFileName = require('../config/config').visExtDepFileName;
 
 async function readProjectPlugins(projectPath, verbose){
@@ -38,45 +37,8 @@ async function readProjectPlugins(projectPath, verbose){
 	return plugins
 }
 
-async function readIvyTransformation(verbose){
-
-	var toIvy;
-	const pathToXslt = "./ivy/plugins-to-ivy.xsl";
-
-	try{
-		const toIvyXml = await fs.readFile(pathToXslt, 'utf8');
-		if(verbose)console.log("xslt:\n%s".debug, toIvyXml);
-		toIvy = xsltProcessor.xmlParse(toIvyXml);
-	}
-	catch{
-		console.info("Cannot read %s".warn, pathToXslt);
-	}
-	return toIvy;
-}
-
-function composeIvyFilePath(projectPath){
-	return path.resolve(`${projectPath}/${viskitDir}/${ivyFileName}`);
-}
-
 function composeDependenciesFilePath(projectPath, visVersion){
 	return path.resolve(`${projectPath}/${viskitDir}/${visExtDepFileName}`);
-}
-
-async function createIvyFile(projectPath, plugins, toIvy, verbose){
-
-	const ivyFilePath = composeIvyFilePath(projectPath);
-
-	try{
-
-		const ivyXml = xsltProcessor.xsltProcess(plugins, toIvy);
-		if(verbose)console.log("Ivy file %s:\n%s\n".debug, ivyFileName, ivyXml);
-
-		await fs.writeFile(ivyFilePath, ivyXml, 'utf8');
-		if(verbose)console.log("Created %s\n".debug, ivyFilePath);
-	}
-	catch(e){
-		console.error("Cannot create %s".error, ivyFilePath);
-	}
 }
 
 async function isVisInstallation(visPath, verbose){
@@ -102,50 +64,6 @@ async function isVisInstallation(visPath, verbose){
 	if(verbose)console.debug("Found Vis installation at %s\n".debug, visPath);
 
 	return true;
-}
-
-async function resolveVisPlugins(visPath, projectPath, verbose){
-
-	return Q.Promise(function(resolve, reject, notify) {
-
-		const ivyFilePath = composeIvyFilePath(projectPath);
-		const dropinsDirPath = path.resolve(`${visPath}/Kony_Visualizer_Enterprise/dropins`);
-
-		if(verbose)console.log("Placing plugins in %s".debug, dropinsDirPath);
-
-		const child = spawn("java", [
-			"-jar",
-			"./ivy/ivy-2.4.0.jar",
-			"-settings",
-			"./ivy/ivysettings.xml",
-			"-ivy",
-			ivyFilePath,
-			"-retrieve",
-			`${dropinsDirPath}/[artifact]_[revision].[ext]`
-		]);
-
-		child.stdout.setEncoding('utf8');
-
-		// use child.stdout.setEncoding('utf8'); if you want text chunks
-		child.stdout.on('data', (chunk) => {
-			process.stdout.write(chunk.info);
-			notify(".");
-		});
-
-		// since these are streams, you can pipe them elsewhere
-		//child.stderr.pipe(dest);
-
-		child.on('close', (code) => {
-			if(code == 0){
-				resolve(code);
-			}
-			else{
-				const errorMessage = `Java exited with code ${code}`;
-				console.error(errorMessage.error);
-				reject(new Error(errorMessage));
-			}
-		});
-	});
 }
 
 async function getVisVersion(projectPath, verbose){
@@ -247,12 +165,12 @@ async function setVisVersion(visPath, projectPath, verbose){
 
 		// 5. Create ivy file.
 		const plugins = await readProjectPlugins(projectPath, verbose);
-		const toIvy = await readIvyTransformation(verbose);
-		await createIvyFile(projectPath, plugins, toIvy, verbose);
+		const toIvy = await ivy.readIvyTransformation(verbose);
+		await ivy.createIvyFile(projectPath, plugins, toIvy, verbose);
 		// 6. Remove dropins dir if it exists.
 		// 7. Resolve dependencies into new dropins directory.
 
-		const resolved = await resolveVisPlugins(visPath, projectPath, verbose);
+		const resolved = await ivy.invokeIvy(visPath, projectPath, verbose);
 
 	}
 
