@@ -1,8 +1,14 @@
 const fs = require('fs-extra');
+const path = require('path');
 const xsltProcessor = require('xslt-processor');
 const util = require('util');
 //const exec = util.promisify(require('child_process').exec);
 const { spawn } = require('child_process');
+const Q = require('q');
+Q.longStackSupport = true;
+const download = require('../common/download');
+const viskitDir = require('../config/config').viskitDir;
+const ivyFileName = require('../config/config').ivyFileName;
 
 async function readProjectPlugins(projectPath, verbose){
 
@@ -33,7 +39,7 @@ async function readProjectPlugins(projectPath, verbose){
 async function readIvyTransformation(verbose){
 
 	var toIvy;
-	const pathToXslt = "./ant/plugins-to-ivy.xsl";
+	const pathToXslt = "./ivy/plugins-to-ivy.xsl";
 
 	try{
 		const toIvyXml = await fs.readFile(pathToXslt, 'utf8');
@@ -46,13 +52,18 @@ async function readIvyTransformation(verbose){
 	return toIvy;
 }
 
+function composeIvyFilePath(projectPath){
+	return path.resolve(`${projectPath}/${viskitDir}/${ivyFileName}`);
+}
+
 async function createIvyFile(projectPath, plugins, toIvy, verbose){
 
-	const ivyFilePath = `${projectPath}/ivy.xml`;
+	const ivyFilePath = composeIvyFilePath(projectPath);
+
 	try{
 
 		const ivyXml = xsltProcessor.xsltProcess(plugins, toIvy);
-		if(verbose)console.log("ivy.xml:\n%s\n".debug, ivyXml);
+		if(verbose)console.log("Ivy file %s:\n%s\n".debug, ivyFileName, ivyXml);
 
 		await fs.writeFile(ivyFilePath, ivyXml, 'utf8');
 		if(verbose)console.log("Created %s\n".debug, ivyFilePath);
@@ -87,28 +98,73 @@ async function isVisInstallation(visPath, verbose){
 	return true;
 }
 
-async function invokeAnt(visPath, projectPath, verbose){
+async function resolveVisPlugins(visPath, projectPath, verbose){
 
-	const child = spawn("ant", [
-		"-f",
-		"./ant/viskit.xml",
-		"setvisver",
-		`-Dvis.home=${visPath}`,
-		`-Dproject=${projectPath}`
-	]);
-	child.stdout.setEncoding('utf8');
+	return Q.Promise(function(resolve, reject, notify) {
 
-	// use child.stdout.setEncoding('utf8'); if you want text chunks
-	child.stdout.on('data', (chunk) => {
-		process.stdout.write(chunk.info);
+		const ivyFilePath = composeIvyFilePath(projectPath);
+		const dropinsDirPath = path.resolve(`${visPath}/Kony_Visualizer_Enterprise/dropins`);
+
+		if(verbose)console.log("Placing plugins in %s".debug, dropinsDirPath);
+
+		const child = spawn("java", [
+			"-jar",
+			"./ivy/ivy-2.4.0.jar",
+			"-settings",
+			"./ivy/ivysettings.xml",
+			"-ivy",
+			ivyFilePath,
+			"-retrieve",
+			`${dropinsDirPath}/[artifact]_[revision].[ext]`
+		]);
+
+		child.stdout.setEncoding('utf8');
+
+		// use child.stdout.setEncoding('utf8'); if you want text chunks
+		child.stdout.on('data', (chunk) => {
+			process.stdout.write(chunk.info);
+			notify(".");
+		});
+
+		// since these are streams, you can pipe them elsewhere
+		//child.stderr.pipe(dest);
+
+		child.on('close', (code) => {
+			if(code == 0){
+				resolve(code);
+			}
+			else{
+				const errorMessage = `Java exited with code ${code}`;
+				console.error(errorMessage.error);
+				reject(new Error(errorMessage));
+			}
+		});
 	});
+}
 
-	// since these are streams, you can pipe them elsewhere
-	//child.stderr.pipe(dest);
+async function getVisVersion(projectPath, verbose){
+	//TODO: Parse konyplugins.xml for this value.
+	return await "8.3.14";
+}
 
-	child.on('close', (code) => {
-		if(code != 0)console.log(`Ant exited with code ${code}`);
-	});
+async function downloadBuildTools(projectPath, visVersion, verbose){
+
+	const toolName = `visualizer-ci-tool-${visVersion}`;
+	const zipName = `${toolName}.zip`
+	// At the time of writing this, this URL pattern works from Vis version 7.2.0 to 8.3.14 and higher.
+	const url = `http://download.kony.com/visualizer_enterprise/citools/${visVersion}/${zipName}`;
+
+	const destinationDir = `${projectPath}/${viskitDir}/${toolName}`;
+	const destinationPath = `${destinationDir}/${zipName}`;
+
+	try{
+		const byteCount = await download(url, destinationDir, destinationPath);
+		if(verbose)console.log("Downloaded CI tools: %d bytes to %s".info, byteCount, destinationPath);
+		//TODO: Read file and return external dependencies.
+	}
+	catch(e){
+		console.error("Error downloading CI Tools %s: %o".error, visVersion, e);
+	}
 }
 
 async function setVisVersion(visPath, projectPath, verbose){
@@ -118,15 +174,26 @@ async function setVisVersion(visPath, projectPath, verbose){
 
 	const isVis = await isVisInstallation(visPath, verbose);
 	if(isVis){
+
+		// 1. Get Vis version according to the branding and keditor plugins.
+		const visVersion = await getVisVersion(projectPath, verbose);
+
+		// 2. Download dependencies for the given version to list them for the user.
+		const dependencies = await downloadBuildTools(projectPath, visVersion, verbose);
+
+		// 3. Back up plugins directory if not backed up already.
+
+		// 4. Remove prior versions of the plugins to be downlowaded from plugins dir.
+
+		// 5. Create ivy file.
 		const plugins = await readProjectPlugins(projectPath, verbose);
 		const toIvy = await readIvyTransformation(verbose);
 		await createIvyFile(projectPath, plugins, toIvy, verbose);
-		await invokeAnt(visPath, projectPath, verbose);
+		// 6. Remove dropins dir if it exists.
+		// 7. Resolve dependencies into new dropins directory.
 
-		// TODO: Determine what the version should be according to the branding and keditor plugins.
-		// TODO: Delete the dropins directory.
-		// TODO: Issue warnings on what the correct versions of Gradle, Java, etc are.
-		//
+		const resolved = await resolveVisPlugins(visPath, projectPath, verbose);
+
 	}
 
 	return visVersions;

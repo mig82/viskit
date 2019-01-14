@@ -25,12 +25,12 @@ program.on('--help', function(){
 	console.log(colors.info(
 		"Why?\n\n" +
 
-		"When working with two or more projects developed using different versions of Visualiser it \n" +
-		"is very difficult to switch between Visualiser versions. Projects developed with Visualizer\n" +
-		"versions older than the one you have installed can only be opened if you upgrade them. Projects \n" +
-		"developed with Visualizer versions more recent than the one you have installed can only be \n" +
-		"opened if you upgrade your installation, and then upgrade will likely result in a version more \n" +
-		"recent than the one your project actually needed.\n\n" +
+		"When working with two or more projects developed using different versions of Visualiser, it \n" +
+		"is very cumbersome to switch between them. Projects developed with Visualizer versions older \n" +
+		"than the one you have installed can only be opened if you upgrade them. Projects developed\n" +
+		"with Visualizer versions more recent than the one you have installed can only be opened if\n" +
+		"you upgrade your installation, and then any upgrade will likely result in a version more recent\n" +
+		"than the one your project actually needed.\n\n" +
 
 		"This forces you to either keep multiple installations of Visualiser or to manually switch \n" +
 		"the plugins in your Visualiser installation.\n\n" +
@@ -42,7 +42,13 @@ program.on('--help', function(){
 		"not be installed, but rather had to be downloaded and set up manually.\n\n" +
 
 		"This command in Viskit's new incarnation as an NPM package adopts that funcionality in a much \n" +
-		"more elegant and maintainable way.\n" +
+		"more elegant and maintainable way.\n\n" +
+
+		"IMPORTANT NOTE: ".emphasis + "This command is highly experimental. Vis v8 brought with it breaking \n" +
+		"changes to how Visualizer works with the JDK, Gradle and other dependencies. You should still \n" +
+		"keep at least a v7.x and a v8.x installation and not try to transform a v7.x into a v8.x or \n" +
+		"viceversa. Also keep in mind that the most recent Vis versions will require more recent Xcode \n" +
+		"versions." +
 		"\n"
 	));
 });
