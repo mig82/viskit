@@ -1,4 +1,5 @@
 module.exports = {
 	viskitDir: ".viskit",
-	ivyFileName: "ivy.xml"
+	ivyFileName: "ivy.xml",
+	visExtDepFileName: "externaldependencies.json"
 };

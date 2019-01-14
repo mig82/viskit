@@ -6,9 +6,11 @@ const util = require('util');
 const { spawn } = require('child_process');
 const Q = require('q');
 Q.longStackSupport = true;
+const unzip = require('unzip');
 const download = require('../common/download');
 const viskitDir = require('../config/config').viskitDir;
 const ivyFileName = require('../config/config').ivyFileName;
+const visExtDepFileName = require('../config/config').visExtDepFileName;
 
 async function readProjectPlugins(projectPath, verbose){
 
@@ -54,6 +56,10 @@ async function readIvyTransformation(verbose){
 
 function composeIvyFilePath(projectPath){
 	return path.resolve(`${projectPath}/${viskitDir}/${ivyFileName}`);
+}
+
+function composeDependenciesFilePath(projectPath, visVersion){
+	return path.resolve(`${projectPath}/${viskitDir}/${visExtDepFileName}`);
 }
 
 async function createIvyFile(projectPath, plugins, toIvy, verbose){
@@ -144,7 +150,8 @@ async function resolveVisPlugins(visPath, projectPath, verbose){
 
 async function getVisVersion(projectPath, verbose){
 	//TODO: Parse konyplugins.xml for this value.
-	return await "8.3.14";
+	//return await "8.3.14";
+	return await "7.2.0";
 }
 
 async function downloadBuildTools(projectPath, visVersion, verbose){
@@ -159,12 +166,63 @@ async function downloadBuildTools(projectPath, visVersion, verbose){
 
 	try{
 		const byteCount = await download(url, destinationDir, destinationPath);
-		if(verbose)console.log("Downloaded CI tools: %d bytes to %s".info, byteCount, destinationPath);
-		//TODO: Read file and return external dependencies.
+		if(verbose)console.log("Downloaded CI tools: %d bytes to %s".debug, byteCount, destinationPath);
+		return destinationPath;
 	}
 	catch(e){
 		console.error("Error downloading CI Tools %s: %o".error, visVersion, e);
 	}
+}
+
+async function extractExternalDependencies(buildToolPath, projectPath, verbose){
+
+	const extDepFilePath = composeDependenciesFilePath(projectPath);
+	if(verbose)console.log("Extracting external dependencies from %s to %s".debug, buildToolPath, extDepFilePath);
+
+	return Q.Promise((resolve, reject, notify) => {
+
+		fs.createReadStream(buildToolPath)
+		.pipe(unzip.Parse())
+		.on('entry', (entry) => {
+
+			var fileName = entry.path;
+			var type = entry.type; // 'Directory' or 'File'
+			var size = entry.size;
+
+			if (fileName === visExtDepFileName) {
+				if(verbose)console.log("Found %s in build tools zip file".debug, visExtDepFileName);
+				entry.pipe(fs.createWriteStream(extDepFilePath));
+			} else {
+				//if(verbose)console.log("Draining %s".debug, fileName);
+				entry.autodrain();
+			}
+			notify(fileName);
+		})
+		.on('close', () => {
+			if(verbose)console.log("Closing stream on %s".debug, buildToolPath);
+			resolve(extDepFilePath);
+		})
+		.on('error', (error) => {
+			console.error("Error reading contents of %s\n%o".error, buildToolPath, error);
+			reject(error);
+		});
+	});
+}
+
+async function readExternalDependencies(extDepFilePath, verbose){
+	const contents = await fs.readJson(extDepFilePath);
+	var dependencies = []
+	if(contents && contents.visualizer && contents.visualizer.dependencies){
+		dependencies = contents.visualizer.dependencies.map(dep => {
+			return {
+				name: dep.name,
+				version: dep.version/*,
+				description: dep.description*/
+			};
+		});
+	}
+	if(verbose)console.log("dependencies: %o".debug, dependencies);
+	return dependencies;
 }
 
 async function setVisVersion(visPath, projectPath, verbose){
@@ -179,7 +237,9 @@ async function setVisVersion(visPath, projectPath, verbose){
 		const visVersion = await getVisVersion(projectPath, verbose);
 
 		// 2. Download dependencies for the given version to list them for the user.
-		const dependencies = await downloadBuildTools(projectPath, visVersion, verbose);
+		const buildToolPath = await downloadBuildTools(projectPath, visVersion, verbose);
+		const extDepFilePath = await extractExternalDependencies(buildToolPath, projectPath, verbose);
+		const extDependencies = await readExternalDependencies(extDepFilePath, verbose);
 
 		// 3. Back up plugins directory if not backed up already.
 
