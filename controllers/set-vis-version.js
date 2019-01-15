@@ -4,7 +4,7 @@ const vis = require('../helpers/visualizer');
 const bTools = require('../helpers/build-tools');
 const viskitDir = require('../config/config').viskitDir;
 
-async function setVisVersion(visPath, projectPath, verbose){
+async function setVisVersion(visPath, projectPath, dryRun, verbose){
 
 	var visVersions = [];
 	if(verbose)console.debug("Attempting to set plugins at\n\t%s to match\n\t%s\n".debug, visPath, projectPath);
@@ -26,6 +26,7 @@ async function setVisVersion(visPath, projectPath, verbose){
 		const pluginsAreBackedUp = await vis.backupPlugins(visPath, verbose);
 
 		// 4. Remove prior versions of the plugins to be downlowaded from plugins dir.
+		const dedupResults = await vis.dedupPlugins(visPath, projectPlugins.plugins, dryRun, verbose);
 
 		// 5. Create ivy file.
 		const pluginsDoc = projectPlugins.pluginsDoc;

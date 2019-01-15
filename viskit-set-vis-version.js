@@ -14,6 +14,7 @@ const usage = "Usage:  [options] <visualizer-path> <project>";
 program
 	.usage(usage)
 	.action(onAction);
+	//TODO: Add dry-run option
 
 program.on('--help', function(){
 	console.log(colors.info(
@@ -68,6 +69,7 @@ async function onAction(visualizerPath, project, options){
 	var pluginVersions = await setVisVersion(
 		path.resolve(visualizerPath),
 		path.resolve(project),
+		options.dryRun,
 		process.env.verbose
 	);
 	pluginVersions.forEach(plugin => {outputs.print(options.output, plugin)});
