@@ -1,7 +1,7 @@
-const ivy = require('../common/ivy');
-const vProjects = require('../common/vis-projects');
-const vis = require('../common/visualizer');
-const bTools = require('../common/build-tools');
+const ivy = require('../helpers/ivy');
+const vProjects = require('../helpers/projects');
+const vis = require('../helpers/visualizer');
+const bTools = require('../helpers/build-tools');
 const viskitDir = require('../config/config').viskitDir;
 
 async function setVisVersion(visPath, projectPath, verbose){
