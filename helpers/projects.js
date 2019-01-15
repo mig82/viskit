@@ -27,10 +27,13 @@ async function readPlugins(projectPath, verbose){
 		}
 		catch(e){
 			console.error("Unable to read %s\n%o".error, pluginsXmlPath, e);
+			throw e;
 		}
 	}
 	else{
-		console.info("File not found at %s".warn, pluginsXmlPath);
+		var message = `File not found at ${pluginsXmlPath}`;
+		console.info(message.warn);
+		throw new Error(message);
 	}
 	return plugins
 }
@@ -54,34 +57,44 @@ function findPluginBy(pluginsDoc, attribute, value){
 	return plugin;
 }
 
-function getProjectVersion(pluginsDoc, verbose){
-	const versionPlugin = findPluginBy(pluginsDoc, "plugin-id", "com.kony.ide.paas.branding");
+function readVersion(pluginsDoc, verbose){
+	//Search for the Branding plugin.
+	var versionPlugin = findPluginBy(pluginsDoc, "plugin-id", "com.kony.ide.paas.branding");
+	//If the Branding plugin is not listed, then search for the StudioViz Core plugin.
 	if(!versionPlugin) versionPlugin = findPluginBy(pluginsDoc, "plugin-id", "com.kony.studio.viz.core.win64");
 	if(!versionPlugin) versionPlugin = findPluginBy(pluginsDoc, "plugin-id", "com.kony.studio.viz.core.mac64");
+	//If the StudioViz Core plugin is not listed, then search for the Kony Studio plugin.
 	if(!versionPlugin) versionPlugin = findPluginBy(pluginsDoc, "plugin-id", "com.pat.tool.keditor");
 
-	const pluginName = versionPlugin.getAttribute("plugin-name");
-	const pluginVersion = versionPlugin.getAttribute("version-no");
+	var pluginName = versionPlugin.getAttribute("plugin-name");
+	var pluginVersion = versionPlugin.getAttribute("version-no");
 
-	const projectVersion = pluginVersion.match(/^(\d+\.\d+\.\d+)\..*$/)[1];
+	var projectVersion = pluginVersion.match(/^(\d+\.\d+\.\d+)\..*$/)[1];
 	if(verbose)console.log("Vis version according to plugin %s %s: %s".debug, pluginName, pluginVersion, projectVersion);
 
 	return projectVersion;
 }
 
+function readPluginIds(pluginsDoc, verbose){
+	return pluginsDoc.getElementsByTagName("pluginInfo").map((xNode) => {
+		return xNode.getAttribute("plugin-id");
+	})
+}
 async function parseProjectPlugins(projectPath, verbose){
 
-	const pluginsDoc = await readPlugins(projectPath, verbose);
-	const projectVersion = getProjectVersion(pluginsDoc, verbose);
+	var pluginsDoc = await readPlugins(projectPath, verbose);
+	var projectVersion = readVersion(pluginsDoc, verbose);
+	var plugins = readPluginIds(pluginsDoc, verbose);
 
 	return {
 		projectVersion: projectVersion,
-		pluginsDoc: pluginsDoc
+		pluginsDoc: pluginsDoc,
+		plugins: plugins
 	}
 }
 
 module.exports = {
 	//getVersion: getVersion,
-	//readPlugins: readPlugins
+	//readPlugins: readPlugins,
 	parseProjectPlugins: parseProjectPlugins
 };

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<plugins>
+	<pluginInfo version-no="8.2.6.v201801070000_r1" plugin-id="com.ronin.foo" plugin-name="Foo"/>
+	<pluginInfo version-no="8.2.6.v201801070000_r1" plugin-id="com.ronin.bar" plugin-name="Bar"/>
+	<pluginInfo version-no="8.2.6.v201801070000_r1" plugin-id="com.ronin.qux" plugin-name="Qux"/>
+	<pluginInfo version-no="8.2.6.v201801070000_r1" plugin-id="com.kony.ide.paas.branding" plugin-name="Branding"/>
+</plugins>

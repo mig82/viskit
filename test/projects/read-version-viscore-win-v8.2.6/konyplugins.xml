@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<plugins>
+	<pluginInfo version-no="0.0.0.v201801070000_r1" plugin-id="com.kony.foo" plugin-name="Foo"/>
+	<!--pluginInfo version-no="8.2.6.v201801070000_r1" plugin-id="com.kony.ide.paas.branding" plugin-name="Branding"/-->
+	<pluginInfo version-no="0.0.0.v201801070000_r1" plugin-id="com.pat.tool.keditor" plugin-name="Kony Studio"/>
+	<pluginInfo version-no="8.2.6.v201801070000_r1" plugin-id="com.kony.studio.viz.core.win64" plugin-name="StudioViz Core"/>
+	<pluginInfo version-no="0.0.0.v201801070000_r1" plugin-id="com.kony.bar" plugin-name="Bar"/>
+</plugins>
