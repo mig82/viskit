@@ -22,21 +22,28 @@ async function downloadBuildTools(projectPath, visVersion, verbose){
 	const destinationDir = `${projectPath}/${viskitDir}/${toolName}`;
 	const destinationPath = `${destinationDir}/${zipName}`;
 
-	//TODO: Download only if destinationPath doesn't already exist.
-	try{
-		const byteCount = await download(url, destinationDir, destinationPath);
-		if(verbose)console.log("Downloaded CI tools: %d bytes to %s".debug, byteCount, destinationPath);
-		return destinationPath;
+	const buildToolsExist = await fs.pathExists(destinationPath);
+	if(!buildToolsExist){
+		try{
+			const byteCount = await download(url, destinationDir, destinationPath);
+			if(verbose)console.log("Downloaded build tools: %d bytes to %s".debug, byteCount, destinationPath);
+			return destinationPath;
+		}
+		catch(e){
+			console.error("Error downloading build Tools %s: %o".error, visVersion, e);
+			return null;
+		}
 	}
-	catch(e){
-		console.error("Error downloading CI Tools %s: %o".error, visVersion, e);
+	else{
+		if(verbose)console.log("Build tools already found at %s".info, destinationPath);
+		return destinationPath;
 	}
 }
 
 async function extractExternalDependencies(buildToolPath, projectPath, verbose){
 
 	const extDepFilePath = composeDependenciesFilePath(projectPath);
-	if(verbose)console.log("Extracting external dependencies from %s to %s".debug, buildToolPath, extDepFilePath);
+	if(verbose)console.log("Extracting external dependencies\n\tfrom %s\n\tto %s".debug, buildToolPath, extDepFilePath);
 
 	return Q.Promise((resolve, reject, notify) => {
 

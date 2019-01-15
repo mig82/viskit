@@ -23,6 +23,7 @@ async function setVisVersion(visPath, projectPath, verbose){
 		const extDependencies = await bTools.readExternalDependencies(extDepFilePath, verbose);
 
 		// 3. Back up plugins directory if not backed up already.
+		const pluginsAreBackedUp = await vis.backupPlugins(visPath, verbose);
 
 		// 4. Remove prior versions of the plugins to be downlowaded from plugins dir.
 
