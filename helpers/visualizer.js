@@ -36,10 +36,10 @@ async function backupPlugins(visPath, verbose){
 	const pluginsBackupDirPath = path.resolve(`${visPath}/Kony_Visualizer_Enterprise/${pluginsBackupDir}`);
 	var isBackedUp = await fs.pathExists(pluginsBackupDirPath);
 	if(!isBackedUp){
-		console.log("Backing up plugins to %s".debug, pluginsBackupDirPath);
+		if(verbose)console.log("Backing up original installatioin plugins to %s".debug, pluginsBackupDirPath);
 		try {
 			await fs.copy(pluginsDirPath, pluginsBackupDirPath)
-			console.log("Plugins are backed up at %s".info, pluginsBackupDirPath);
+			console.log("The original installation plugins have been backed up at %s".info, pluginsBackupDirPath);
 			isBackedUp = true;
 		}
 		catch (err) {
@@ -47,7 +47,7 @@ async function backupPlugins(visPath, verbose){
 		}
 	}
 	else{
-		if(verbose)console.log("Plugins already backed up at %s".debug, pluginsBackupDirPath);
+		console.log("The original installation plugins are already backed up at %s".info, pluginsBackupDirPath);
 	}
 	return isBackedUp;
 }
@@ -67,7 +67,7 @@ function findPlugin(pluginId, pluginsDirPath, verbose){
 				resolve(pluginPaths[0])
 			}
 			else{
-				console.log("\tCould NOT find %s at %s".warn, pluginId, pluginsDirPath);
+				if(verbose)console.log("\tCould NOT find %s at %s".debug, pluginId, pluginsDirPath);
 				resolve(false);
 			}
 		});
@@ -115,9 +115,17 @@ async function removeDropinsDir(visPath, verbose) {
 	}
 }
 
+function getInstalledVersion(visPath, verbose){
+	//Consider only major.minor.patch -e.g for 8.3.0.1 consider only 8.3.0
+	const regex = /KonyVisualizerEnterprise((\d+\.){2}\d).*/gi;
+	let matches = regex.exec(visPath);
+	return matches && matches.length > 1?matches[1]:null;
+}
+
 module.exports = {
 	isInstallation: isInstallation,
 	backupPlugins: backupPlugins,
 	dedupPlugins: dedupPlugins,
-	removeDropinsDir: removeDropinsDir
+	removeDropinsDir: removeDropinsDir,
+	getInstalledVersion: getInstalledVersion
 }

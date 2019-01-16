@@ -105,6 +105,7 @@ async function invokeIvy(visPath, projectPath, verbose){
 
 		ivyProcess.on('close', (code) => {
 			if(code == 0){
+				console.log("New active plugins found at %s".info, dropinsDirPath);
 				resolve(code);
 			}
 			else{

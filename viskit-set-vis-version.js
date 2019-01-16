@@ -4,6 +4,7 @@ const program = require("commander");
 const path = require('path');
 const colors = require("colors");
 const setVisVersion = require("./controllers/set-vis-version");
+const outputs = require("./config/outputs.js");
 const theme = require("./config/theme.js");
 colors.setTheme(theme);
 
@@ -13,6 +14,7 @@ const usage = "Usage:  [options] <visualizer-path> <project>";
 
 program
 	.usage(usage)
+	.option('-f, --force', 'Force the operation regardles of how different the installed and requested versions are')
 	.action(onAction);
 	//TODO: Add dry-run option
 
@@ -45,11 +47,13 @@ program.on('--help', function(){
 		"This command in Viskit's new incarnation as an NPM package adopts that funcionality in a much \n" +
 		"more elegant and maintainable way.\n\n" +
 
-		"IMPORTANT: ".emphasis + "This command is highly experimental. Vis v8 brought with it breaking \n" +
+		"IMPORTANT: ".emphasis + "This command is " + "HIGHLY EXPERIMENTAL".emphasis +
+		". Vis v8 brought with it breaking \n" +
 		"changes to how Visualizer works with the JDK, Gradle and other dependencies. You should still \n" +
 		"keep at least a v7.x and a v8.x installation and not try to transform a v7.x into a v8.x or \n" +
 		"viceversa. Also keep in mind that the most recent Vis versions will require more recent Xcode \n" +
-		"versions." +
+		"and Android SDK versions. This command will do its best to let you know what the min versions \n" +
+		"of those external dependencies are.\n\n" +
 		"\n"
 	));
 });
@@ -66,13 +70,32 @@ async function onAction(visualizerPath, project, options){
 		console.info("%s\n".info, usage);
 		process.exit(1);
 	}
-	var pluginVersions = await setVisVersion(
-		path.resolve(visualizerPath),
-		path.resolve(project),
-		options.dryRun,
-		process.env.verbose
-	);
-	pluginVersions.forEach(plugin => {outputs.print(options.output, plugin)});
+
+	console.log(colors.info("\nInvoking " + "black".inverse + " magic...\n"));
+
+	try{
+		var versionInfo = await setVisVersion(
+			path.resolve(visualizerPath),
+			path.resolve(project),
+			options.dryRun,
+			options.force,
+			process.env.verbose
+		);
+		console.log(
+			"Done!...\n\nVis path: %s\nNew effective version: %s".info,
+			visualizerPath,
+			versionInfo.visVersion
+		);
+		console.log("Make sure you have these dependencies installed:".info);
+		versionInfo.dependencies.forEach((dep) => {
+			console.log("\t%s: %s".info, dep.name, dep.version);
+		});
+
+		console.log("\nNote:".bold.info + " Visualizer will have crashed while we rearranged its internal organs. Go restart it.\n".info);
+	}
+	catch(e){
+		console.log(e.message.error);
+	}
 }
 
 program.parse(process.argv);
