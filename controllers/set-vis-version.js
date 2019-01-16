@@ -36,7 +36,10 @@ async function setVisVersion(visPath, projectPath, dryRun, verbose){
 		// 6. Remove dropins dir if it exists.
 		await vis.removeDropinsDir(visPath, verbose);
 
-		// 7. Resolve dependencies into new dropins directory.
+		// 7. Add the Vis installation to the places for Ivy to lookup plugins.
+		await ivy.addVisToIvy(visPath, projectPath, verbose);
+
+		// 8. Resolve dependencies into new dropins directory.
 		const resolved = await ivy.invokeIvy(visPath, projectPath, verbose);
 
 	}

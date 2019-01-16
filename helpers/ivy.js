@@ -28,6 +28,10 @@ function composeIvyFilePath(projectPath){
 	return path.resolve(`${projectPath}/${viskitDir}/${ivyFileName}`);
 }
 
+function composeIvySettingsFilePath(projectPath){
+	return path.resolve(`${projectPath}/${viskitDir}/ivysettings.xml`);
+}
+
 async function createIvyFile(projectPath, plugins, toIvy, verbose){
 
 	const ivyFilePath = composeIvyFilePath(projectPath);
@@ -45,38 +49,61 @@ async function createIvyFile(projectPath, plugins, toIvy, verbose){
 	}
 }
 
+async function addVisToIvy(visPath, projectPath, verbose){
+	// 1. Read Ivy settings file
+	var ivySettingsXml = await fs.readFile("./ivy/ivysettings.xml", "utf8");
+
+	// 2. Replace $VIS_HOME with the visPath
+	ivySettingsXml = ivySettingsXml.replace(/VIS_HOME/g, visPath);
+
+	// 3. Write the file back.
+	const ivyFileSettingsPath = composeIvySettingsFilePath(projectPath);
+	await fs.writeFile(ivyFileSettingsPath, ivySettingsXml);
+}
+
 async function invokeIvy(visPath, projectPath, verbose){
 
 	return Q.Promise(function(resolve, reject, notify) {
 
 		const ivyFilePath = composeIvyFilePath(projectPath);
+		const ivyFileSettingsPath = composeIvySettingsFilePath(projectPath);
 		const dropinsDirPath = path.resolve(`${visPath}/Kony_Visualizer_Enterprise/dropins`);
 
 		if(verbose)console.log("Placing plugins in %s".debug, dropinsDirPath);
 
-		const child = spawn("java", [
+		var options = [
 			"-jar",
 			"./ivy/ivy-2.4.0.jar",
 			"-settings",
-			"./ivy/ivysettings.xml",
+			ivyFileSettingsPath,
 			"-ivy",
 			ivyFilePath,
 			"-retrieve",
 			`${dropinsDirPath}/[artifact]_[revision].[ext]`
-		]);
+		];
 
-		child.stdout.setEncoding('utf8');
+		//This would be waaaaaay too verbose.
+		//if(verbose)options.push("-verbose");
 
-		// use child.stdout.setEncoding('utf8'); if you want text chunks
-		child.stdout.on('data', (chunk) => {
+		if(verbose)console.log("Invoking Ivy:\njava %s".debug, options.join(" "));
+
+		const ivyProcess = spawn("java", options);
+
+		ivyProcess.stdout.setEncoding('utf8');
+
+		// use ivyProcess.stdout.setEncoding('utf8'); if you want text chunks
+		ivyProcess.stdout.on('data', (chunk) => {
 			process.stdout.write(chunk.info);
 			notify(".");
 		});
 
 		// since these are streams, you can pipe them elsewhere
-		//child.stderr.pipe(dest);
+		//ivyProcess.stderr.pipe(dest);
+		ivyProcess.on('error', (err) => {
+			console.log("%o".error, err);
+		});
 
-		child.on('close', (code) => {
+		ivyProcess.on('close', (code) => {
 			if(code == 0){
 				resolve(code);
 			}
@@ -91,7 +118,7 @@ async function invokeIvy(visPath, projectPath, verbose){
 
 module.exports = {
 	readIvyTransformation: readIvyTransformation,
-	composeIvyFilePath: composeIvyFilePath,
 	createIvyFile: createIvyFile,
-	invokeIvy: invokeIvy
+	invokeIvy: invokeIvy,
+	addVisToIvy: addVisToIvy
 };

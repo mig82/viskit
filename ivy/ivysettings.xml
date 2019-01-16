@@ -1,23 +1,35 @@
 <ivysettings>
 	<resolvers>
-		<chain name="plugins-resolver-chain" returnFirst="true">
+		<chain name="plugins" returnFirst="true">
 
-			<filesystem name="local">
+			<chain name="Visualizer Home" returnFirst="true">
+				<filesystem name="Visualizer plugins">
+					<artifact pattern="VIS_HOME/Kony_Visualizer_Enterprise/plugins/[artifact]_[revision].[ext]"/>
+				</filesystem>
+				<filesystem name="Visualizer dropins">
+					<artifact pattern="VIS_HOME/Kony_Visualizer_Enterprise/dropins/[artifact]_[revision].[ext]"/>
+				</filesystem>
+				<filesystem name="Visualizer backup">
+					<artifact pattern="VIS_HOME/Kony_Visualizer_Enterprise/plugins_BACKUP/[artifact]_[revision].[ext]"/>
+				</filesystem>
+			</chain>
+
+			<filesystem name="Ivy Cache">
 				<artifact pattern="${ivy.settings.dir}/lib/[artifact]-[revision].[ext]"/>
 			</filesystem>
 
-			<url name="v7">
+			<url name="v7 release site">
 				<artifact pattern="http://download.kony.com/studio/70/plugins/[artifact]_[revision].[ext]" />
 			</url>
 
-			<url name="v8">
+			<url name="v8 release site">
 				<artifact pattern="http://download.kony.com/visualizer_enterprise/80/plugins/[artifact]_[revision].[ext]" />
 			</url>
 
-			<url name="v9">
+			<url name="v9 release site">
 				<artifact pattern="http://download.kony.com/visualizer_enterprise/90/plugins/[artifact]_[revision].[ext]" />
 			</url>
 		</chain>
 	</resolvers>
-	<settings defaultResolver="plugins-resolver-chain"/>
+	<settings defaultResolver="plugins"/>
 </ivysettings>
