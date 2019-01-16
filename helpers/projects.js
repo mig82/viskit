@@ -1,6 +1,6 @@
 const fs = require('fs-extra');
 const xsltProcessor = require('xslt-processor');
-
+const os = require('os');
 
 /**
  * readPlugins - description
@@ -19,8 +19,24 @@ async function readPlugins(projectPath, verbose){
 		try{
 			var pluginsXml = await fs.readFile(pluginsXmlPath, 'utf8');
 
-			//TODO: If Windows replace mac64 with win64, if Nix, then do the opposite.
-			//isWindows()?replace("win64", "mac64"):replace("mac64", "win64")
+			var platform = os.platform();
+			if(verbose)console.debug("Platform: %s\n".debug, platform);
+
+			//Windows -> win32
+			if(platform === "win32" || platform === "win64"){
+				pluginsXml = pluginsXml.replace(/mac64/g, "win64");
+			}
+			//Mac -> darwin
+			else{
+				pluginsXml = pluginsXml.replace(/win64/g, "mac64");
+			}
+
+			/*TODO: Figure out how to add or remove the
+			 * Windows-only plugins depending on the host OS:
+			 * 	"com.kony.windowsphone8"
+			 * 	"com.kony.windows8"
+			 * 	"com.kony.windows10"
+			 * 	"com.kony.windows"*/
 
 			plugins = xsltProcessor.xmlParse(pluginsXml);
 			if(verbose)console.debug("%s:\n%s\n".debug, pluginsXmlPath, pluginsXml);

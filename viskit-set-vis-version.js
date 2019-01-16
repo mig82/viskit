@@ -45,7 +45,7 @@ program.on('--help', function(){
 		"This command in Viskit's new incarnation as an NPM package adopts that funcionality in a much \n" +
 		"more elegant and maintainable way.\n\n" +
 
-		"IMPORTANT NOTE: ".emphasis + "This command is highly experimental. Vis v8 brought with it breaking \n" +
+		"IMPORTANT: ".emphasis + "This command is highly experimental. Vis v8 brought with it breaking \n" +
 		"changes to how Visualizer works with the JDK, Gradle and other dependencies. You should still \n" +
 		"keep at least a v7.x and a v8.x installation and not try to transform a v7.x into a v8.x or \n" +
 		"viceversa. Also keep in mind that the most recent Vis versions will require more recent Xcode \n" +

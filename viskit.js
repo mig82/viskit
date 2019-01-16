@@ -10,7 +10,7 @@ program
 	.usage('[options] [command]')
 	.option('-v, --verbose', 'output everything');
 
-//IMPORTANT NOTE: Keep the commands listed in alphabetical order.
+//IMPORTANT: Keep the commands listed in alphabetical order.
 program
 	.command("count-widgets <project>", "Count the number of widgets for each view.")
 	.alias("cw");
