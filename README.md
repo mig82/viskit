@@ -21,12 +21,30 @@ in the command prompt -e.g.:
 
 ## Is Project
 
-Determine whether a given directory is the root of a Visualizer project.
+Determine whether a given path points to a Visualizer project, according to the `.project`
+file located at its root directory.
 
     viskit is-vis-project path/to/workspace/FooApp
 
 This is mostly a utility command on top of which others are built. It simply determines
 whether the given path points to the root directory of a Visualizer project or not.
+
+## Get Project version
+
+Retrieves the version of a project according to the plugins it requires, as listed in
+the `konyplugins.xml` file located at the root directory of the project.
+
+    viskit gpv path/to/workspace/FooApp
+
+This helps you determine which Vis version you would need in order to
+open a project _without_ upgrading it. This is specially relevant when
+multiple developers must collaborate on a project.
+
+You can use this command to decide which Major.Minor to install and then
+use the `set-vis-version` command to install the right patch and hotfix
+versions on top of that -e.g. If the project is of version 8.2.6.2, then
+download version 8.2 from the Kony Downloads site and use `set-vis-version`
+to get the exact plugins to match 8.2.**6.2**.
 
 ## Find Views
 
