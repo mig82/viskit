@@ -36,11 +36,15 @@ program
 	.alias("fw");
 
 program
-	.command("is-vis-project <project>", "Determine whether a given directory is the root of a Visualizer project.")
+	.command("get-project-version <project>", "Retrieves the version of a project according to the plugins it uses.")
+	.alias("gpv");
+
+program
+	.command("is-vis-project <project>", "Determine whether a given directory is the root of a Vis project.")
 	.alias("ivp");
 
 program
-	.command("set-vis-version <visualizer-path> <project>", "Set the version of the Visualizer installation to match a given project.")
+	.command("set-vis-version <visualizer-path> <project>", "Set the version of the Vis installation to match a given project.")
 	.alias("svv");
 
 program.on('option:verbose', function () {
@@ -53,7 +57,8 @@ program.on('--help', function(){
 		"\nWhat is Viskit?\n\n" +
 
 		"Viskit is a CLI meant to help " + "Kony Visualizer".emphasis + " developers work faster and keep\n" +
-		"their projects clear of junk.\n"
+		"their projects clear of junk.\n" +
+		"Read more about Viskit at " + "https://www.npmjs.com/package/viskit".underline + "\n"
 	));
 	//Pun
 	console.log(colors.info(
