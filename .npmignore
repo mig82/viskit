@@ -3,3 +3,6 @@
 
 # Jasmine
 /spec/*
+
+# Test projects
+/test/*
