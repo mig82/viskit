@@ -60,10 +60,10 @@ program.on('--help', function(){
 		"It could break your installation. This command is safest to use when transforming an installation\n" +
 		"from one Patch or Hotfix version to another. E.g.:\n\n" +
 
-		"\t* Transforming version 8.3.2 down or up a patch to 8.3.1 or 8.3.3 is considered " + "safe\n".green +
-		"\t* Transforming version 8.3.2.2 down or up a hotfix to 8.3.2.1 or to 8.3.2.3 is considered " + "safe\n".green +
-		"\t* Transforming version 8.3.x down or up a minor to 8.2.x or 8.4.x is " + "not safe\n".warn +
-		"\t* Transforming version 8.x.y down or up a major to 7.x.y or 9.x.y is " + "strongly discouraged\n".red +
+		"\t* Transforming version 8.3.2."+"2".underline+" down or up a hotfix to 8.3.2."+"1".underline+" or to 8.3.2."+"3".underline+" is considered " + "safe".green + " and should work.\n" +
+		"\t* Transforming version 8.3."+"2".underline+" down or up a patch to 8.3."+"1".underline+" or 8.3.3 is considered " + "safe".green + " and should work.\n" +
+		"\t* Transforming version 8."+"3".underline+".x down or up a minor to 8."+"2".underline+".x or 8."+"4".underline+".x is " + "known to work or break".warn + " depending on the versions.\n" +
+		"\t* Transforming version "+"8".underline+".x.y down or up a major to "+"7".underline+".x.y or "+"9".underline+".x.y is " + "likely to break".red + " your installation.\n" +
 
 		"\nIn the event of this command breaking your installation you can always restore the original plugins\n" +
 		"from the plugins_BACKUP directory created under your Vis installation." +
