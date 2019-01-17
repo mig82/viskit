@@ -79,8 +79,10 @@ function readVersion(pluginsDoc, verbose){
 	//If the Branding plugin is not listed, then search for the StudioViz Core plugin.
 	if(!versionPlugin) versionPlugin = findPluginBy(pluginsDoc, "plugin-id", "com.kony.studio.viz.core.win64");
 	if(!versionPlugin) versionPlugin = findPluginBy(pluginsDoc, "plugin-id", "com.kony.studio.viz.core.mac64");
-	//If the StudioViz Core plugin is not listed, then search for the Kony Studio plugin.
+	//If the StudioViz Core plugin is not listed, then search for the Kony Studio plugin -a.k.a. KEditor plugin.
 	if(!versionPlugin) versionPlugin = findPluginBy(pluginsDoc, "plugin-id", "com.pat.tool.keditor");
+	//On 6.x versions of Vis the Kony Studio had a different package name. Recently migrated projects will still show it.
+	if(!versionPlugin) versionPlugin = findPluginBy(pluginsDoc, "plugin-id", "com.pat.tool.keditor.KEditorPlugin");
 
 	var pluginName = versionPlugin.getAttribute("plugin-name");
 	var pluginVersion = versionPlugin.getAttribute("version-no");
