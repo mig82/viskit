@@ -77,7 +77,7 @@ function findPlugin(pluginId, pluginsDirPath, verbose){
 async function dedupPlugins(visPath, pluginIds, dryRun, verbose){
 
 	const pluginsDirPath = path.resolve(`${visPath}/Kony_Visualizer_Enterprise/plugins`);
-	if(verbose)console.log("Removing previously installed plugins from %s", pluginsDirPath);
+	if(verbose)console.log("Removing previously installed plugins from %s".debug, pluginsDirPath);
 
 	var removedCount = 0;
 	for(const id of pluginIds){
