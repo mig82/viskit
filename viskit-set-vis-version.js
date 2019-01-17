@@ -54,6 +54,19 @@ program.on('--help', function(){
 		"viceversa. Also keep in mind that the most recent Vis versions will require more recent Xcode \n" +
 		"and Android SDK versions. This command will do its best to let you know what the min versions \n" +
 		"of those external dependencies are.\n\n" +
+
+		"SUPER-IMPORTANT: ".emphasis + "You should not try to transform Vis installations from one " +
+		"Major.Minor to another. \n" +
+		"It could break your installation. This command is safest to use when transforming an installation\n" +
+		"from one Patch or Hotfix version to another. E.g.:\n\n" +
+
+		"\t* Transforming version 8.3.2 down or up a patch to 8.3.1 or 8.3.3 is considered " + "safe\n".green +
+		"\t* Transforming version 8.3.2.2 down or up a hotfix to 8.3.2.1 or to 8.3.2.3 is considered " + "safe\n".green +
+		"\t* Transforming version 8.3.x down or up a minor to 8.2.x or 8.4.x is " + "not safe\n".warn +
+		"\t* Transforming version 8.x.y down or up a major to 7.x.y or 9.x.y is " + "strongly discouraged\n".red +
+
+		"\nIn the event of this command breaking your installation you can always restore the original plugins\n" +
+		"from the plugins_BACKUP directory created under your Vis installation." +
 		"\n"
 	));
 });
@@ -91,10 +104,21 @@ async function onAction(visualizerPath, project, options){
 			console.log("\t%s: %s".info, dep.name, dep.version);
 		});
 
-		console.log("\nNote:".bold.info + " Visualizer will have crashed while we rearranged its internal organs. Go restart it.\n".info);
+		console.log("\nNote:".bold.info + " Go restart Vis.\n".info);
 	}
 	catch(e){
-		console.log(e.message.error);
+
+		if(e.name === "IncompatibleMajorMinorError"){
+			console.log(e.message.warn);
+			console.log(colors.warn(
+				"Transforming Vis across different Major.Minor versions could break your installation.\n" +
+				"It is " + "strongly".bold + " recommended you install the corresponding Major.Minor version and run this command on that instead.\n" +
+				"Try this again with the --force option if you still wish to proceed at your own risk."
+			));
+		}
+		else{
+			console.log(e.message.error);
+		}
 	}
 }
 

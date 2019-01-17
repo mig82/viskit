@@ -115,9 +115,16 @@ async function removeDropinsDir(visPath, verbose) {
 	}
 }
 
-function getInstalledVersion(visPath, verbose){
+function getOriginalMajorMinor(visPath, verbose){
+	//Consider only major.minor -e.g for 8.3.0.1 consider only 8.3
+	const regex = /KonyVisualizerEnterprise(\d+\.\d+).*/gi;
+	let matches = regex.exec(visPath);
+	return matches && matches.length > 1?matches[1]:null;
+}
+
+function getOriginalMajorMinorPatch(visPath, verbose){
 	//Consider only major.minor.patch -e.g for 8.3.0.1 consider only 8.3.0
-	const regex = /KonyVisualizerEnterprise((\d+\.){2}\d).*/gi;
+	const regex = /KonyVisualizerEnterprise((\d+\.){2}\d+).*/gi;
 	let matches = regex.exec(visPath);
 	return matches && matches.length > 1?matches[1]:null;
 }
@@ -127,5 +134,6 @@ module.exports = {
 	backupPlugins: backupPlugins,
 	dedupPlugins: dedupPlugins,
 	removeDropinsDir: removeDropinsDir,
-	getInstalledVersion: getInstalledVersion
+	getOriginalMajorMinor: getOriginalMajorMinor,
+	getOriginalMajorMinorPatch: getOriginalMajorMinorPatch
 }

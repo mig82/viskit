@@ -4,6 +4,11 @@ const vis = require('../helpers/visualizer');
 const bTools = require('../helpers/build-tools');
 const viskitDir = require('../config/config').viskitDir;
 
+function IncompatibleMajorMinorError(message) {
+   this.message = message;
+   this.name = 'IncompatibleMajorMinorError';
+}
+
 async function setVisVersion(visPath, projectPath, dryRun, force, verbose){
 
 	var versionInfo = {};
@@ -18,12 +23,15 @@ async function setVisVersion(visPath, projectPath, dryRun, force, verbose){
 		const visVersion = projectPlugins.projectVersion;
 
 		// 1.1. Warn that the installed and requested versions are significantly different.
-		var installedVersion = vis.getInstalledVersion(visPath, verbose);
-		if(installedVersion !== visVersion && !force){
-			throw new Error(
-				`Installed version ${installedVersion} and ` +
-				`project version ${visVersion} are significantly different.` +
-				"\nUse --force option if you wish to proceed"
+		const majorMinorRegex = /^(\d+\.\d+).*/gi;
+		let matches = majorMinorRegex.exec(visVersion);
+		const projMajorMinor = matches && matches.length > 1?matches[1]:null;
+
+		var installedMajorMinor = vis.getOriginalMajorMinor(visPath, verbose);
+		if(installedMajorMinor !== projMajorMinor && !force){
+			throw new IncompatibleMajorMinorError(
+				`Installed version ${installedMajorMinor} and ` +
+				`project version ${projMajorMinor} are different.`
 			);
 		}
 
