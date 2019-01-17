@@ -28,45 +28,43 @@ program.on('--help', function(){
 	console.log(colors.info(
 		"Why?\n\n" +
 
-		"When working with two or more projects developed using different versions of Visualiser, it \n" +
+		"When working with two or more projects developed using different versions of Visualizer, it \n" +
 		"is very cumbersome to switch between them. Projects developed with Visualizer versions older \n" +
 		"than the one you have installed can only be opened if you upgrade them. Projects developed\n" +
 		"with Visualizer versions more recent than the one you have installed can only be opened if\n" +
 		"you upgrade your installation, and then any upgrade will likely result in a version more recent\n" +
 		"than the one your project actually needed.\n\n" +
 
-		"This forces you to either keep multiple installations of Visualiser or to manually switch \n" +
-		"the plugins in your Visualiser installation.\n\n" +
+		"This forces you to either keep multiple installations of Visualizer or to manually switch \n" +
+		"the plugins in your Visualizer installation. This command attempts to help you shuffle the plugins \n" +
+		"in your Visualizer installation in an automated and reliable way.\n\n" +
 
-		"The original Viskit project (" + "https://github.com/kony-ronin/ant-viskit".underline +
-		") was born to transform \n" +
-		"the version of the Visualiser installation by downloading and shuffling the plugins needed in \n" +
-		"an efficient and reliable way. However, that implemantion was based on an Ant script which could\n" +
-		"not be installed, but rather had to be downloaded and set up manually.\n\n" +
+		"Sadly it's not possible to make a single Visualizer installation service projects for 7.x and 8.x \n" +
+		"but this way you can at least try to use a single 7.x installation for all your 7.x projects and \n" +
+		"a single 8.x installation for all your 8.x projects.\n\n" +
 
-		"This command in Viskit's new incarnation as an NPM package adopts that funcionality in a much \n" +
-		"more elegant and maintainable way.\n\n" +
+		"Note: ".bold + "this will not work with projects of versions 6.x and below.\n\n" +
 
 		"IMPORTANT: ".emphasis + "This command is " + "HIGHLY EXPERIMENTAL".emphasis +
-		". Vis v8 brought with it breaking \n" +
-		"changes to how Visualizer works with the JDK, Gradle and other dependencies. You should still \n" +
-		"keep at least a v7.x and a v8.x installation and not try to transform a v7.x into a v8.x or \n" +
-		"viceversa. Also keep in mind that the most recent Vis versions will require more recent Xcode \n" +
-		"and Android SDK versions. This command will do its best to let you know what the min versions \n" +
-		"of those external dependencies are.\n\n" +
+		". Vis v8 introduced breaking changes to how Visualizer\n" +
+		"works with the JDK, Gradle and other dependencies. You should still keep at least a v7.x and\n" +
+		"a v8.x installation and not try to transform a v7.x into a v8.x or vice versa. Also keep in mind \n" +
+		"that the most recent Vis versions will require more recent Xcode and Android SDK versions.\n" +
+		"This command will do its best to let you know what the min versions of those external dependencies\n" +
+		"are.\n\n" +
 
 		"SUPER-IMPORTANT: ".emphasis + "You should not try to transform Vis installations from one " +
 		"Major.Minor to another. \n" +
 		"It could break your installation. This command is safest to use when transforming an installation\n" +
 		"from one Patch or Hotfix version to another. E.g.:\n\n" +
 
-		"\t* Transforming version 8.3.2."+"2".underline+" down or up a hotfix to 8.3.2."+"1".underline+" or to 8.3.2."+"3".underline+" is considered " + "safe".green + " and should work.\n" +
-		"\t* Transforming version 8.3."+"2".underline+" down or up a patch to 8.3."+"1".underline+" or 8.3.3 is considered " + "safe".green + " and should work.\n" +
-		"\t* Transforming version 8."+"3".underline+".x down or up a minor to 8."+"2".underline+".x or 8."+"4".underline+".x is " + "known to work or break".warn + " depending on the versions.\n" +
-		"\t* Transforming version "+"8".underline+".x.y down or up a major to "+"7".underline+".x.y or "+"9".underline+".x.y is " + "likely to break".red + " your installation.\n" +
+		" * Transforming version 8.3.2."+"2".underline+" down or up a hotfix to 8.3.2."+"1".underline+" or to 8.3.2."+"3".underline+" is considered " + "safe".green + " and should work.\n" +
+		" * Transforming version 8.3."+"2".underline+" down or up a patch to 8.3."+"1".underline+" or 8.3.3 is considered " + "safe".green + " and should work.\n" +
+		" * Transforming version 8."+"3".underline+".x down or up a minor to 8."+"2".underline+".x or 8."+"4".underline+".x is " + "known to work or break".warn + " depending on the versions.\n" +
+		" * Transforming version "+"8".underline+".x.y down or up a major to "+"7".underline+".x.y or "+"9".underline+".x.y is " + "likely to break".red + " your installation.\n" +
 
 		"\nIn the event of this command breaking your installation you can always restore the original plugins\n" +
-		"from the plugins_BACKUP directory created under your Vis installation." +
+		"from the "+"plugins_BACKUP".bold+" directory created under your Vis installation." +
 		"\n"
 	));
 });

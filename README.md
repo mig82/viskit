@@ -102,6 +102,48 @@ possible. If a specific form is suffering from performance issues, this command 
 give you a hint on whether too many widgets with undefined width or height may be
 part of the problem.
 
+## Set Visualizer Version
+
+Set the version of a Visualizer installation to match a given project.
+
+    viskit set-vis-version|svv path/to/KonyVisualizerEnterpriseX.Y.Z path/to/workspace/FooApp
+
+When working with two or more projects developed using different versions of Visualizer, it
+is very cumbersome to switch between them. Projects developed with Visualizer versions older
+than the one you have installed can only be opened if you upgrade them. Projects developed
+with Visualizer versions more recent than the one you have installed can only be opened if
+you upgrade your installation, and then any upgrade will likely result in a version more recent
+than the one your project actually needed.
+
+This forces you to either keep multiple installations of Visualizer or to manually switch
+the plugins in your Visualizer installation. This command attempts to help you shuffle the plugins
+in your Visualizer installation in an automated and reliable way.
+
+Sadly it's not possible to make a single Visualizer installation service projects for 7.x and 8.x
+but this way you can at least try to use a single 7.x installation for all your 7.x projects and
+a single 8.x installation for all your 8.x projects.
+
+**Note:** this will not work with projects of versions 6.x and below.
+
+**IMPORTANT:** This command is HIGHLY EXPERIMENTAL. Vis v8 introduced breaking changes to how Visualizer
+works with the JDK, Gradle and other dependencies. You should still keep at least a v7.x and
+a v8.x installation and not try to transform a v7.x into a v8.x or vice versa. Also keep in mind
+that the most recent Vis versions will require more recent Xcode and Android SDK versions.
+This command will do its best to let you know what the min versions of those external dependencies
+are.
+
+**SUPER-IMPORTANT:** You should not try to transform Vis installations from one Major.Minor to another.
+It could break your installation. This command is safest to use when transforming an installation
+from one Patch or Hotfix version to another. E.g.:
+
+ * Transforming version 8.3.2.**2** down or up a hotfix to 8.3.2.**1** or to 8.3.2.**3** is considered safe and should work.
+ * Transforming version 8.3.**2** down or up a patch to 8.3.**1** or 8.3.**3** is considered safe and should work.
+ * Transforming version 8.**3**.x down or up a minor to 8.**2**.x or 8.**4**.x is known to work or break depending on the versions.
+ * Transforming version **8**.x.y down or up a major to **7**.x.y or **9**.x.y is likely to break your installation.
+
+**Note:** In the event of this command breaking your installation you can always restore the original plugins
+from the `plugins_BACKUP` directory created under your Vis installation.
+
 ## Find Orphaned Widgets
 
 Find any widgets in the project structure not linked to a view.
@@ -174,4 +216,4 @@ The following is a list of features that *Viskit* aims to address hopefully in t
 
 ## Plugin Handling
 
-* Transforming a Visualizer installation to match the plugin versions of a specific project so that it can be opened without the need to upgrade it.
+* Revert back to the plugins backed up by the `svv` command.
