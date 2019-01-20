@@ -2,6 +2,10 @@ const colors = require("colors");
 const theme = require("./theme.js");
 colors.setTheme(theme);
 
+const View = require("../models/view");
+const Image = require("../models/image");
+const Widget = require("../models/widget");
+
 const types = [
 	"a", //Print absolute paths.
 	"r", //Print relative paths.
@@ -12,11 +16,11 @@ const types = [
 var options = types.join("|");
 var regex = new RegExp(`^(${options})$`);
 
-const print = function(type, widget, colorDef){
+const print = function(type, model, colorDef){
 
 	var outputColor;
 	if (typeof colorDef === "function"){
-		outputColor = colorDef(widget);
+		outputColor = colorDef(model);
 	}
 	else if (typeof colorDef === "string"){
 		outputColor = colorDef
@@ -26,37 +30,21 @@ const print = function(type, widget, colorDef){
 	}
 
 	if(process.env.verbose){
-		console.debug("%o".info, widget);
+		//console.debug("%o".info, model);
 	}
 
 	switch (type) {
 		case "a":
-			console.log("%s"[outputColor], widget.absPath);
+			console.log("%s"[outputColor], model.absPath);
 			break;
 		case "r":
-			console.log("%s"[outputColor], widget.relPath);
+			console.log("%s"[outputColor], model.relPath);
 			break;
 		case "f":
-			console.log("%s"[outputColor], widget.file);
+			console.log("%s"[outputColor], model.file);
 			break;
 		default: //t
-			if(widget.info){
-				console.log("%s\t%s\t%s\t%s\t%s"[outputColor],
-					widget.viewType,
-					widget.channel?widget.channel:"n/a",
-					widget.viewName,
-					widget.file,
-					widget.info
-				);
-			}
-			else{
-				console.log("%s\t%s\t%s\t%s"[outputColor],
-					widget.viewType,
-					widget.channel?widget.channel:"n/a",
-					widget.viewName,
-					widget.file
-				);
-			}
+			console.log("%s"[outputColor], model.toTabbedString());
 	}
 }
 

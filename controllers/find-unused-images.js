@@ -1,64 +1,45 @@
-//const find = require('find');
-const fs = require('fs-extra');
-//const colors = require('colors');
-//const views = require("../config/views");
-//const widgets = require("../config/widgets");
-//const viewTypes = views.types;
-//const containerTypes = widgets.containerTypes;
-const differenceBy = require('lodash.differenceby');
-const findWidgets = require("../common/finder").findWidgets;
 
-function addUnique(array, element){
-	if(element && array.indexOf(element) < 0) {
-		array.push(element);
-	}
-}
-
-async function findUsedImages(projectPath, viewType, channel, viewName, ignoreEmpty, verbose){
-
-	if(verbose)console.log("Finding unused images".debug);
-	var metaWidgets = await findWidgets(projectPath, viewType, channel, viewName, verbose);
-	var usedImages = [];
-
-	for(const metaWidget of metaWidgets){
-		var widget = await fs.readJson(metaWidget.absPath);
-		if(widget.wType === "Image" || widget.name === "kony.ui.Image2"){
-			addUnique(usedImages, widget["_src_"]);
-			addUnique(usedImages, widget.imagewhenfailed);
-			addUnique(usedImages, widget.imagewhiledownloading);
-		}
-	}
-	return usedImages;
-}
-
-async function findSkinUsedImages(){
-	/* TODO: Find images used as skin background images.
-	* 
-	* themes/defaultTheme/myBlackFlexSkin.json
-	* 	"background_image": "option4.png",
-	* 	"bg_type": "image",
-	* 	"iphone": {
-	* 		"background_image": "calbtn.png",
-	* 		"bg_type": "image"
-	* 	}
-	*/
-}
-
-async function findImages(projectPath, viewType, channel, viewName, ignoreEmpty, verbose){
-	//TODO
-}
+const differenceWith = require('lodash.differencewith');
+const findAll = require("../core/finders/image-finder").findAll;
+const findUsed = require("../core/finders/image-finder").findUsed;
+const Image = require("../models/image");
 
 async function findUnusedImages(projectPath, viewType, channel, viewName, ignoreEmpty, verbose){
 
-	var allImages = await findImages(projectPath, viewType, channel, viewName, ignoreEmpty, verbose);
-	var usedImages = await findUsedImages(projectPath, viewType, channel, viewName, ignoreEmpty, verbose);
-	var unusedImages = differenceBy(allImages, usedImages, image => {
-		//return widget.absPath;
-		return image.relPath.toLowerCase();
-	});
+	var allImages = await findAll(projectPath, channel, verbose);
+	var usedImages = await findUsed(projectPath, viewType, channel, viewName, ignoreEmpty, verbose);
+	var unusedImages = differenceWith(allImages, usedImages, Image.matches);
 
-	//return unusedImages;
-	return usedImages;
+	var countAll = allImages.length;
+	var countUsed = usedImages.length;
+	var countUnused = unusedImages.length;
+
+	if(verbose){
+		console.log("All count: %d".debug, countAll);
+		allImages.forEach(image => {
+			console.log("\t%s".debug, image.toTabbedString());
+		});
+
+		console.log("Used count: %d".debug, countUsed);
+		usedImages.forEach(image => {
+			console.log("\t%s".debug, image.toTabbedString());
+		});
+
+		console.log("Unused count: %d".debug, countUnused);
+		unusedImages.forEach(image => {
+			console.log("\t%s".debug, image.toTabbedString());
+		});
+	}
+
+	var total = countUsed + countUnused;
+	if(countAll === total){
+		console.log("Images in project %d == Total %d = Used %d + Unused %d".green, countAll, total, countUsed, countUnused);
+	}
+	else{
+		console.log("Images in project %d != Total %d = Used %d + Unused %d".warn, countAll, total, countUsed, countUnused);
+	}
+
+	return unusedImages;
 }
 
 module.exports = findUnusedImages;

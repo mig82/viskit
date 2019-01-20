@@ -7,7 +7,7 @@ describe("\tGiven a path to a view\n", () => {
 	const watchChannel = "watch";
 	const androidWearChannel = "androidwear";
 	const desktopWebChannel = "desktop";
-	const allChannels = "all";
+	const allChannels = "common";
 
 	const formViewType = "forms";
 	const popupViewType = "popups";
