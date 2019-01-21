@@ -2,6 +2,7 @@ const find = require('find');
 const fs = require('fs-extra');
 const path = require('path');
 const findIndex = require('lodash.findindex');
+const forOwn = require('lodash.forown');
 const Q = require('q');
 Q.longStackSupport = true;
 
@@ -123,7 +124,7 @@ async function findAll(projectPath, channel, verbose){
 	var searchPath = `resources/${channelOptions}/.*` +
 		"\\.(jpg|ico|svg|png|gif)$"
 
-	console.log("Finding all images\nLooking for:\n\t" + searchPath);
+	if(verbose)console.log("Searching for all images with:\n\t%s".debug, searchPath);
 	var searchPathRegex = new RegExp(searchPath, "");
 
 	return Q.Promise(function(resolve, reject, notify) {
@@ -144,7 +145,7 @@ async function findAll(projectPath, channel, verbose){
 	});
 }
 
-function addImagesFor(usedImages, referencedImages, channel, verbose){
+function addImagesFor(usedImages, referencedImages, channel, usedBy, verbose){
 	referencedImages.forEach(file => {
 		if(verbose)console.log("\tvalue: %s".debug, file);
 		addUnique(usedImages, new Image(
@@ -154,14 +155,29 @@ function addImagesFor(usedImages, referencedImages, channel, verbose){
 			null, //platform,
 			null, //relPath,
 			null, //absPath
-			"widget"
+			usedBy
 		));
 	});
 }
 
-async function findSlashScreens(projectPath, viewType, channel, viewName, ignoreEmpty, verbose){
-	//Read splashscreenproperties.json
-	// splashScreen.(mobile|tablet|desktop)
+async function findSlashScreenImages(projectPath,/*channel,*/ verbose){
+	//Read splashscreenproperties.json -> splashScreen.(mobile|tablet|desktop)
+	var splashPropsFilePath = path.resolve(`${projectPath}/splashscreenproperties.json`);
+	if(verbose)console.log("Searching for images in splash screens in:\n\t%s".debug, splashPropsFilePath);
+
+	var usedImages = [];
+	var json = await fs.readJson(splashPropsFilePath);
+
+	var splashScreen = new Object(json.splashScreen);
+	//console.log(splashScreen);
+
+	forOwn(splashScreen, (channelObj, channelName) => {
+		if(verbose)console.log("Splash screens for %s:".debug, channelName);
+		var referencedImages = findValuesMatching(channelObj, Image.regex);
+		addImagesFor(usedImages, referencedImages, channelName, "splash", verbose);
+	});
+
+	return usedImages;
 }
 
 async function findAppIcons(){
@@ -187,9 +203,9 @@ async function findAppIcons(){
 	//	<attributes name="iphone_spotlighticon_3x_40" value="app_icon_40x40_3x.png"/>
 }
 
-async function findUsed(projectPath, viewType, channel, viewName, ignoreEmpty, verbose){
+async function findViewImages(projectPath, viewType, channel, viewName, verbose){
 
-	if(verbose)console.log("Finding used images".debug);
+	if(verbose)console.log("Searching for images in views".debug);
 	var widgets = await findWidgets(projectPath, viewType, channel, viewName, verbose);
 	var usedImages = [];
 
@@ -202,12 +218,19 @@ async function findUsed(projectPath, viewType, channel, viewName, ignoreEmpty, v
 
 		//var referencedImages = findValuesForKeys(json, imageKeys);
 		var referencedImages = findValuesMatching(json, Image.regex);
-		addImagesFor(usedImages, referencedImages, widget.channel, verbose);
+		addImagesFor(usedImages, referencedImages, widget.channel, "view", verbose);
 	}
 
 	// TODO: Find images used by Skins.
 	// TODO: Find images used as app icons and splash screens.
 	return usedImages;
+}
+
+async function findUsed(projectPath, viewType, channel, viewName, verbose){
+	var splashImages = await findSlashScreenImages(projectPath,/* channel,*/ verbose);
+	var viewImages = await findViewImages(projectPath, viewType, channel, viewName, verbose);
+	var all = splashImages.concat(viewImages);
+	return all;
 }
 
 module.exports = {

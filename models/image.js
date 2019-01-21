@@ -90,10 +90,11 @@ Image.resetProjectPath = function _resetProjectPath(){
 
 Image.prototype.toTabbedString = function _toTabbedString() {
 
-	var s = `${this.channel?this.channel:"common"}\t` +
-		`${this.file}`;
+	var channel = this.channel?this.channel:"common";
+	var s = `${channel}\t${this.file}`;
 
 	if(this.info) s+= `\t${this.info}`;
+	if(this.usedBy) s+= `\t${this.usedBy}`;
 
 	return s;
 };

@@ -1,13 +1,12 @@
 
 const differenceWith = require('lodash.differencewith');
-const findAll = require("../core/finders/image-finder").findAll;
-const findUsed = require("../core/finders/image-finder").findUsed;
+const {findAll, findUsed} = require("../core/finders/image-finder");
 const Image = require("../models/image");
 
 async function findUnusedImages(projectPath, viewType, channel, viewName, ignoreEmpty, verbose){
 
 	var allImages = await findAll(projectPath, channel, verbose);
-	var usedImages = await findUsed(projectPath, viewType, channel, viewName, ignoreEmpty, verbose);
+	var usedImages = await findUsed(projectPath, viewType, channel, viewName, verbose);
 	var unusedImages = differenceWith(allImages, usedImages, Image.matches);
 
 	var countAll = allImages.length;
