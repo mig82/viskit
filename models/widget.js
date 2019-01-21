@@ -28,6 +28,12 @@ function Widget(widgetPath, projectPath){
 		channel = "common";
 		viewName = gParent;
 	}
+	// Tabs have a different structure: Tabs are nested in TabPanes
+	// forms/mobile/homeForm.sm/__fooTabPane__/Tab0ab98b9ae841347.json
+	else if(/__.+__/.test(parent)){
+		channel = pathParts[1];
+		viewName = gParent.replace(viewExtensionRegex, "");
+	}
 	else{
 		channel = pathParts[1];
 		viewName = parent.replace(viewExtensionRegex, "");
