@@ -159,6 +159,34 @@ function addImagesFor(usedImages, referencedImages, channel, verbose){
 	});
 }
 
+async function findSlashScreens(projectPath, viewType, channel, viewName, ignoreEmpty, verbose){
+	//Read splashscreenproperties.json
+	// splashScreen.(mobile|tablet|desktop)
+}
+
+async function findAppIcons(){
+	//Read projectprop.xml
+	//	<attributes name="applogokey" value="0=app_icon.png,1=app_icon_iphone.png,8=app_icon_android.png,50=,42=,16=,18=,48=,43=,1000=,1001=,1002=,9999=,9998=,9997="/>
+	//	<attributes name="ipad_appicon_1x_76" value="app_icon_76x76_1x.png"/>
+	//	<attributes name="ipad_appicon_2x_76" value="app_icon_76x76_2x.png"/>
+	//	<attributes name="ipad_notificationicon_1x_20" value="app_icon_20x20_1x.png"/>
+	//	<attributes name="ipad_notificationicon_2x_20" value="app_icon_20x20_2x.png"/>
+	//	<attributes name="ipad_proappicon_2x_83Point5" value="app_icon_83_5x83_5_2x.png"/>
+	//	<attributes name="ipad_settingsicon_1x_29" value="app_icon_29x29_1x.png"/>
+	//	<attributes name="ipad_settingsicon_2x_29" value="app_icon_29x29_2x.png"/>
+	//	<attributes name="ipad_spotlighticon_1x_40" value="app_icon_40x40_1x.png"/>
+	//	<attributes name="ipad_spotlighticon_2x_40" value="app_icon_40x40_2x.png"/>
+	//	<attributes name="iphoneipad_appstoreicon_1x_1024" value="itunes_artwork.png"/>
+	//	<attributes name="iphone_appicon_2x_60" value="app_icon_60x60_2x.png"/>
+	//	<attributes name="iphone_appicon_3x_60" value="app_icon_60x60_3x.png"/>
+	//	<attributes name="iphone_notificationicon_2x_20" value="app_icon_20x20_2x.png"/>
+	//	<attributes name="iphone_notificationicon_3x_20" value="app_icon_20x20_3x.png"/>
+	//	<attributes name="iphone_spotlighticon_2x_29" value="app_icon_29x29_2x.png"/>
+	//	<attributes name="iphone_spotlighticon_2x_40" value="app_icon_40x40_2x.png"/>
+	//	<attributes name="iphone_spotlighticon_3x_29" value="app_icon_29x29_3x.png"/>
+	//	<attributes name="iphone_spotlighticon_3x_40" value="app_icon_40x40_3x.png"/>
+}
+
 async function findUsed(projectPath, viewType, channel, viewName, ignoreEmpty, verbose){
 
 	if(verbose)console.log("Finding used images".debug);
