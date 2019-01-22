@@ -9,6 +9,7 @@ Q.longStackSupport = true;
 const findWidgets = require('../../common/finder').findWidgets;
 //const findValuesForKeys = require('../../common/object/find-values').findValuesForKeys;
 const findValuesMatching = require('../../common/object/find-values').findValuesMatching;
+const flattenObject = require('../../common/object/flatten');
 const searchAll = require('../../common/search-all');
 const channels = require("../../config/channels");
 
@@ -168,13 +169,22 @@ async function findSlashScreenImages(projectPath,/*channel,*/ verbose){
 	var usedImages = [];
 	var json = await fs.readJson(splashPropsFilePath);
 
-	var splashScreen = new Object(json.splashScreen);
-	//console.log(splashScreen);
+	if(verbose)console.log("Original splash screens config:\n%o".debug, json.splashScreen);
+	var splashScreen = flattenObject(json.splashScreen, 99);
+	if(verbose)console.log("Flattened splash screens config:\n%o".debug, splashScreen);
 
-	forOwn(splashScreen, (channelObj, channelName) => {
-		if(verbose)console.log("Splash screens for %s:".debug, channelName);
-		var referencedImages = findValuesMatching(channelObj, Image.regex);
-		addImagesFor(usedImages, referencedImages, channelName, "splash", verbose);
+	forOwn(splashScreen, (value, key) => {
+		if(typeof value === "string" && Image.regex.test(value)){
+			addUnique(usedImages, new Image(
+				value, //file
+				key.split("/")[0], //channel,
+				null, //nature,
+				null, //platform,
+				null, //relPath,
+				null, //absPath
+				"Splash-screen image for: " + key
+			));
+		}
 	});
 
 	return usedImages;

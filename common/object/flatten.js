@@ -26,7 +26,7 @@ function flatten(json, depth){
 				for (var i = 0; i < value.length; i++) {
 					json[`${key}[${i}]`] = value[i];
 					var typeOfNested = typeof value[i];
-					if(verbose)console.log("\t%d is %s", i, typeOfNested);
+					//if(verbose)console.log("\t%d is %s", i, typeOfNested);
 					isFlat = isFlat && typeOfNested !== "object"
 				}
 				delete json[key];
@@ -35,14 +35,14 @@ function flatten(json, depth){
 				forOwn(value, (value2, key2) => {
 					json[`${key}/${key2}`] = value2;
 					var typeOfNested = typeof value2;
-					if(verbose)console.log("\t%s is %s", key2, typeOfNested);
+					//if(verbose)console.log("\t%s is %s", key2, typeOfNested);
 					isFlat = isFlat && typeOfNested !== "object";
 				});
 				delete json[key];
 			}
 			//else if(primitives.indexOf(typeof value) >= 0){}
 		});
-		if(verbose)console.log("isFlat:%s\tk:%d\tdepth:%d\n", isFlat, k, depth);
+		//if(verbose)console.log("isFlat:%s\tk:%d\tdepth:%d\n", isFlat, k, depth);
 		k++;
 	}while(!isFlat && k <= depth);
 
