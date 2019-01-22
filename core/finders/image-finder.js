@@ -7,8 +7,6 @@ const Q = require('q');
 Q.longStackSupport = true;
 
 const findWidgets = require('../../common/finder').findWidgets;
-//const findValuesForKeys = require('../../common/object/find-values').findValuesForKeys;
-const findValuesMatching = require('../../common/object/find-values').findValuesMatching;
 const flattenObject = require('../../common/object/flatten');
 const searchAll = require('../../common/search-all');
 const channels = require("../../config/channels");
@@ -169,9 +167,9 @@ async function findSlashScreenImages(projectPath,/*channel,*/ verbose){
 	var usedImages = [];
 	var json = await fs.readJson(splashPropsFilePath);
 
-	if(verbose)console.log("Original splash screens config:\n%o".debug, json.splashScreen);
-	var splashScreen = flattenObject(json.splashScreen, 99);
-	if(verbose)console.log("Flattened splash screens config:\n%o".debug, splashScreen);
+	//if(verbose)console.log("Original splash screens config:\n%o".debug, json.splashScreen);
+	var splashScreen = flattenObject(json.splashScreen);
+	//if(verbose)console.log("Flattened splash screens config:\n%o".debug, splashScreen);
 
 	forOwn(splashScreen, (value, key) => {
 		if(typeof value === "string" && Image.regex.test(value)){
@@ -182,7 +180,7 @@ async function findSlashScreenImages(projectPath,/*channel,*/ verbose){
 				null, //platform,
 				null, //relPath,
 				null, //absPath
-				"Splash-screen image for: " + key
+				"splashscreenproperties.json/" + key //usedBy
 			));
 		}
 	});
@@ -224,11 +222,22 @@ async function findViewImages(projectPath, viewType, channel, viewName, verbose)
 		var imageKeys = [];
 		var json = await fs.readJson(widget.absPath);
 
-		if(verbose)console.log("\n%s".debug, widget.relPath);
+		json = flattenObject(json);
+		//if(verbose)console.log("Flattened widget:\n%o".debug, json);
 
-		//var referencedImages = findValuesForKeys(json, imageKeys);
-		var referencedImages = findValuesMatching(json, Image.regex);
-		addImagesFor(usedImages, referencedImages, widget.channel, "view", verbose);
+		forOwn(json, (value, key) => {
+			if(typeof value === "string" && Image.regex.test(value)){
+				addUnique(usedImages, new Image(
+					value, //file
+					widget.channel, //channel,
+					null, //nature,
+					null, //platform,
+					null, //relPath,
+					null, //absPath
+					widget.relPath + "/" + key //usedBy
+				));
+			}
+		});
 	}
 
 	// TODO: Find images used by Skins.

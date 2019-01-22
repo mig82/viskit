@@ -1,7 +1,7 @@
 const forOwn = require("lodash.forown");
 const NotAnObjectError = require("./errors/not-an-object");
 
-let verbose = process && process.env && process.env.verbose;
+var verbose = false;
 
 //TODO: Contribute this back to Lodash.
 
@@ -13,7 +13,15 @@ function flatten(json, depth){
 		throw new NotAnObjectError("This is not an object: " + json);
 	}
 
-	depth = typeof depth === "number"?Number.parseInt(depth):1;
+	if(typeof depth === "undefined"){
+		depth = 99; //I doubt any JSON will have more than 99 levels of nesting.
+	}
+	else if(typeof depth === "number"){
+		depth = Number.parseInt(depth);
+	}
+	else{
+		depth = 1;
+	}
 
 	//const primitives = ["boolean", "string", "number", "undefined"];
 	var isFlat;
@@ -26,7 +34,7 @@ function flatten(json, depth){
 				for (var i = 0; i < value.length; i++) {
 					json[`${key}[${i}]`] = value[i];
 					var typeOfNested = typeof value[i];
-					//if(verbose)console.log("\t%d is %s", i, typeOfNested);
+					if(verbose)console.log("\t%d is %s", i, typeOfNested);
 					isFlat = isFlat && typeOfNested !== "object"
 				}
 				delete json[key];
@@ -35,18 +43,22 @@ function flatten(json, depth){
 				forOwn(value, (value2, key2) => {
 					json[`${key}/${key2}`] = value2;
 					var typeOfNested = typeof value2;
-					//if(verbose)console.log("\t%s is %s", key2, typeOfNested);
+					if(verbose)console.log("\t%s is %s", key2, typeOfNested);
 					isFlat = isFlat && typeOfNested !== "object";
 				});
 				delete json[key];
 			}
 			//else if(primitives.indexOf(typeof value) >= 0){}
 		});
-		//if(verbose)console.log("isFlat:%s\tk:%d\tdepth:%d\n", isFlat, k, depth);
+		if(verbose)console.log("isFlat:%s\tk:%d\tdepth:%d\n", isFlat, k, depth);
 		k++;
 	}while(!isFlat && k <= depth);
 
 	return json;
+}
+
+flatten.setVerbose = (makeVerbose) => {
+	verbose = makeVerbose;
 }
 
 module.exports = flatten;

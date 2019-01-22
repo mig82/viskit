@@ -1,6 +1,13 @@
 const flatten = require("../../../common/object/flatten");
+flatten.setVerbose(false); //Set this to true to see the log statements.
 
 describe("\tGiven a map with nested maps\n", () => {
+
+	beforeAll(()=>{
+		spyOn(console, 'log').and.callThrough();
+	});
+
+
 	it( "\tWhen we flatten the map\n" +
 		"\tThen the properties of the nested maps become properties of the parent map", () => {
 
@@ -28,6 +35,11 @@ describe("\tGiven a map with nested maps\n", () => {
 });
 
 describe("\tGiven a map with nested arrays\n", () => {
+
+	beforeAll(()=>{
+		spyOn(console, 'log').and.callThrough();
+	});
+
 	it( "\tWhen we flatten the map\n" +
 		"\tThen the elements in the arrays become properties of the parent map", () => {
 
@@ -48,8 +60,13 @@ describe("\tGiven a map with nested arrays\n", () => {
 	});
 });
 
-describe("\tGiven a map with nested maps with nested maps\n", () => {
-	it( "\tWhen we flatten the map without specifying a depth,\n" +
+describe("\tGiven a map with nested maps containing other nested maps\n", () => {
+
+	beforeAll(()=>{
+		spyOn(console, 'log').and.callThrough();
+	});
+
+	it( "\tWhen we flatten the map specifying a depth of 1,\n" +
 		"\tThen only the properties of the directly nested maps become properties of the parent map", () => {
 
 		var json = {
@@ -64,7 +81,7 @@ describe("\tGiven a map with nested maps with nested maps\n", () => {
 			},
 			zen: 3.1416
 		};
-		expect(flatten(json)).toEqual({
+		expect(flatten(json, 1)).toEqual({
 			foo: 1,
 			"bar/x": 2,
 			"bar/y": 3,
@@ -103,7 +120,12 @@ describe("\tGiven a map with nested maps with nested maps\n", () => {
 });
 
 describe("\tGiven a map with nested arrays containing objects\n", () => {
-	it( "\tWhen we flatten the map without specifying a depth\n" +
+
+	beforeAll(()=>{
+		spyOn(console, 'log').and.callThrough();
+	});
+
+	it( "\tWhen we flatten the map specifying a depth of 1\n" +
 		"\tThen the elements in the arrays become properties of the parent map but are not flattened themselves", () => {
 
 		var json = {
@@ -115,7 +137,7 @@ describe("\tGiven a map with nested arrays containing objects\n", () => {
 			}],
 			zen: 3.1416
 		};
-		expect(flatten(json)).toEqual({
+		expect(flatten(json, 1)).toEqual({
 			foo: 1,
 			"bar[0]": 2,
 			"bar[1]": 3,
@@ -139,6 +161,7 @@ describe("\tGiven a map with nested arrays containing objects\n", () => {
 			}],
 			zen: 3.1416
 		};
+
 		expect(flatten(json, 2)).toEqual({
 			foo: 1,
 			"bar[0]": 2,
