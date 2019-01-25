@@ -64,6 +64,9 @@ async function setVisVersion(visPath, projectPath, dryRun, force, verbose){
 		versionInfo.dependencies = extDependencies;
 		//versionInfo.dedup = dedupResults;
 		//versionInfo.resolved = resolved;
+
+		// TODO: Update Kony_Visualizer_Enterprise/configuration/config.ini
+		// osgi.splashPath=platform\:/base/plugins/com.kony.ide.paas.branding
 	}
 	else{
 		throw new Error(`This path is NOT a Vis installation: ${visPath}`);
