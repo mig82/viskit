@@ -1,6 +1,7 @@
 const fs = require('fs-extra');
-const xsltProcessor = require('xslt-processor');
+const xmlParse = require('xslt-processor').xmlParse;
 const os = require('os');
+const colors = require('colors');
 
 /**
  * readPlugins - description
@@ -38,8 +39,8 @@ async function readPlugins(projectPath, verbose){
 			 * 	"com.kony.windows10"
 			 * 	"com.kony.windows"*/
 
-			plugins = xsltProcessor.xmlParse(pluginsXml);
-			if(verbose)console.debug("%s:\n%s\n".debug, pluginsXmlPath, pluginsXml);
+			plugins = xmlParse(pluginsXml);
+			if(verbose)console.log("%s:\n%s\n".debug, pluginsXmlPath, pluginsXml);
 		}
 		catch(e){
 			console.error("Unable to read %s\n%o".error, pluginsXmlPath, e);
@@ -134,9 +135,9 @@ async function isVisProject(projectPath, verbose){
 
 	try{
 		var projectXmlContent = await fs.readFile(projectFile, 'utf8');
-		if(verbose)console.debug(projectXmlContent);
+		if(verbose)console.log(colors.debug(projectXmlContent));
 
-		var project = xsltProcessor.xmlParse(projectXmlContent);
+		var project = xmlParse(projectXmlContent);
 		/* <?xml version="1.0" encoding="UTF-8"?>
 		<projectDescription>
 			<name>EuropeModelBank</name>
