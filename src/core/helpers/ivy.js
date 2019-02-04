@@ -11,7 +11,7 @@ const ivyFileName = require('../config/config').ivyFileName;
 async function readIvyTransformation(verbose){
 
 	var toIvy;
-	const pathToXslt = path.resolve(`${__dirname}/../ivy/plugins-to-ivy.xsl`);
+	const pathToXslt = path.resolve(`${__dirname}/../../../resources/ivy/plugins-to-ivy.xsl`);
 
 	try{
 		const toIvyXml = await fs.readFile(pathToXslt, 'utf8');
@@ -51,7 +51,7 @@ async function createIvyFile(projectPath, plugins, toIvy, verbose){
 
 async function addVisToIvy(visPath, projectPath, verbose){
 	// 1. Read Ivy settings file
-	var ivySettingsXml = await fs.readFile(path.resolve(`${__dirname}/../ivy/ivysettings.xml`), "utf8");
+	var ivySettingsXml = await fs.readFile(path.resolve(`${__dirname}/../../../resources/ivy/ivysettings.xml`), "utf8");
 
 	// 2. Replace $VIS_HOME with the visPath
 	ivySettingsXml = ivySettingsXml.replace(/VIS_HOME/g, visPath);
@@ -71,7 +71,7 @@ async function invokeIvy(visPath, projectPath, verbose){
 
 		if(verbose)console.log("Placing plugins in %s".debug, dropinsDirPath);
 
-		var ivyJarPath = path.resolve(`${__dirname}/../ivy/ivy-2.4.0.jar`);
+		var ivyJarPath = path.resolve(`${__dirname}/../../../resources/ivy/ivy-2.4.0.jar`);
 		var options = [
 			"-jar",
 			ivyJarPath,

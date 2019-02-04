@@ -4,7 +4,7 @@ const path = require('path');
 const Q = require('q');
 Q.longStackSupport = true;
 
-const download = require('../common/download');
+const download = require('./download');
 const viskitDir = require('../config/config').viskitDir;
 const visExtDepFileName = require('../config/config').visExtDepFileName;
 
@@ -30,7 +30,7 @@ async function downloadBuildTools(projectPath, visVersion, verbose){
 			return destinationPath;
 		}
 		catch(e){
-			console.error("Error downloading build Tools %s: %o".error, visVersion, e);
+			console.error("Error downloading build Tools %s: %s".error, visVersion, e.message);
 			return null;
 		}
 	}

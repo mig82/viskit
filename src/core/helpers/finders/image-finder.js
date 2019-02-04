@@ -11,9 +11,9 @@ const xsltProcessor = require('xslt-processor');
 const Q = require('q');
 Q.longStackSupport = true;
 
-const findWidgets = require('../../common/finder').findWidgets;
-const flattenObject = require('../../common/object/flatten');
-const searchAll = require('../../common/search-all');
+const findWidgets = require('./ui-finder').findWidgets;
+const flattenObject = require('../../../common/object/flatten');
+const searchAll = require('../search-all');
 const channels = require("../../config/channels");
 
 const Image = require('../../models/image');
