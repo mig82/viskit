@@ -1,6 +1,6 @@
 const fs = require('fs-extra');
 const xmlParse = require('xslt-processor').xmlParse;
-const xpath = require("./xpath");
+const getXpathStringValue = require("./xpath").getXpathStringValue; //TODO: Use this instead the xmlParse function.
 const os = require('os');
 const colors = require('colors');
 
