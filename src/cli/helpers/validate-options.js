@@ -1,6 +1,6 @@
-const views = require("./config/views.js");
-const channels = require("./config/channels.js");
-const outputs = require("./config/outputs.js");
+const views = require("../../core/config/views.js");
+const channels = require("../../core/config/channels.js");
+const outputs = require("../../reporters/console");
 
 function validateOptions(options){
 

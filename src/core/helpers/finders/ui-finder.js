@@ -4,11 +4,11 @@ const findFile = require('find').file;
 const findDir = require('find').dir;
 const Q = require('q');
 Q.longStackSupport = true;
-const channels = require("../config/channels");
-const views = require("../config/views");
-const Widget = require("../models/widget");
-const View = require("../models/view");
-const searchAll = require("./search-all");
+const channels = require("../../config/channels");
+const views = require("../../config/views");
+const Widget = require("../../models/widget");
+const View = require("../../models/view");
+const searchAll = require("../search-all");
 
 function buildSearchPath(searchFor, projectPath, viewType, channel, viewName){
 	var path;

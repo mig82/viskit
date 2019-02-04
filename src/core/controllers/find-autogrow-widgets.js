@@ -3,7 +3,7 @@ const fs = require('fs-extra');
 const colors = require('colors');
 const views = require("../config/views");
 const widgets = require("../config/widgets");
-const findWidgets = require("../common/finder").findWidgets;
+const findWidgets = require("../helpers/finders/ui-finder").findWidgets;
 
 const viewTypes = views.types;
 const containerTypes = widgets.containerTypes;

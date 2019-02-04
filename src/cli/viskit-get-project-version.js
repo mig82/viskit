@@ -3,8 +3,8 @@
 const program = require("commander");
 const path = require('path');
 const colors = require("colors");
-const getProjectVersion = require("./controllers/get-project-version").getProjectVersion;
-const theme = require("./config/theme.js");
+const getProjectVersion = require("../core/controllers/get-project-version").getProjectVersion;
+const theme = require("../core/config/theme.js");
 colors.setTheme(theme);
 
 colors.setTheme(theme);

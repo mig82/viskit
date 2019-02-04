@@ -3,7 +3,7 @@ const find = require('find');
 const fs = require('fs-extra');
 const colors = require('colors');
 const viewTypes = require("../config/views.js").types;
-const finder = require("../common/finder");
+const finder = require("../helpers/finders/ui-finder");
 
 /**
 *

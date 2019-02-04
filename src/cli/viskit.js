@@ -2,7 +2,7 @@
 
 const program = require("commander");
 const colors = require("colors");
-const theme = require("./config/theme.js");
+const theme = require("../core/config/theme.js");
 colors.setTheme(theme);
 
 program

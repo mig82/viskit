@@ -3,9 +3,9 @@
 	"version": "1.0.2",
 	"description": "A command line helper for Kony Visualizer projects.",
 	"bin": {
-		"viskit": "./viskit.js"
+		"viskit": "./src/cli/viskit.js"
 	},
-	"main": "viskit.js",
+	"main": "src/cli/viskit.js",
 	"preferGlobal": true,
 	"scripts": {
 		"test": "bash test.sh"

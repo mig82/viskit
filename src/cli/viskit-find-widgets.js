@@ -3,13 +3,13 @@
 const program = require("commander");
 const path = require('path');
 const colors = require("colors");
-const findWidgets = require("./controllers/find-widgets");
-const theme = require("./config/theme.js");
+const findWidgets = require("../core/controllers/find-widgets");
+const theme = require("../core/config/theme.js");
 colors.setTheme(theme);
-const views = require("./config/views.js");
-const channels = require("./config/channels.js");
-const outputs = require("./config/outputs.js");
-const validateOptions = require("./validate-options");
+const views = require("../core/config/views.js");
+const channels = require("../core/config/channels.js");
+const outputs = require("../reporters/console");
+const validateOptions = require("./helpers/validate-options");
 
 colors.setTheme(theme);
 

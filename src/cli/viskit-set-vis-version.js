@@ -3,9 +3,9 @@
 const program = require("commander");
 const path = require('path');
 const colors = require("colors");
-const setVisVersion = require("./controllers/set-vis-version");
-const outputs = require("./config/outputs.js");
-const theme = require("./config/theme.js");
+const setVisVersion = require("../core/controllers/set-vis-version");
+const outputs = require("../reporters/console");
+const theme = require("../core/config/theme.js");
 colors.setTheme(theme);
 
 colors.setTheme(theme);
