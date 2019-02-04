@@ -25,8 +25,14 @@ function Widget(widgetPath, projectPath){
 
 	var channel, viewName;
 	if(viewType === "userwidgets" || parent === "userwidgetmodel.sm"){
-		channel = "all";
+		channel = "common";
 		viewName = gParent;
+	}
+	// Tabs have a different structure: Tabs are nested in TabPanes
+	// forms/mobile/homeForm.sm/__fooTabPane__/Tab0ab98b9ae841347.json
+	else if(/__.+__/.test(parent)){
+		channel = pathParts[1];
+		viewName = gParent.replace(viewExtensionRegex, "");
 	}
 	else{
 		channel = pathParts[1];
@@ -49,7 +55,7 @@ Widget.setProjectPath = function _setProjectPath(projectPath, force){
 
 	if(!projectPathRegex || force){
 		if(process.env.verbose){
-			console.warn("Setting project path to %s. Do NOT do this more than once.", projectPath);
+			console.warn("Setting project path to %s. Do NOT do this more than once.".warn, projectPath);
 		}
 		if(projectPath instanceof RegExp){
 			projectPathRegex = projectPath;
@@ -71,6 +77,53 @@ Widget.getProjectPath = function _getProjectPath(){
 }
 Widget.resetProjectPath = function _resetProjectPath(){
 	projectPathRegex = null;
+}
+
+Widget.prototype.toTabbedString = function _toTabbedString() {
+
+	var s = `${this.viewType}\t` +
+		`${this.channel?this.channel:"common"}\t` +
+		`${this.viewName}\t` +
+		`${this.file}`;
+
+	if(this.info) s+= `\t${this.info}`;
+
+	return s;
+};
+
+Widget.isImage = (obj) => {
+	return obj.wType === "Image" || obj.name === "kony.ui.Image2" ||
+	obj["@class"] === "com.kony.gen.viz.model.component.KVizImage2";
+}
+
+Widget.isCalendar = (obj) => {
+	return obj.wType === "Calendar" || obj.name === "kony.ui.Calendar" ||
+	obj["@class"] === "com.kony.gen.viz.model.component.KVizDateField";
+}
+
+Widget.isTab = (obj) => {
+	return obj.wType === "Tab" || obj.name === "kony.ui.Tab" ||
+	obj["@class"] === "com.kony.gen.viz.model.container.KVizTab";
+}
+
+Widget.isListBox = (obj) => {
+	return obj.wType === "ListBox" || obj.name === "kony.ui.ListBox" ||
+	obj["@class"] === "com.kony.gen.viz.model.component.KVizListBox";
+}
+
+Widget.isCheckBoxGroup = (obj) => {
+	return obj.wType === "CheckBoxGroup" || obj.name === "kony.ui.CheckBoxGroup" ||
+	obj["@class"] === "com.kony.gen.viz.model.component.KVizCheckBox";
+}
+
+Widget.isRadioButtonGroup = (obj) => {
+	return obj.wType === "RadioButtonGroup" || obj.name === "kony.ui.RadioButtonGroup" ||
+	obj["@class"] === "com.kony.gen.viz.model.component.KVizRadio";
+}
+
+Widget.isSlider = (obj) => {
+	return obj.wType === "Slider" || obj.name === "kony.ui.Slider" ||
+	obj["@class"] === "com.kony.gen.viz.model.component.KVizSlider";
 }
 
 module.exports = Widget;

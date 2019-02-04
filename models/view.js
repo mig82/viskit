@@ -23,7 +23,7 @@ function View(viewPath, projectPath){
 
 	var file, channel, viewName;
 	if(viewType === "userwidgets" || lastDir === "userwidgetmodel.sm"){
-		channel = "all";
+		channel = "common";
 		viewName = pathParts[pathParts.length - 2];
 		//viewName will be name-spaced -e.g. com.acme.FooComponent
 		//file = viewName.substring(viewName.lastIndexOf(".")+1) + ".json";
@@ -52,7 +52,7 @@ View.setProjectPath = function _setProjectPath(projectPath, force){
 
 	if(!projectPathRegex || force){
 		if(process.env.verbose){
-			console.warn("Setting project path to %s. Do NOT do this more than once.", projectPath);
+			console.warn("Setting project path to %s. Do NOT do this more than once.".warn, projectPath);
 		}
 		if(projectPath instanceof RegExp){
 			projectPathRegex = projectPath;
@@ -75,5 +75,17 @@ View.getProjectPath = function _getProjectPath(){
 View.resetProjectPath = function _resetProjectPath(){
 	projectPathRegex = null;
 }
+
+View.prototype.toTabbedString = function _toTabbedString() {
+
+	var s = `${this.viewType}\t` +
+		`${this.channel?this.channel:"common"}\t` +
+		`${this.viewName}\t` +
+		`${this.file}`;
+
+	if(this.info) s+= `\t${this.info}`;
+
+	return s;
+};
 
 module.exports = View;

@@ -8,6 +8,7 @@ const channels = require("../config/channels");
 const views = require("../config/views");
 const Widget = require("../models/widget");
 const View = require("../models/view");
+const searchAll = require("./search-all");
 
 function buildSearchPath(searchFor, projectPath, viewType, channel, viewName){
 	var path;
@@ -95,10 +96,6 @@ function patchViewName(viewName){
 		return viewName.substr(0, viewName.length -3);
 	}
 	return viewName;
-}
-
-function searchAll(option){
-	return !option || option.trim() === "all" || option.trim() === "";
 }
 
 function concatOptions(options){
