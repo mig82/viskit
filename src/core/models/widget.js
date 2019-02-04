@@ -68,7 +68,7 @@ Widget.setProjectPath = function _setProjectPath(projectPath, force){
 		}
 	}
 	else{
-		if(process.env.verbose)console.warn("Project path is already set.");
+		if(process.env.verbose)console.log("Project path is already set.".debug);
 	}
 }
 
@@ -99,6 +99,11 @@ Widget.isImage = (obj) => {
 Widget.isCalendar = (obj) => {
 	return obj.wType === "Calendar" || obj.name === "kony.ui.Calendar" ||
 	obj["@class"] === "com.kony.gen.viz.model.component.KVizDateField";
+}
+
+Widget.isTabPane = (obj) => {
+	return obj.wType === "TabPane" || obj.name === "kony.ui.TabPane" ||
+	obj["@class"] === "com.kony.gen.viz.model.container.KVizTabPane";
 }
 
 Widget.isTab = (obj) => {

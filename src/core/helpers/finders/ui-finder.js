@@ -160,8 +160,17 @@ async function findViewDescendants(view, projectPath, verbose){
 		//console.log("\t\t%s".debug, widget.children);
 		if(widget.children){
 			Widget.setProjectPath(projectPath);
+			//Let's add the children of this widget to the list we're iterating over.
 			descendants = descendants.concat(widget.children.map(child => {
-				var absPath = view.absDir + "/" + child + ".json";
+				var absPath;
+
+				//TabPanes have a nested structure. The Tab is a child if the TabPane.
+				if(Widget.isTabPane(widget)){
+					absPath = view.absDir + "/__" + widget.id + "__/" + child + ".json";
+				}
+				else{
+					absPath = view.absDir + "/" + child + ".json";
+				}
 				return new Widget(absPath);
 			}));
 		}

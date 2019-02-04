@@ -65,7 +65,7 @@ View.setProjectPath = function _setProjectPath(projectPath, force){
 		}
 	}
 	else{
-		if(process.env.verbose)console.warn("Project path is already set.");
+		if(process.env.verbose)console.log("Project path is already set.".debug);
 	}
 }
 
