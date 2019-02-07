@@ -4,7 +4,7 @@ const program = require("commander");
 const path = require('path');
 const colors = require("colors");
 const forOwn = require('lodash.forown');
-const findUnusedImages = require("../core/controllers/find-unused-images");
+const findImages = require("../core/controllers/find-images");
 const theme = require("../core/config/theme.js");
 colors.setTheme(theme);
 const views = require("../core/config/views.js");
@@ -24,9 +24,9 @@ program
 program.on('--help', function(){
 	console.info(colors.info(
 		"\nExamples:\n" +
-		"\tviskit find-unused-images path/to/workspace/FooProject\n" +
+		"\tviskit find-images path/to/workspace/FooProject\n" +
 		//"\tviskit faw -channel tablet --ignore-empty path/to/workspace/FooProject\n" +
-		"\tviskit fui path/to/workspace/FooProject -t forms -c mobile --show-all\n"
+		"\tviskit fi path/to/workspace/FooProject -t forms -c mobile --show-all\n"
 	));
 	console.info(colors.info(
 		"Why?\n\n" +
@@ -47,7 +47,7 @@ async function onAction(project, options){
 
 	validateOptions(options);
 
-	var images = await findUnusedImages(
+	var images = await findImages(
 		path.resolve(project),
 		options.viewType,
 		options.channel,
@@ -88,9 +88,9 @@ async function onAction(project, options){
 	var total = countUsed + countUnused - countMissing;
 
 	var info = `All ${countAll} `;
-	info += countAll === total?"=":"!" + "= " +
-		`Total ${total} = ` +
-		`Used ${countUsed} + Unused ${countUnused} - Missing ${countMissing}`;
+	info += countAll === total?"=":"!" + "= ";
+	info += `Total ${total} = `;
+	info += `Used ${countUsed} + Unused ${countUnused} - Missing ${countMissing}`;
 
 	if(countAll === total){
 		console.info("Summary: %s".info, info);
