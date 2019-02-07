@@ -1,4 +1,4 @@
-const indexOfStringIgnoreCase = require("../../../common/array/index-of-string-ignore-case");
+const indexOfStringIgnoreCase = require("../../../src/common/array/index-of-string-ignore-case");
 describe("\tGiven an array of strings\n", () => {
 
 	var strings = [

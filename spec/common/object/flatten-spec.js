@@ -1,4 +1,4 @@
-const flatten = require("../../../common/object/flatten");
+const flatten = require("../../../src/common/object/flatten");
 flatten.setVerbose(false); //Set this to true to see the log statements.
 
 describe("\tGiven a map with nested maps\n", () => {
