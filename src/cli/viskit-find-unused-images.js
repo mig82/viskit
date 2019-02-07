@@ -3,6 +3,7 @@
 const program = require("commander");
 const path = require('path');
 const colors = require("colors");
+const forOwn = require('lodash.forown');
 const findUnusedImages = require("../core/controllers/find-unused-images");
 const theme = require("../core/config/theme.js");
 colors.setTheme(theme);
@@ -10,7 +11,7 @@ const views = require("../core/config/views.js");
 const channels = require("../core/config/channels.js");
 const outputs = require("../reporters/console");
 const validateOptions = require("./helpers/validate-options");
-const forOwn = require('lodash.forown');
+const capitalize = require("../common/string/capitalize");
 
 program
 	.usage("[options] <project>")
@@ -46,7 +47,7 @@ async function onAction(project, options){
 
 	validateOptions(options);
 
-	var unusedImages = await findUnusedImages(
+	var images = await findUnusedImages(
 		path.resolve(project),
 		options.viewType,
 		options.channel,
@@ -55,10 +56,48 @@ async function onAction(project, options){
 		process.env.verbose
 	);
 
-	unusedImages.forEach(image => {
-		outputs.print(options.output, image, image.color);
+	forOwn(images, (images, classification) => {
+
+		console.log(`${capitalize(classification)}:`.info);
+
+		var color = theme.info;
+		if(classification == "used"){
+			color = theme.ok;
+		}
+		else if(classification == "missing"){
+			color = theme.error;
+		}
+		else if(classification !== "all"){
+			color = theme.warn
+		}
+
+		if(images && images.length > 0){
+			images.forEach(image => {
+				outputs.print(options.output, image, color);
+			});
+		}
+		else{
+			console.log("-".info);
+		}
 	});
-	console.info("Count: %d".info, unusedImages.length);
+
+	var countAll = images.all.length;
+	var countUsed = images.used.length;
+	var countUnused = images.unused.length;
+	var countMissing = images.missing.length;
+	var total = countUsed + countUnused - countMissing;
+
+	var info = `All ${countAll} `;
+	info += countAll === total?"=":"!" + "= " +
+		`Total ${total} = ` +
+		`Used ${countUsed} + Unused ${countUnused} - Missing ${countMissing}`;
+
+	if(countAll === total){
+		console.info("Summary: %s".info, info);
+	}
+	else {
+		console.info("Summary: %s".warn, info);
+	}
 }
 
 program.parse(process.argv);
