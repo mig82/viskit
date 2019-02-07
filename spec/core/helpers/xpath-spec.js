@@ -1,4 +1,4 @@
-const xpath = require("../../helpers/xpath");
+const xpath = require("../../../src/core/helpers/xpath");
 //xpath.setVerbose(true);
 const getXpathStringValue = xpath.getXpathStringValue;
 

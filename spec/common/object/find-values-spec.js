@@ -1,4 +1,4 @@
-const {findValuesForKeys, findValuesMatching} = require("../../../common/object/find-values");
+const {findValuesForKeys, findValuesMatching} = require("../../../src/common/object/find-values");
 
 var json = {
 	"@class": "com.kony.gen.viz.model.component.KVizDateField",

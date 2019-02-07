@@ -1,5 +1,5 @@
 "use strict";
-var View = require("../../models/view");
+var View = require("../../../src/core/models/view");
 describe("\tGiven a path to a view\n", () => {
 
 	const mobileChannel = "mobile";

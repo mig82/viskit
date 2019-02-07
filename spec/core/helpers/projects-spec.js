@@ -1,6 +1,6 @@
 "use strict";
 const path = require('path');
-const projects = require("../../helpers/projects");
+const projects = require("../../../src/core/helpers/projects");
 const os = require('os');
 
 describe("\tGiven a path to a v8.2.6 project\n", () => {

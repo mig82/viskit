@@ -1,6 +1,6 @@
 "use strict";
 const path = require('path');
-const vis = require("../../helpers/visualizer");
+const vis = require("../../../src/core/helpers/visualizer");
 
 describe("\tGiven a path to a Vis installation\n", () => {
 
@@ -43,7 +43,7 @@ describe("\tGiven a path to a Vis installation\n", () => {
 			"com.pat.tabrcandroid",
 			"com.pat.tool.keditor"
 		], dryRun, verbose);
-		
+
 		expect(stats.removed).toBe(24);
 		expect(stats.searched).toBe(24);
 	});
