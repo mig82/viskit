@@ -32,6 +32,10 @@ program
 	.alias("frc");
 
 program
+	.command("find-skins <project>", "Find all the skins defined for a given theme")
+	.alias("fs");
+
+program
 	.command("find-views <project>", "Find any views in the project of a specific type, channel, name")
 	.alias("fv");
 
