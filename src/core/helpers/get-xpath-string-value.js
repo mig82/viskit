@@ -24,7 +24,4 @@ function setVerbose(makeVerbose) {
 	verbose = !!makeVerbose;
 }
 
-module.exports = {
-	//setVerbose: setVerbose,
-	getXpathStringValue: getXpathStringValue
-};
+module.exports = getXpathStringValue;

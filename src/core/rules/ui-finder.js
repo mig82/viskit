@@ -4,21 +4,21 @@ const findFile = require('find').file;
 const findDir = require('find').dir;
 const Q = require('q');
 Q.longStackSupport = true;
-const channels = require("../../config/channels");
-const views = require("../../config/views");
-const Widget = require("../../models/widget");
-const View = require("../../models/view");
-const searchAll = require("../search-all");
-const stripPathEndSlash = require("../strip-path-end-slash");
+const channels = require("../config/channels");
+const views = require("../config/views");
+const Widget = require("../models/widget");
+const View = require("../models/view");
+const isSearchAllOption = require("../helpers/is-search-all-option");
+const stripPathEndSlash = require("../helpers/strip-path-end-slash");
 
 function buildSearchPath(searchFor, projectPath, viewType, channel, viewName){
 	var path;
 
-	var viewNameOptions = searchAll(viewName) ? ".*" : viewName;
-	var channelOptions = searchAll(channel) ? "(" + channels.types.join("|") + ")" : channel;
-	var viewTypeOptions = searchAll(viewType) ? concatOptions(views.standardTypes) : viewType;
+	var viewNameOptions = isSearchAllOption(viewName) ? ".*" : viewName;
+	var channelOptions = isSearchAllOption(channel) ? "(" + channels.types.join("|") + ")" : channel;
+	var viewTypeOptions = isSearchAllOption(viewType) ? concatOptions(views.standardTypes) : viewType;
 
-	if(searchAll(viewType)) {
+	if(isSearchAllOption(viewType)) {
 		path = `^${projectPath}(` +
 			`/${viewTypeOptions}/${channelOptions}/${viewNameOptions}` +
 			"|" +

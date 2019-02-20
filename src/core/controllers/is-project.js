@@ -1,4 +1,4 @@
-const vProjects = require('../helpers/projects');
+const vProjects = require('../rules/projects');
 
 async function isVisProject(projectPath, verbose){
 	return vProjects.isVisProject(projectPath, verbose);

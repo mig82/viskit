@@ -4,7 +4,7 @@ const path = require('path');
 const Q = require('q');
 Q.longStackSupport = true;
 
-const download = require('./download');
+const download = require('../helpers/download');
 const viskitDir = require('../config/config').viskitDir;
 const visExtDepFileName = require('../config/config').visExtDepFileName;
 

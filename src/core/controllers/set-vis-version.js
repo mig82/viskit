@@ -1,7 +1,7 @@
-const ivy = require('../helpers/ivy');
-const vProjects = require('../helpers/projects');
-const vis = require('../helpers/visualizer');
-const bTools = require('../helpers/build-tools');
+const ivy = require('../rules/ivy');
+const vProjects = require('../rules/projects');
+const vis = require('../rules/visualizer');
+const bTools = require('../rules/build-tools');
 const viskitDir = require('../config/config').viskitDir;
 
 function IncompatibleMajorMinorError(message) {

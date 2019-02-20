@@ -1,4 +1,4 @@
-const finder = require("../helpers/finders/ui-finder.js");
+const finder = require("../rules/ui-finder.js");
 
 /**
  * findWidgets - Finds all widget files contained in all the forms, templates, popups

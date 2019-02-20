@@ -12,13 +12,13 @@ const Q = require('q');
 Q.longStackSupport = true;
 
 const findWidgets = require('./ui-finder').findWidgets;
-const findSkins = require('../find-skins');
-const flattenObject = require('../../../common/object/flatten');
-const searchAll = require('../search-all');
-const channels = require("../../config/channels");
+const findSkins = require('./find-skins');
+const flattenObject = require('../../common/object/flatten');
+const isSearchAllOption = require('../helpers/is-search-all-option');
+const channels = require("../config/channels");
 
-const Image = require('../../models/image');
-const Widget = require('../../models/widget');
+const Image = require('../models/image');
+const Widget = require('../models/widget');
 
 function addUnique(images, newImage){
 
@@ -88,7 +88,7 @@ async function findAll(projectPath, channel, verbose){
 	//TODO: Filter down by channel
 	var imagesPath = path.resolve(`${projectPath}/resources`);
 
-	var channelOptions = searchAll(channel) ?
+	var channelOptions = isSearchAllOption(channel) ?
 		"(" + channels.types.concat("common").join("|") + ")" :
 		`(${channel}|common)`;
 

@@ -7,7 +7,7 @@ colors.setTheme(theme);
 const Q = require("q");
 Q.longStackSupport = true;
 
-const stripPathEndSlash = require("./strip-path-end-slash");
+const stripPathEndSlash = require("../helpers/strip-path-end-slash");
 const Skin = require("../models/skin")
 
 function findSkins(projectPath, themeName, verbose){

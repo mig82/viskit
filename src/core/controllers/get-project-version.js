@@ -1,5 +1,5 @@
 const fs = require('fs-extra');
-const vProjects = require('../helpers/projects');
+const vProjects = require('../rules/projects');
 
 /**
  * getProjectVersion - Determines the version of a project given path to its root

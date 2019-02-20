@@ -1,4 +1,4 @@
-const finder = require("../helpers/finders/ui-finder.js");
+const finder = require("../rules/ui-finder.js");
 
 /**
  * findViews - Finds all the directories representing forms, templates, popups

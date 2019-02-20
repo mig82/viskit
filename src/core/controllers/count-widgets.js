@@ -3,12 +3,7 @@ const find = require('find');
 const fs = require('fs-extra');
 const colors = require('colors');
 const viewTypes = require("../config/views.js").types;
-const finder = require("../helpers/finders/ui-finder");
-
-/**
-*
-*/
-
+const finder = require("../rules/ui-finder");
 
 /**
  * countWidgets - Count the widgets for each form, template, popup or component according to the
