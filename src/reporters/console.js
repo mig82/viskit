@@ -35,10 +35,20 @@ const print = function(type, model, colorDef){
 
 	switch (type) {
 		case "a":
-			console.log("%s"[outputColor], model.absPath);
+			if(model.absPath){
+				console.log("%s"[outputColor], model.absPath);
+			}
+			else{
+				console.log("%s"[outputColor], model.file);
+			}
 			break;
 		case "r":
-			console.log("%s"[outputColor], model.relPath);
+			if(model.relPath){
+				console.log("%s"[outputColor], model.relPath);
+			}
+			else{
+				console.log("%s"[outputColor], model.file);
+			}
 			break;
 		case "f":
 			console.log("%s"[outputColor], model.file);

@@ -1,4 +1,5 @@
 const theme = {
+	ok: 'green',
 	prompt: 'grey',
 	debug: 'magenta',
 	info: 'cyan',

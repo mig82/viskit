@@ -20,6 +20,10 @@ program
 	.alias("faw");
 
 program
+	.command("find-images <project>", "Find and classify images in the project structure into used, unused and missing")
+	.alias("fi");
+
+program
 	.command("find-orphan-widgets <project>", "Find any widgets in the project structure not linked to a view")
 	.alias("fow");
 
@@ -28,8 +32,8 @@ program
 	.alias("frc");
 
 program
-	.command("find-unused-images <project>", "Find any images in the project structure not in use")
-	.alias("fui");
+	.command("find-skins <project>", "Find all the skins defined for a given theme")
+	.alias("fs");
 
 program
 	.command("find-views <project>", "Find any views in the project of a specific type, channel, name")
