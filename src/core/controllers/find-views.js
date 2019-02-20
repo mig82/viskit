@@ -1,4 +1,4 @@
-const finder = require("../rules/ui-finder.js");
+const _findViews = require("../rules/find-views.js");
 
 /**
  * findViews - Finds all the directories representing forms, templates, popups
@@ -18,7 +18,7 @@ async function findViews(projectPath, viewType, channel, viewName, verbose) {
 		channel,
 		viewName
 	);
-	return await finder.findViews(projectPath, viewType, channel, viewName, verbose);
+	return await _findViews(projectPath, viewType, channel, viewName, verbose);
 }
 
 module.exports = findViews;

@@ -1,9 +1,14 @@
+"use strict";
 
 const colors = require('colors');
+const differenceBy = require('lodash.differenceby');
+
+const findViews = require("../rules/find-views");
+const findWidgets = require("../rules/find-widgets");
+const findViewDescendants = require("../rules/find-view-descendants");
+
 const views = require("../config/views");
 const widgets = require("../config/widgets");
-const finder = require("../rules/ui-finder");
-const differenceBy = require('lodash.differenceby');
 const viewTypes = views.types;
 const containerTypes = widgets.containerTypes;
 
@@ -26,18 +31,18 @@ const containerTypes = widgets.containerTypes;
  * does not declare them back as a child.
  */
 async function findOrphans(projectPath, viewType, channel, viewName, showAll, verbose){
-	const views = await finder.findViews(projectPath, viewType, channel, viewName, verbose);
+	const views = await findViews(projectPath, viewType, channel, viewName, verbose);
 	var projectOrphans = {};
 
 	for(const view of views){
-		var descendants = await finder.findViewDescendants(view, projectPath, verbose);
+		var descendants = await findViewDescendants(view, projectPath, verbose);
 		if(verbose)console.debug("Descendants of: %s\n%o".debug,
 			view.file,
 			descendants.map(d=>{
 				return d.file;
 			})
 		);
-		var widgets = await finder.findWidgets(projectPath, view.viewType, view.channel, view.viewName, verbose);
+		var widgets = await findWidgets(projectPath, view.viewType, view.channel, view.viewName, verbose);
 		if(verbose)console.debug("Widgets of: %s\n%o".debug,
 			view.file,
 			widgets.map(w=>{

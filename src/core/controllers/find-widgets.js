@@ -1,4 +1,4 @@
-const finder = require("../rules/ui-finder.js");
+const _findWidgets = require("../rules/find-widgets.js");
 
 /**
  * findWidgets - Finds all widget files contained in all the forms, templates, popups
@@ -19,7 +19,7 @@ async function findWidgets(projectPath, viewType, channel, viewName, verbose){
 		channel,
 		viewName
 	);
-	return await finder.findWidgets(projectPath, viewType, channel, viewName, verbose);
+	return await _findWidgets(projectPath, viewType, channel, viewName, verbose);
 }
 
 module.exports = findWidgets;
