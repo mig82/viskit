@@ -6,3 +6,7 @@
 
 # Test projects
 /test/*
+
+# Roadmap
+/README.md
+/ROADMAP.md
