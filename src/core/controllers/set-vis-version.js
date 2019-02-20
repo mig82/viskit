@@ -1,18 +1,23 @@
 "use strict";
 
-const ivy = require('../rules/ivy');
-const parseProjectPlugins = require('../rules/parse-project-plugins');
-const vis = require('../rules/visualizer');
+const ivy = require("../rules/ivy");
+const parseProjectPlugins = require("../rules/parse-project-plugins");
+const isVisInstallation = require("../rules/is-vis-installation");
+const getOriginalMajorMinor = require("../rules/get-orig-major-minor");
+const getOriginalMajorMinorPath = require("../rules/get-orig-major-minor-patch");
+const backupVisPlugins = require("../rules/backup-vis-plugins");
+const dedupVisPlugins = require("../rules/dedup-vis-plugins");
+const removeDropinsDir = require("../rules/remove-dropins-dir");
 
 const downloadBuildTools = require("../rules/download-build-tools");
 const extractVisDependencies = require("../rules/extract-vis-dependencies");
 const readVisDependencies = require("../rules/read-vis-dependencies");
 
-const viskitDir = require('../config/config').viskitDir;
+const viskitDir = require("../config/config").viskitDir;
 
 function IncompatibleMajorMinorError(message) {
    this.message = message;
-   this.name = 'IncompatibleMajorMinorError';
+   this.name = "IncompatibleMajorMinorError";
 }
 
 async function setVisVersion(visPath, projectPath, dryRun, force, verbose){
@@ -20,7 +25,7 @@ async function setVisVersion(visPath, projectPath, dryRun, force, verbose){
 	var versionInfo = {};
 	if(verbose)console.debug("Attempting to set plugins at\n\t%s to match\n\t%s\n".debug, visPath, projectPath);
 
-	const isVis = await vis.isInstallation(visPath, verbose);
+	const isVis = await isVisInstallation(visPath, verbose);
 	if(isVis){
 
 		const projectPlugins = await parseProjectPlugins(projectPath, verbose);
@@ -33,7 +38,7 @@ async function setVisVersion(visPath, projectPath, dryRun, force, verbose){
 		let matches = majorMinorRegex.exec(visVersion);
 		const projMajorMinor = matches && matches.length > 1?matches[1]:null;
 
-		var installedMajorMinor = vis.getOriginalMajorMinor(visPath, verbose);
+		var installedMajorMinor = getOriginalMajorMinor(visPath, verbose);
 		if(installedMajorMinor !== projMajorMinor && !force){
 			throw new IncompatibleMajorMinorError(
 				`Installed version ${installedMajorMinor} and ` +
@@ -47,10 +52,10 @@ async function setVisVersion(visPath, projectPath, dryRun, force, verbose){
 		const extDependencies = await readVisDependencies(extDepFilePath, verbose);
 
 		// 3. Back up plugins directory if not backed up already.
-		const pluginsAreBackedUp = await vis.backupPlugins(visPath, verbose);
+		const pluginsAreBackedUp = await backupVisPlugins(visPath, verbose);
 
 		// 4. Remove prior versions of the plugins to be downlowaded from plugins dir.
-		const dedupResults = await vis.dedupPlugins(visPath, projectPlugins.plugins, dryRun, verbose);
+		const dedupResults = await dedupVisPlugins(visPath, projectPlugins.plugins, dryRun, verbose);
 
 		// 5. Create ivy file.
 		const pluginsDoc = projectPlugins.pluginsDoc;
@@ -58,7 +63,7 @@ async function setVisVersion(visPath, projectPath, dryRun, force, verbose){
 		await ivy.createIvyFile(projectPath, pluginsDoc, toIvy, verbose);
 
 		// 6. Remove dropins dir if it exists.
-		await vis.removeDropinsDir(visPath, verbose);
+		await removeDropinsDir(visPath, verbose);
 
 		// 7. Add the Vis installation to the places for Ivy to lookup plugins.
 		await ivy.addVisToIvy(visPath, projectPath, verbose);
