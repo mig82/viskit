@@ -26,14 +26,18 @@ program.on('--help', function(){
 		"\nExamples:\n" +
 		"\tviskit find-images path/to/workspace/FooProject\n" +
 		//"\tviskit faw -channel tablet --ignore-empty path/to/workspace/FooProject\n" +
-		"\tviskit fi path/to/workspace/FooProject -t forms -c mobile --show-all\n"
+		"\tviskit fi path/to/workspace/FooProject -t forms -c mobile\n"
 	));
 	console.info(colors.info(
 		"Why?\n\n" +
 
 		"An image is considered " + "unused".emphasis + " when despite it being part of the project file \n" +
 		"structure, it is not used as the source, loading image or not found image by\n" +
-		"any image widget, nor as the background to any container widgets.\n"
+		"any image widget, nor as the background to any container widgets.\n\n" +
+
+		"An image is considered " + "missing".emphasis + " when despite it being referred to by a form,\n" +
+		"widget, property or skin, it cannot be found in the project structure" +
+		"\n"
 	));
 });
 
@@ -88,7 +92,7 @@ async function onAction(project, options){
 	var total = countUsed + countUnused - countMissing;
 
 	var info = `All ${countAll} `;
-	info += countAll === total?"=":"!" + "= ";
+	info += countAll === total?"= ":"!" + "= ";
 	info += `Total ${total} = `;
 	info += `Used ${countUsed} + Unused ${countUnused} - Missing ${countMissing}`;
 

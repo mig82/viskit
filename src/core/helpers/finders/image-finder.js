@@ -12,6 +12,7 @@ const Q = require('q');
 Q.longStackSupport = true;
 
 const findWidgets = require('./ui-finder').findWidgets;
+const findSkins = require('../find-skins');
 const flattenObject = require('../../../common/object/flatten');
 const searchAll = require('../search-all');
 const channels = require("../../config/channels");
@@ -37,9 +38,13 @@ function addUnique(images, newImage){
 	}
 }
 
-async function findSkinUsedImages(){
-	/* TODO: Find images used as skin background images.
-	*
+async function findSkinImages(projectPath, themeName, verbose){
+
+	if(verbose)console.log("Searching for images in skins".debug);
+	var skins = await findSkins(projectPath, themeName, verbose);
+	var skinBackgroundImages = [];
+
+	/* Look for images used as skin background images -e.g.:
 	* {
 		"background_image": "imagedrag.png",
 		"bg_type": "image",
@@ -47,73 +52,35 @@ async function findSkinUsedImages(){
 			"background_image": "imagedrag.png",
 			"bg_type": "image",
 		},
-		"androidwearos": {
-			"background_image": "imagedrag.png",
-			"bg_type": "image",
-		},
-		"desktopweb": {
-			"background_image": "imagedrag.png",
-			"bg_type": "image",
-		},
-		"ipad": {
-			"background_image": "imagedrag.png",
-			"bg_type": "image",
-		},
-		"iphone": {
-			"background_image": "imagedrag.png",
-			"bg_type": "image",
-		},
-		"kiosk": {
-			"background_image": "imagedrag.png",
-			"bg_type": "image",
-		},
-		"spaan": {
-			"background_image": "imagedrag.png",
-			"bg_type": "image",
-		},
-		"spaandroidtablet": {
-			"background_image": "imagedrag.png",
-			"bg_type": "image",
-		},
-		"spabb": {
-			"background_image": "imagedrag.png",
-			"bg_type": "image",
-		},
 		"spaip": {
 			"background_image": "imagedrag.png",
 			"bg_type": "image",
-		},
-		"spaipad": {
-			"background_image": "imagedrag.png",
-			"bg_type": "image",
-		},
-		"spawindowstablet": {
-			"background_image": "imagedrag.png",
-			"bg_type": "image",
-		},
-		"spawinphone8": {
-			"background_image": "imagedrag.png",
-			"bg_type": "image",
-		},
-		"tabrcandroid": {
-			"background_image": "imagedrag.png",
-			"bg_type": "image",
-		},
-		"wType": "FlexContainer",
-		"watchos": {
-			"background_image": "imagedrag.png",
-			"bg_type": "image",
-		},
-		"windows8": {
-			"background_image": "imagedrag.png",
-			"bg_type": "image",
-		},
-		"winphone8": {
-			"background_image": "imagedrag.png",
-			"bg_type": "image",
 		}
+		"wType": "FlexContainer"
+	}*/
+
+	for(const skin of skins){
+
+		var json = await fs.readJson(skin.absPath);
+
+		json = flattenObject(json);
+		//if(verbose)console.log("Flattened skin:\n%o".debug, json);
+
+		forOwn(json, (value, key) => {
+			if(typeof value === "string" && Image.regex.test(value)){
+				addUnique(skinBackgroundImages, new Image(
+					value, //file
+					"common", //channel,
+					null, //nature,
+					null, //platform,
+					null, //relPath,
+					null, //absPath
+					skin.relPath + "/" + key //usedBy
+				));
+			}
+		});
 	}
-	*/
+	return skinBackgroundImages;
 }
 
 async function findAll(projectPath, channel, verbose){
@@ -195,6 +162,7 @@ async function findSlashScreenImages(projectPath,/*channel,*/ verbose){
 
 async function findAppIcons(projectPath, channel, verbose){
 
+	//TODO: Starting with v8 SP4 these are found in projecProperties.json
 	var projectPropXmlFilePath = path.resolve(`${projectPath}/projectprop.xml`);
 	if(verbose)console.log("Searching for images in:\n\t%s".debug, projectPropXmlFilePath);
 
@@ -278,7 +246,7 @@ async function findViewImages(projectPath, viewType, channel, viewName, verbose)
 
 	for(const widget of widgets){
 
-		var imageKeys = [];
+		//var imageKeys = [];
 		var json = await fs.readJson(widget.absPath);
 
 		json = flattenObject(json);
@@ -298,9 +266,6 @@ async function findViewImages(projectPath, viewType, channel, viewName, verbose)
 			}
 		});
 	}
-
-	// TODO: Find images used by Skins.
-	// TODO: Find images used as app icons and splash screens.
 	return usedImages;
 }
 
@@ -308,7 +273,8 @@ async function findUsed(projectPath, viewType, channel, viewName, verbose){
 	var splashImages = await findSlashScreenImages(projectPath,/* channel,*/ verbose);
 	var viewImages = await findViewImages(projectPath, viewType, channel, viewName, verbose);
 	var appIcons = await findAppIcons(projectPath, channel, verbose);
-	var all = splashImages.concat(viewImages).concat(appIcons);
+	var skinImages = await findSkinImages(projectPath, null, verbose);
+	var all = splashImages.concat(viewImages).concat(appIcons).concat(skinImages);
 	return all;
 }
 

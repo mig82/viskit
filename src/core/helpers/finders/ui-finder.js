@@ -9,6 +9,7 @@ const views = require("../../config/views");
 const Widget = require("../../models/widget");
 const View = require("../../models/view");
 const searchAll = require("../search-all");
+const stripPathEndSlash = require("../strip-path-end-slash");
 
 function buildSearchPath(searchFor, projectPath, viewType, channel, viewName){
 	var path;
@@ -84,13 +85,6 @@ function find(type, searchPath, projectPath, verbose){
 	});
 }
 
-function patchProjectPath(projectPath){
-	if(projectPath.substr(-1) === '/'){
-		return projectPath.slice(0, -1);
-	}
-	return projectPath;
-}
-
 function patchViewName(viewName){
 	if(viewName && viewName.substr(-3) === '.sm'){
 		return viewName.substr(0, viewName.length -3);
@@ -114,7 +108,7 @@ function concatOptions(options){
  * @return Array             An array of all the widgets matching the input criteria.
  */
 async function findViews(projectPath, viewType, channel, viewName, verbose){
-	var patchedProjectPath = patchProjectPath(projectPath);
+	var patchedProjectPath = stripPathEndSlash(projectPath);
 	var searchPath = buildSearchPath("views", patchedProjectPath, viewType, channel, patchViewName(viewName));
 	return await find("views", searchPath, patchedProjectPath, verbose);
 }
@@ -132,7 +126,7 @@ async function findViews(projectPath, viewType, channel, viewName, verbose){
  * @return Array             An array of all the widget files contained in any view matching the input criteria.
  */
 async function findWidgets(projectPath, viewType, channel, viewName, verbose){
-	var patchedProjectPath = patchProjectPath(projectPath);
+	var patchedProjectPath = stripPathEndSlash(projectPath);
 	var searchPath = buildSearchPath("widgets", patchedProjectPath, viewType, channel, patchViewName(viewName));
 	return await find("widgets", searchPath, patchedProjectPath, verbose);
 }

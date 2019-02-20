@@ -3,7 +3,7 @@ const differenceWith = require('lodash.differencewith');
 const {findAll, findUsed} = require("../helpers/finders/image-finder");
 const Image = require("../models/image");
 
-async function findUnusedImages(projectPath, viewType, channel, viewName, ignoreEmpty, verbose){
+async function findImages(projectPath, viewType, channel, viewName, ignoreEmpty, verbose){
 
 	var allImages = await findAll(projectPath, channel, verbose);
 	var usedImages = await findUsed(projectPath, viewType, channel, viewName, verbose);
@@ -46,4 +46,4 @@ async function findUnusedImages(projectPath, viewType, channel, viewName, ignore
 	};
 }
 
-module.exports = findUnusedImages;
+module.exports = findImages;
