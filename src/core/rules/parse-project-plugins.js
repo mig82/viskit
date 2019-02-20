@@ -160,9 +160,4 @@ async function isVisProject(projectPath, verbose){
 	return isProject;
 }
 
-module.exports = {
-	//getVersion: getVersion,
-	//readPlugins: readPlugins,
-	isVisProject: isVisProject,
-	parseProjectPlugins: parseProjectPlugins
-};
+module.exports = parseProjectPlugins;

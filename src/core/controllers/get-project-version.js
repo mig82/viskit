@@ -1,5 +1,5 @@
 const fs = require('fs-extra');
-const vProjects = require('../rules/projects');
+const parseProjectPlugins = require('../rules/parse-project-plugins');
 
 /**
  * getProjectVersion - Determines the version of a project given path to its root
@@ -12,7 +12,7 @@ const vProjects = require('../rules/projects');
 
 async function getProjectVersion(projectPath, verbose){
 
-	var pluginsInfo = await vProjects.parseProjectPlugins(projectPath, verbose);
+	var pluginsInfo = await parseProjectPlugins(projectPath, verbose);
 	return pluginsInfo.projectVersion;
 }
 

@@ -1,5 +1,5 @@
 const ivy = require('../rules/ivy');
-const vProjects = require('../rules/projects');
+const parseProjectPlugins = require('../rules/parse-project-plugins');
 const vis = require('../rules/visualizer');
 const bTools = require('../rules/build-tools');
 const viskitDir = require('../config/config').viskitDir;
@@ -17,7 +17,7 @@ async function setVisVersion(visPath, projectPath, dryRun, force, verbose){
 	const isVis = await vis.isInstallation(visPath, verbose);
 	if(isVis){
 
-		const projectPlugins = await vProjects.parseProjectPlugins(projectPath, verbose);
+		const projectPlugins = await parseProjectPlugins(projectPath, verbose);
 
 		// 1. Get Vis version according to the branding and keditor plugins.
 		const visVersion = projectPlugins.projectVersion;
