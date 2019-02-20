@@ -1,7 +1,13 @@
+"use strict";
+
 const ivy = require('../rules/ivy');
 const parseProjectPlugins = require('../rules/parse-project-plugins');
 const vis = require('../rules/visualizer');
-const bTools = require('../rules/build-tools');
+
+const downloadBuildTools = require("../rules/download-build-tools");
+const extractVisDependencies = require("../rules/extract-vis-dependencies");
+const readVisDependencies = require("../rules/read-vis-dependencies");
+
 const viskitDir = require('../config/config').viskitDir;
 
 function IncompatibleMajorMinorError(message) {
@@ -36,9 +42,9 @@ async function setVisVersion(visPath, projectPath, dryRun, force, verbose){
 		}
 
 		// 2. Download dependencies for the given version to list them for the user.
-		const buildToolPath = await bTools.downloadBuildTools(projectPath, visVersion, verbose);
-		const extDepFilePath = await bTools.extractExternalDependencies(buildToolPath, projectPath, verbose);
-		const extDependencies = await bTools.readExternalDependencies(extDepFilePath, verbose);
+		const buildToolPath = await downloadBuildTools(projectPath, visVersion, verbose);
+		const extDepFilePath = await extractVisDependencies(buildToolPath, projectPath, verbose);
+		const extDependencies = await readVisDependencies(extDepFilePath, verbose);
 
 		// 3. Back up plugins directory if not backed up already.
 		const pluginsAreBackedUp = await vis.backupPlugins(visPath, verbose);
