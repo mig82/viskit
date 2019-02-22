@@ -1,4 +1,4 @@
-const _isVisProject = require('../rules/is-vis-project');
+const _isVisProject = require('../operations/is-vis-project');
 
 async function isVisProject(projectPath, verbose){
 	return _isVisProject(projectPath, verbose);

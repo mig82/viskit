@@ -1,9 +1,11 @@
+"use strict";
 
 const find = require('find');
 const fs = require('fs-extra');
 const colors = require('colors');
 const viewTypes = require("../config/views.js").types;
-const finder = require("../rules/ui-finder");
+const findViews = require("../operations/find-views");
+const findWidgets = require("../operations/find-widgets");
 
 /**
  * countWidgets - Count the widgets for each form, template, popup or component according to the
@@ -35,11 +37,11 @@ async function countWidgets(projectPath, viewType, channel, viewName, verbose){
 
 			if(verbose)console.log('Counting widgets for view type: %s'.debug, viewType);
 			counts[viewType] = [];
-			var views = await finder.findViews(projectPath, viewType, channel, viewName, verbose);
+			var views = await findViews(projectPath, viewType, channel, viewName, verbose);
 
-			for(view of views){
+			for(var view of views){
 				if(verbose)console.log('Counting widgets for view: %s'.debug, view.viewName);
-				var widgets = await finder.findWidgets(projectPath, viewType, channel, view.viewName, verbose);
+				var widgets = await findWidgets(projectPath, viewType, channel, view.viewName, verbose);
 				var widgetCount = widgets.length;
 				view.info = widgetCount;
 				if(widgetCount <= 200){

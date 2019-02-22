@@ -7,8 +7,8 @@ const Q = require('q');
 Q.longStackSupport = true;
 const channels = require("../config/channels");
 const views = require("../config/views");
-const Widget = require("../models/widget");
-const View = require("../models/view");
+const Widget = require("../models/Widget");
+const View = require("../models/View");
 const isSearchAllOption = require("./is-search-all-option");
 const concatOptions = require("./concat-options");
 

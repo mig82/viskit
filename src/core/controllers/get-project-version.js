@@ -1,5 +1,5 @@
 const fs = require('fs-extra');
-const parseProjectPlugins = require('../rules/parse-project-plugins');
+const parseProjectPlugins = require('../operations/parse-project-plugins');
 
 /**
  * getProjectVersion - Determines the version of a project given path to its root

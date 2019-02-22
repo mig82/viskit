@@ -8,7 +8,7 @@ const Q = require("q");
 Q.longStackSupport = true;
 
 const stripPathEndSlash = require("../helpers/strip-path-end-slash");
-const Skin = require("../models/skin")
+const Skin = require("../models/Skin")
 
 function findSkins(projectPath, themeName, verbose){
 	var projectRootPath = stripPathEndSlash(projectPath);

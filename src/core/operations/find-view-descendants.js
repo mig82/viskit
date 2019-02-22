@@ -5,7 +5,7 @@ const {buildSearchPath, find} = require("../helpers/ui-finder");
 const isSearchAllOption = require("../helpers/is-search-all-option");
 const stripPathEndSlash = require("../helpers/strip-path-end-slash");
 const stripViewExtension = require("../helpers/strip-view-extension");
-const Widget = require("../models/widget");
+const Widget = require("../models/Widget");
 
 /**
  * findViewDescendants - Finds all widgets which descend from a given view -meaning that they are either

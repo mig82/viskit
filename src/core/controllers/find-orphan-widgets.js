@@ -3,9 +3,9 @@
 const colors = require('colors');
 const differenceBy = require('lodash.differenceby');
 
-const findViews = require("../rules/find-views");
-const findWidgets = require("../rules/find-widgets");
-const findViewDescendants = require("../rules/find-view-descendants");
+const findViews = require("../operations/find-views");
+const findWidgets = require("../operations/find-widgets");
+const findViewDescendants = require("../operations/find-view-descendants");
 
 const views = require("../config/views");
 const widgets = require("../config/widgets");

@@ -1,6 +1,6 @@
 "use strict";
 const path = require('path');
-const Skin = require("../../../src/core/models/skin");
+const Skin = require("../../../src/core/models/Skin");
 const findSkins = require("../../../src/core/helpers/find-skins");
 
 describe("\tGiven a project\n", () => {

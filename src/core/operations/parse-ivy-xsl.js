@@ -4,7 +4,7 @@ const xsltProcessor = require('xslt-processor');
 const fs = require('fs-extra');
 const path = require('path');
 
-async function readIvyTransformation(verbose){
+async function parseIvyXsl(verbose){
 
 	var toIvy;
 	const pathToXslt = path.resolve(`${__dirname}/../../../resources/ivy/plugins-to-ivy.xsl`);
@@ -21,4 +21,4 @@ async function readIvyTransformation(verbose){
 }
 
 
-module.exports = readIvyTransformation;
+module.exports = parseIvyXsl;

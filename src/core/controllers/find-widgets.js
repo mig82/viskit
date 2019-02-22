@@ -1,4 +1,4 @@
-const _findWidgets = require("../rules/find-widgets.js");
+const _findWidgets = require("../operations/find-widgets.js");
 
 /**
  * findWidgets - Finds all widget files contained in all the forms, templates, popups

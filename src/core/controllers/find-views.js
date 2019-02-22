@@ -1,4 +1,4 @@
-const _findViews = require("../rules/find-views.js");
+const _findViews = require("../operations/find-views.js");
 
 /**
  * findViews - Finds all the directories representing forms, templates, popups

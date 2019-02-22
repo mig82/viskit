@@ -2,23 +2,23 @@
 
 const viskitDir = require("../config/config").viskitDir;
 
-const parseIvyXsl = require("../rules/parse-ivy-xsl");
-const createIvyFile = require("../rules/create-ivy-file");
-const addVisPathToIvyResolvers = require("../rules/add-vis-path-to-ivy-resolvers");
-const invokeIvy = require("../rules/invoke-ivy");
+const parseIvyXsl = require("../operations/parse-ivy-xsl");
+const createIvyFile = require("../operations/create-ivy-file");
+const addVisPathToIvyResolvers = require("../operations/add-vis-path-to-ivy-resolvers");
+const invokeIvy = require("../operations/invoke-ivy");
 
-const parseProjectPlugins = require("../rules/parse-project-plugins");
-const isVisInstallation = require("../rules/is-vis-installation");
-const backupVisPlugins = require("../rules/backup-vis-plugins");
-const removeDropinsDir = require("../rules/remove-dropins-dir");
-const dedupVisPlugins = require("../rules/dedup-vis-plugins");
+const parseProjectPlugins = require("../operations/parse-project-plugins");
+const isVisInstallation = require("../operations/is-vis-installation");
+const backupVisPlugins = require("../operations/backup-vis-plugins");
+const removeDropinsDir = require("../operations/remove-dropins-dir");
+const dedupVisPlugins = require("../operations/dedup-vis-plugins");
 
-const downloadBuildTools = require("../rules/download-build-tools");
-const extractVisDependencies = require("../rules/extract-vis-dependencies");
-const readVisDependencies = require("../rules/read-vis-dependencies");
+const downloadBuildTools = require("../operations/download-build-tools");
+const extractVisDependencies = require("../operations/extract-vis-dependencies");
+const readVisDependencies = require("../operations/read-vis-dependencies");
 
-const getOriginalMajorMinor = require("../rules/get-orig-major-minor");
-const getOriginalMajorMinorPath = require("../rules/get-orig-major-minor-patch");
+const getOriginalMajorMinor = require("../operations/get-orig-major-minor");
+const getOriginalMajorMinorPath = require("../operations/get-orig-major-minor-patch");
 
 function IncompatibleMajorMinorError(message) {
    this.message = message;

@@ -2,9 +2,9 @@ const colors = require("colors");
 const theme = require("../core/config/theme.js");
 colors.setTheme(theme);
 
-const View = require("../core/models/view");
-const Image = require("../core/models/image");
-const Widget = require("../core/models/widget");
+const View = require("../core/models/View");
+const Image = require("../core/models/Image");
+const Widget = require("../core/models/Widget");
 
 const types = [
 	"a", //Print absolute paths.
