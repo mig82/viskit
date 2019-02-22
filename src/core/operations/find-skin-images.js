@@ -38,6 +38,7 @@ async function findSkinImages(projectPath, themeName, verbose){
 
 		forOwn(json, (value, key) => {
 			if(typeof value === "string" && Image.regex.test(value)){
+				if(verbose)console.log("Found image ref in skin at %s/%s: %s".debug, skin.relPath, key, value);
 				addUnique(skinBackgroundImages, new Image(
 					value, //file
 					"common", //channel,

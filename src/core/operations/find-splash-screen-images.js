@@ -23,6 +23,7 @@ async function findSlashScreenImages(projectPath,/*channel,*/ verbose){
 
 	forOwn(splashScreen, (value, key) => {
 		if(typeof value === "string" && Image.regex.test(value)){
+			if(verbose)console.log("Found image ref in splash screen at %s/%s: %s".debug, "splashscreenproperties.json", key, value);
 			addUnique(usedImages, new Image(
 				value, //file
 				key.split("/")[0], //channel,

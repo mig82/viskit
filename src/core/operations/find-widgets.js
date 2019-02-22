@@ -26,11 +26,10 @@ const stripViewExtension = require("../helpers/strip-view-extension");
  */
  async function findWidgets(projectPath, viewType, channel, viewName, verbose){
 
-	if(verbose)
-	console.log("Looking for:\n\t%s\n".debug, searchPath);
-
 	var patchedProjectPath = stripPathEndSlash(projectPath);
 	var searchPath = buildSearchPath("widgets", patchedProjectPath, viewType, channel, stripViewExtension(viewName));
+
+	if(verbose) console.log("Looking for widgets at:\n\t%s\n".debug, searchPath);
 
 	var searchPathRegex = new RegExp(searchPath);
 

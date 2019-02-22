@@ -12,11 +12,12 @@ const Image = require('../models/Image');
 
 async function findWidgetImages(projectPath, viewType, channel, viewName, verbose){
 
-	if(verbose)console.log("Searching for images in views".debug);
+	if(verbose)console.log("Searching for images in widgets".debug);
 	var widgets = await findWidgets(projectPath, viewType, channel, viewName, verbose);
-	var usedImages = [];
+	if(verbose)console.log("Found %d widgets".debug, widgets.length);
 
-	for(const widget of widgets){
+	var usedImages = [];
+	for(var widget of widgets){
 
 		//var imageKeys = [];
 		var json = await fs.readJson(widget.absPath);
@@ -26,6 +27,7 @@ async function findWidgetImages(projectPath, viewType, channel, viewName, verbos
 
 		forOwn(json, (value, key) => {
 			if(typeof value === "string" && Image.regex.test(value)){
+				if(verbose)console.log("Found image ref in widget at %s/%s: %s".debug, widget.relPath, key, value);
 				addUnique(usedImages, new Image(
 					value, //file
 					widget.channel, //channel,
