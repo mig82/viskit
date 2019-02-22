@@ -11,6 +11,7 @@ const types = [
 	"r", //Print relative paths.
 	"f", //Print file names.
 	"t", //Print tab-separated metadata.
+	"j" //Print JSON
 ];
 
 var options = types.join("|");
@@ -60,7 +61,7 @@ const print = function(type, model, colorDef){
 
 const cmdOption = {
 	flag: "-o, --output <format>",
-	desc: "The format in which you wish the output to be displayed."
+	desc: "The format in which you wish the output to be displayed (" + types.join("|") + ")"
 };
 
 module.exports = {

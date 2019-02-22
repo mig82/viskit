@@ -43,7 +43,7 @@ function invokeCommand(command, options, verbose){
 			}
 			else{
 				const errorMessage = `${command} exited with code ${code}`;
-				console.error(errorMessage.error);
+				//console.error(errorMessage.error);
 				reject(new Error(errorMessage));
 			}
 		});

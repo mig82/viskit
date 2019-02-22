@@ -58,15 +58,20 @@ async function onAction(project, options){
 	);
 	//console.log("Orphans: %o".info, orphans);
 
-	var viewsWithOrphansCount = 0;
-	forOwn(orphans, (viewOrphans, viewName) => {
-		viewsWithOrphansCount++;
-		var orphanCount = viewOrphans.length;
-		var message = "";
-		viewOrphans.forEach(widget => {outputs.print(options.output, widget, "error")});
-		console.info("Count for %s: %d".info, viewName, orphanCount);
-	})
-	console.info("Count: %d".info, viewsWithOrphansCount);
+	if(options.output === "j"){
+		console.log(JSON.stringify(orphans));
+	}
+	else{
+		var viewsWithOrphansCount = 0;
+		forOwn(orphans, (viewOrphans, viewName) => {
+			viewsWithOrphansCount++;
+			var orphanCount = viewOrphans.length;
+			var message = "";
+			viewOrphans.forEach(widget => {outputs.print(options.output, widget, "error")});
+			console.info("Count for %s: %d".info, viewName, orphanCount);
+		})
+		console.info("Count: %d".info, viewsWithOrphansCount);
+	}
 }
 
 program.parse(process.argv);

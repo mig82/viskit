@@ -1,4 +1,5 @@
 /*
+"use strict";
 describe("\tGiven ...\n", () => {
 
 	beforeAll(() => {});

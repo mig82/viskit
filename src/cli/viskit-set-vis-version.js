@@ -15,6 +15,7 @@ const usage = "Usage:  [options] <visualizer-path> <project>";
 program
 	.usage(usage)
 	.option('-f, --force', 'Force the operation regardles of how different the installed and requested versions are')
+	.option(outputs.cmdOption.flag, outputs.cmdOption.desc, outputs.regex)
 	.action(onAction);
 	//TODO: Add dry-run option
 
@@ -92,17 +93,23 @@ async function onAction(visualizerPath, project, options){
 			options.force,
 			process.env.verbose
 		);
-		console.log(
-			"Done!...\n\nVis path: %s\nNew effective version: %s".info,
-			visualizerPath,
-			versionInfo.visVersion
-		);
-		console.log("Make sure you have these dependencies installed:".info);
-		versionInfo.dependencies.forEach((dep) => {
-			console.log("\t%s: %s".info, dep.name, dep.version);
-		});
 
-		console.log("\nNote:".bold.info + " Go restart Vis.\n".info);
+		if(options.output === "j"){
+			console.log(JSON.stringify(versionInfo));
+		}
+		else{
+			console.log(
+				"Done!...\n\nVis path: %s\nNew effective version: %s".info,
+				visualizerPath,
+				versionInfo.visVersion
+			);
+			console.log("Make sure you have these dependencies installed:".info);
+			versionInfo.dependencies.forEach((dep) => {
+				console.log("\t%s: %s".info, dep.name, dep.version);
+			});
+
+			console.log("\nNote:".bold.info + " Go restart Vis.\n".info);
+		}
 	}
 	catch(e){
 

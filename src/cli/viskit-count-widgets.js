@@ -46,7 +46,7 @@ program.on('--help', function(){
 
 		"If this count is way higher than what you can observe through Visualizer for any\n" +
 		"given form, then it's possible that your form has orphan widgets. Consider running\n" +
-		"the " + "find-orphans".emphasis + " command if you suspect this may be the case.\n\n"
+		"the " + "find-orphans".emphasis + " command if you suspect this may be the case.\n"
 	));
 });
 
@@ -68,13 +68,18 @@ async function onAction(project, options){
 		process.env.verbose
 	);
 
-	forOwn(counts, (typeViews, viewType) => {
+	if(options.output === "j"){
+		console.log(JSON.stringify(counts));
+	}
+	else{
+		forOwn(counts, (typeViews, viewType) => {
 
-		typeViews.forEach(view => {
-			outputs.print(options.output, view, view.color);
+			typeViews.forEach(view => {
+				outputs.print(options.output, view, view.color);
+			});
+			console.info("Count of %s: %d".info, viewType, typeViews.length);
 		});
-		console.info("Count of %s: %d".info, viewType, typeViews.length);
-	});
+	}
 }
 
 program.parse(process.argv);

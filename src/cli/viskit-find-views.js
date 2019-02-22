@@ -71,8 +71,14 @@ async function onAction(project, options){
 		options.viewName,
 		process.env.verbose
 	);
-	views.forEach(view => {outputs.print(options.output, view)});
-	console.info("Count: %d".info, views.length);
+
+	if(options.output === "j"){
+		console.log(JSON.stringify(views));
+	}
+	else{
+		views.forEach(view => {outputs.print(options.output, view)});
+		console.info("Count: %d".info, views.length);
+	}
 }
 
 program.parse(process.argv);

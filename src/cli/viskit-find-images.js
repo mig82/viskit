@@ -60,47 +60,52 @@ async function onAction(project, options){
 		process.env.verbose
 	);
 
-	forOwn(images, (images, classification) => {
-
-		console.log(`${capitalize(classification)}:`.info);
-
-		var color = theme.info;
-		if(classification == "used"){
-			color = theme.ok;
-		}
-		else if(classification == "missing"){
-			color = theme.error;
-		}
-		else if(classification !== "all"){
-			color = theme.warn
-		}
-
-		if(images && images.length > 0){
-			images.forEach(image => {
-				outputs.print(options.output, image, color);
-			});
-		}
-		else{
-			console.log("-".info);
-		}
-	});
-
-	var countAll = images.all.length;
-	var countUsed = images.used.length;
-	var countUnused = images.unused.length;
-	var countMissing = images.missing.length;
-	var total = countUsed + countUnused - countMissing;
-
-	var info = `All ${countAll} `;
-	info += countAll === total?"= ":"!" + "= ";
-	info += `Total ${total} = `;
-	info += `Used ${countUsed} + Unused ${countUnused} - Missing ${countMissing}`;
-
-	if(countAll === total){
-		console.info("Summary: %s".info, info);
+	if(options.output === "j"){
+		console.log(JSON.stringify(images));
 	}
-	else {
-		console.info("Summary: %s".warn, info);
+	else{
+		forOwn(images, (images, classification) => {
+
+			console.log(`${capitalize(classification)}:`.info);
+
+			var color = theme.info;
+			if(classification == "used"){
+				color = theme.ok;
+			}
+			else if(classification == "missing"){
+				color = theme.error;
+			}
+			else if(classification !== "all"){
+				color = theme.warn
+			}
+
+			if(images && images.length > 0){
+				images.forEach(image => {
+					outputs.print(options.output, image, color);
+				});
+			}
+			else{
+				console.log("-".info);
+			}
+		});
+
+		var countAll = images.all.length;
+		var countUsed = images.used.length;
+		var countUnused = images.unused.length;
+		var countMissing = images.missing.length;
+		var total = countUsed + countUnused - countMissing;
+
+		var info = `All ${countAll} `;
+		info += countAll === total?"= ":"!" + "= ";
+		info += `Total ${total} = `;
+		info += `Used ${countUsed} + Unused ${countUnused} - Missing ${countMissing}`;
+
+		if(countAll === total){
+			console.info("Summary: %s".info, info);
+		}
+		else {
+			console.info("Summary: %s".warn, info);
+		}
 	}
 }
 

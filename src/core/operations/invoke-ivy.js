@@ -29,7 +29,7 @@ async function invokeIvy(visPath, projectPath, verbose){
 		`${dropinsDirPath}/[artifact]_[revision].[ext]`
 	];
 
-	invokeCommand("java", options, verbose)
+	return invokeCommand("java", options, verbose)
 	.progress(info => {
 		process.stdout.write(colors.info(info));
 	})

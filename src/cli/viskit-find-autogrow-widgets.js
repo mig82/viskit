@@ -66,10 +66,15 @@ async function onAction(project, options){
 		process.env.verbose
 	);
 
-	widgets.forEach(widget => {
-		outputs.print(options.output, widget, widget.color);
-	});
-	console.info("Count: %d".info, widgets.length);
+	if(options.output === "j"){
+		console.log(JSON.stringify(widgets));
+	}
+	else{
+		widgets.forEach(widget => {
+			outputs.print(options.output, widget, widget.color);
+		});
+		console.info("Count: %d".info, widgets.length);
+	}
 }
 
 program.parse(process.argv);
