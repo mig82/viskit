@@ -1,6 +1,5 @@
-const xpath = require("../../../src/core/helpers/xpath");
+const getXpathStringValue = require("../../../src/core/helpers/get-xpath-string-value");
 //xpath.setVerbose(true);
-const getXpathStringValue = xpath.getXpathStringValue;
 
 describe("\tGiven the XML content of a .project Eclipse file of a Vis project\n", () => {
 

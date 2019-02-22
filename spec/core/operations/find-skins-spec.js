@@ -1,12 +1,13 @@
 "use strict";
+
 const path = require('path');
 const Skin = require("../../../src/core/models/Skin");
-const findSkins = require("../../../src/core/helpers/find-skins");
+const findSkins = require("../../../src/core/operations/find-skins");
 
 describe("\tGiven a project\n", () => {
 
 	var projectPath;
-	var defaultThemeSkins, secondThemeSkins;
+	var defaultThemeSkins, secondThemeSkins, thirdThemeSkins;
 
 	beforeAll(()=>{
 		spyOn(console, 'log').and.callThrough();
@@ -26,6 +27,10 @@ describe("\tGiven a project\n", () => {
 			new Skin("slImage.json", "secondTheme", "themes/secondTheme/slImage.json", `${projectPath}/themes/secondTheme/slImage.json`),
 			new Skin("slPopup.json", "secondTheme", "themes/secondTheme/slPopup.json", `${projectPath}/themes/secondTheme/slPopup.json`)
 		];
+
+		thirdThemeSkins = [
+			new Skin("slFbox.json", "thirdTheme", "themes/thirdTheme/slFbox.json", `${projectPath}/themes/thirdTheme/slFbox.json`)
+		];
 	});
 
 	beforeEach(() => {});
@@ -34,7 +39,7 @@ describe("\tGiven a project\n", () => {
 		"\tThen we get the full list of all skins in all themes", async () => {
 
 			var skins = await findSkins(projectPath, null, false);
-			var allSkins = defaultThemeSkins.concat(secondThemeSkins);
+			var allSkins = defaultThemeSkins.concat(secondThemeSkins).concat(thirdThemeSkins);
 			expect(skins).toEqual(allSkins);
 	});
 

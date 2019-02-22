@@ -1,6 +1,6 @@
 "use strict";
 const path = require('path');
-const vis = require("../../../src/core/helpers/visualizer");
+const dedupVisPlugins = require("../../../src/core/operations/dedup-vis-plugins");
 
 describe("\tGiven a path to a Vis installation\n", () => {
 
@@ -17,7 +17,7 @@ describe("\tGiven a path to a Vis installation\n", () => {
 		var dryRun = true;
 		var verbose = false;
 
-		var stats = await vis.dedupPlugins(visPath, [
+		var stats = await dedupVisPlugins(visPath, [
 			"com.kony.cloudmiddleware",
 			"com.kony.cloudthirdparty",
 			"com.kony.codegen",
