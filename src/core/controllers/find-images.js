@@ -1,45 +1,32 @@
 
 const differenceWith = require('lodash.differencewith');
-const {findAll, findUsed} = require("../helpers/finders/image-finder");
-const Image = require("../models/image");
+
+const findImageFiles = require("../operations/find-image-files");
+const findSkinImages = require("../operations/find-skin-images");
+const findWidgetImages = require("../operations/find-widget-images");
+const findAppIconImages = require("../operations/find-app-icon-images");
+const findSlashScreenImages = require("../operations/find-splash-screen-images");
+
+const Image = require("../models/Image");
+
+async function findUsed(projectPath, viewType, channel, viewName, verbose){
+	var splashImages = await findSlashScreenImages(projectPath,/* channel,*/ verbose);
+	var widgetImages = await findWidgetImages(projectPath, viewType, channel, viewName, verbose);
+	var appIconsImages = await findAppIconImages(projectPath, channel, verbose);
+	var skinImages = await findSkinImages(projectPath, null, verbose);
+	var all = splashImages.concat(widgetImages).concat(appIconsImages).concat(skinImages);
+	return all;
+}
 
 async function findImages(projectPath, viewType, channel, viewName, ignoreEmpty, verbose){
 
-	var allImages = await findAll(projectPath, channel, verbose);
+	var imageFiles = await findImageFiles(projectPath, channel, verbose);
 	var usedImages = await findUsed(projectPath, viewType, channel, viewName, verbose);
-	var unusedImages = differenceWith(allImages, usedImages, Image.matches);
-	var missingImages = differenceWith(usedImages, allImages, Image.matches);
-
-	/*var countAll = allImages.length;
-	var countUsed = usedImages.length;
-	var countUnused = unusedImages.length;
-	var countMissing = missingImages.length;
-
-	if(verbose){
-
-		console.log("All count: %d".debug, countAll);
-		allImages.forEach(image => {
-			console.log("\t%s".debug, image.toTabbedString());
-		});
-
-		console.log("Used count: %d".debug, countUsed);
-		usedImages.forEach(image => {
-			console.log("\t%s".debug, image.toTabbedString());
-		});
-
-		console.log("Unused count: %d".debug, countUnused);
-		unusedImages.forEach(image => {
-			console.log("\t%s".debug, image.toTabbedString());
-		});
-
-		console.log("Missing count: %d".debug, countMissing);
-		missingImages.forEach(image => {
-			console.log("\t%s".debug, image.toTabbedString());
-		});
-	}*/
+	var unusedImages = differenceWith(imageFiles, usedImages, Image.matches);
+	var missingImages = differenceWith(usedImages, imageFiles, Image.matches);
 
 	return {
-		all: allImages,
+		all: imageFiles,
 		used: usedImages,
 		unused: unusedImages,
 		missing: missingImages

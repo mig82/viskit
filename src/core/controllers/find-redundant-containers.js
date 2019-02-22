@@ -6,7 +6,7 @@ const views = require("../config/views");
 const widgets = require("../config/widgets");
 const viewTypes = views.types;
 const containerTypes = widgets.containerTypes;
-const findWidgets = require("../helpers/finders/ui-finder").findWidgets;
+const findWidgets = require("../operations/find-widgets");
 
 /**
  * findRedundantContainers - Find any container widgets -i.e. instances of

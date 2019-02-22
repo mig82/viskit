@@ -1,4 +1,4 @@
-var Widget = require("../../../src/core/models/widget");
+var Widget = require("../../../src/core/models/Widget");
 
 describe("\tGiven a path to a widget\n", () => {
 

@@ -3,7 +3,7 @@
 const program = require("commander");
 const path = require('path');
 const colors = require("colors");
-const isVisProject = require("../core/controllers/is-project").isVisProject;
+const isVisProject = require("../core/controllers/is-vis-project");
 const theme = require("../core/config/theme.js");
 colors.setTheme(theme);
 

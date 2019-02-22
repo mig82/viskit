@@ -1,6 +1,6 @@
 "use strict";
 const path = require('path');
-const projects = require("../../../src/core/helpers/projects");
+const parseProjectPlugins = require("../../../src/core/operations/parse-project-plugins");
 const os = require('os');
 
 describe("\tGiven a path to a v8.2.6 project\n", () => {
@@ -17,7 +17,7 @@ describe("\tGiven a path to a v8.2.6 project\n", () => {
 		"\tThen the version is the one of the Branding plugin", async () => {
 
 		var projectPath = path.resolve(`test/projects/read-version-branding-v${expectedVersion}`);
-		var result = await projects.parseProjectPlugins(projectPath, false);
+		var result = await parseProjectPlugins(projectPath, false);
 		var version = result.projectVersion;
 		expect(version).toBe(expectedVersion);
 	});
@@ -26,7 +26,7 @@ describe("\tGiven a path to a v8.2.6 project\n", () => {
 		"\tThen the version is the one of the Windows Vis Core plugin", async () => {
 
 		var projectPath = path.resolve(`test/projects/read-version-viscore-win-v${expectedVersion}`);
-		var result = await projects.parseProjectPlugins(projectPath, false);
+		var result = await parseProjectPlugins(projectPath, false);
 		var version = result.projectVersion;
 		expect(version).toBe(expectedVersion);
 	});
@@ -35,7 +35,7 @@ describe("\tGiven a path to a v8.2.6 project\n", () => {
 		"\tThen the version is the one of the Mac Vis Core plugin", async () => {
 
 		var projectPath = path.resolve(`test/projects/read-version-viscore-mac-v${expectedVersion}`);
-		var result = await projects.parseProjectPlugins(projectPath, false);
+		var result = await parseProjectPlugins(projectPath, false);
 		var version = result.projectVersion;
 		expect(version).toBe(expectedVersion);
 	});
@@ -44,7 +44,7 @@ describe("\tGiven a path to a v8.2.6 project\n", () => {
 		"\tThen the version is the one of the KEditor plugin", async () => {
 
 		var projectPath = path.resolve(`test/projects/read-version-keditor-v${expectedVersion}`);
-		var result = await projects.parseProjectPlugins(projectPath, false);
+		var result = await parseProjectPlugins(projectPath, false);
 		var version = result.projectVersion;
 		expect(version).toBe(expectedVersion);
 	});
@@ -60,7 +60,7 @@ describe("\tGiven a path to a project\n", () => {
 		"\tThen the resulting list matches the project plugins", async () => {
 
 		var projectPath = path.resolve(`test/projects/read-plugins`);
-		var result = await projects.parseProjectPlugins(projectPath, false);
+		var result = await parseProjectPlugins(projectPath, false);
 		expect(result.plugins).toEqual([
 			"com.ronin.foo",
 			"com.ronin.bar",
@@ -78,7 +78,7 @@ describe("\tGiven a path to a project\n", () => {
 		//For the purpose of testing, mock the platform to execute as if this is a Mac.
 		spyOn(os, 'platform').and.returnValue("darwin");
 
-		var result = await projects.parseProjectPlugins(projectPath, false);
+		var result = await parseProjectPlugins(projectPath, false);
 		expect(result.plugins).toEqual([
 			"com.kony.studio.viz.chrome.mac64",
 			"com.kony.studio.viz.core.mac64",
@@ -96,7 +96,7 @@ describe("\tGiven a path to a project\n", () => {
 		//For the purpose of testing, mock the platform to execute as if this is Windows.
 		spyOn(os, 'platform').and.returnValue("win64");
 
-		var result = await projects.parseProjectPlugins(projectPath, false);
+		var result = await parseProjectPlugins(projectPath, false);
 		expect(result.plugins).toEqual([
 			"com.kony.studio.viz.chrome.win64",
 			"com.kony.studio.viz.core.win64",

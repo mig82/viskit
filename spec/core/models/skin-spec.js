@@ -1,4 +1,4 @@
-var Skin = require("../../../src/core/models/skin");
+var Skin = require("../../../src/core/models/Skin");
 
 describe("\tGiven a path to a skin\n", () => {
 
