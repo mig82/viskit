@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <!-- Generator: Adobe Illustrator 19.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewbox="0 0 120 30" style="enable-background:new 0 0 120 30;" xml:space="preserve">
+        <style type="text/css">
+        .st0 {
+            fill: #fff;
+        }
+        
+        .st1 {
+            fill: #fff;
+            fill-opacity: 0.3;
+        }
+        </style>
+        <circle class="st0" cx="15" cy="15" r="15">
+            <animate accumulate="none" additive="replace" attributename="r" begin="0s" calcmode="linear" dur="0.8s" fill="remove" from="15" repeatcount="indefinite" restart="always" to="15" values="15;9;15">
+            </animate>
+            <animate accumulate="none" additive="replace" attributename="fill-opacity" begin="0s" calcmode="linear" dur="0.8s" fill="remove" from="1" repeatcount="indefinite" restart="always" to="1" values="1;.5;1">
+            </animate>
+        </circle>
+        <circle class="st1" cx="60" cy="15" r="9">
+            <animate accumulate="none" additive="replace" attributename="r" begin="0s" calcmode="linear" dur="0.8s" fill="remove" from="9" repeatcount="indefinite" restart="always" to="9" values="9;15;9">
+            </animate>
+            <animate accumulate="none" additive="replace" attributename="fill-opacity" begin="0s" calcmode="linear" dur="0.8s" fill="remove" from="0.5" repeatcount="indefinite" restart="always" to="0.5" values=".5;1;.5">
+            </animate>
+        </circle>
+        <circle class="st0" cx="105" cy="15" r="15">
+            <animate accumulate="none" additive="replace" attributename="r" begin="0s" calcmode="linear" dur="0.8s" fill="remove" from="15" repeatcount="indefinite" restart="always" to="15" values="15;9;15">
+            </animate>
+            <animate accumulate="none" additive="replace" attributename="fill-opacity" begin="0s" calcmode="linear" dur="0.8s" fill="remove" from="1" repeatcount="indefinite" restart="always" to="1" values="1;.5;1">
+            </animate>
+        </circle>
+    </svg>

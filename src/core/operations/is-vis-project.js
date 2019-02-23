@@ -22,6 +22,8 @@ async function isVisProject(projectPath, verbose){
 	var isProject = false;
 
 	var pathExists = await fs.pathExists(projectPath);
+
+	//TODO: This only applies to Vis Enterprise projects. Need isVisProject checking for projectProperties.json and isVisEntProject cheking .project
 	var projectFile = `${projectPath}/.project`;
 	if(verbose)console.log("Validating %s".debug, projectFile);
 

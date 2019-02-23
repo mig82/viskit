@@ -70,10 +70,15 @@ async function onAction(project, options){
 		process.env.verbose
 	);
 
-	containers.forEach(widget => {
-		outputs.print(options.output, widget, widget.color);
-	});
-	console.info("Count: %d".info, containers.length);
+	if(options.output === "j"){
+		console.log(JSON.stringify(containers));
+	}
+	else{
+		containers.forEach(widget => {
+			outputs.print(options.output, widget, widget.color);
+		});
+		console.info("Count: %d".info, containers.length);
+	}
 }
 
 program.parse(process.argv);

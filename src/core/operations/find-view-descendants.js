@@ -1,7 +1,7 @@
 "use strict";
 
 const fs = require('fs-extra');
-const {buildSearchPath, find} = require("../helpers/ui-finder");
+const buildSearchPath = require("../helpers/build-ui-search-path");
 const isSearchAllOption = require("../helpers/is-search-all-option");
 const stripPathEndSlash = require("../helpers/strip-path-end-slash");
 const stripViewExtension = require("../helpers/strip-view-extension");

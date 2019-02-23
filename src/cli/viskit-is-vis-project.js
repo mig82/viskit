@@ -39,8 +39,15 @@ async function onAction(project, options){
 		path.resolve(project),
 		process.env.verbose
 	);
-	//widgets.forEach(widget => {outputs.print(options.output, widget)});
-	console.info("%s".info, isProject);
+
+	if(options.output === "j"){
+		console.log(JSON.stringify({
+			isProject: isProject
+		}));
+	}
+	else{
+		console.info("%s".info, isProject);
+	}
 }
 
 program.parse(process.argv);

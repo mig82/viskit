@@ -1,0 +1,77 @@
+{
+    "@class": "com.kony.gen.viz.model.component.KVizDateField",
+    "DNDConfig": null,
+    "Image": "calbtn.png",
+    "__parentReadjusting__": false,
+    "_data_": null,
+    "_date_": "20/2/2019",
+    "_height_": {
+        "type": "string",
+        "value": "40dp"
+    },
+    "_left_": {
+        "type": "string",
+        "value": "34dp"
+    },
+    "_margin_": [
+        0,
+        0,
+        0,
+        0
+    ],
+    "_padding_": [
+        0,
+        0,
+        0,
+        0
+    ],
+    "_skin_": "sd394c029c5247099aa3fa9e5a0c8dc8",
+    "_top_": {
+        "type": "string",
+        "value": "27dp"
+    },
+    "_width_": {
+        "type": "string",
+        "value": "260dp"
+    },
+    "advview": "default",
+    "calendaricon": "calbtn.png",
+    "canUpdateUI": true,
+    "containerweight": 100,
+    "contentalignment": 5,
+    "datecomponents": [
+        20,
+        2,
+        2019,
+        0,
+        0,
+        0
+    ],
+    "dateeditable": true,
+    "dateformat": "dd/MM/yyyy",
+    "day": 20,
+    "daytextalignmentincell": 5,
+    "format": "dd/MM/yyyy",
+    "formatteddate": "20/02/2019",
+    "hidedaysheader": false,
+    "hidemonthsheader": false,
+    "hour": 0,
+    "id": "agendaCalendar",
+    "info": null,
+    "isvisible": true,
+    "kuid": "gd66bb9d4cde4d42bd0f14670d1250fc",
+    "minutes": 0,
+    "month": 2,
+    "name": "kony.ui.Calendar",
+    "noofmonths": 1,
+    "pagedate": "/2019",
+    "parent": "barForm",
+    "pf": "barForm",
+    "seconds": 0,
+    "selectdate": "//2019",
+    "viewtype": "default",
+    "wType": "Calendar",
+    "widgetalignment": 5,
+    "year": 2019,
+    "zindex": 1
+}

@@ -1,0 +1,57 @@
+{
+    "@class": "com.kony.gen.viz.model.component.KVizImage2",
+    "DNDConfig": null,
+    "__parentReadjusting__": false,
+    "_base64_": null,
+    "_height_": {
+        "type": "string",
+        "value": "150dp"
+    },
+    "_left_": {
+        "type": "string",
+        "value": "29dp"
+    },
+    "_margin_": [
+        0,
+        0,
+        0,
+        0
+    ],
+    "_padding_": [
+        0,
+        0,
+        0,
+        0
+    ],
+    "_skin_": "se6827ce6e594e4b9e376be6b3a33e27",
+    "_src_": "imagedrag.png",
+    "_top_": {
+        "type": "string",
+        "value": "219dp"
+    },
+    "_width_": {
+        "type": "string",
+        "value": "150dp"
+    },
+    "canUpdateUI": true,
+    "containerweight": 100,
+    "context": {
+        "channel": "mobile",
+        "formID": "mainForm",
+        "platform": "iphone",
+        "templateType": "forms",
+        "topLevelBox": null
+    },
+    "id": "fooImage",
+    "imagescalemode": 1,
+    "info": null,
+    "isvisible": true,
+    "kuid": "ddee28a8b1a84f1ca1cd5df0e65a19d4",
+    "name": "kony.ui.Image2",
+    "parent": "barForm",
+    "pf": "barForm",
+    "srcType": 1,
+    "wType": "Image",
+    "widgetalignment": 5,
+    "zindex": 1
+}

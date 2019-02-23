@@ -60,26 +60,31 @@ async function onAction(project, options){
 		process.env.verbose
 	);
 
-	var maxSkinCount = 0
-	forOwn(allSkins, (themeSkins, theme) => {
-		if(themeSkins.length > maxSkinCount) {
-			maxSkinCount = themeSkins.length;
-		}
-	});
+	if(options.output === "j"){
+		console.log(JSON.stringify(allSkins));
+	}
+	else{
+		var maxSkinCount = 0
+		forOwn(allSkins, (themeSkins, theme) => {
+			if(themeSkins.length > maxSkinCount) {
+				maxSkinCount = themeSkins.length;
+			}
+		});
 
-	forOwn(allSkins, (themeSkins, theme) => {
-		if(themeSkins && themeSkins.length > 0){
-			themeSkins.forEach(skin => {
-				outputs.print(options.output, skin, "info");
-			});
-		}
-		else{
-			console.log("-".info);
-		}
+		forOwn(allSkins, (themeSkins, theme) => {
+			if(themeSkins && themeSkins.length > 0){
+				themeSkins.forEach(skin => {
+					outputs.print(options.output, skin, "info");
+				});
+			}
+			else{
+				console.log("-".info);
+			}
 
-		var color = themeSkins.length < maxSkinCount?configTheme.error:configTheme.info;
-		console.info("Count for %s: %d"[color], theme, themeSkins.length);
-	});
+			var color = themeSkins.length < maxSkinCount?configTheme.error:configTheme.info;
+			console.info("Count for %s: %d"[color], theme, themeSkins.length);
+		});
+	}
 }
 
 program.parse(process.argv);

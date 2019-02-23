@@ -1,0 +1,77 @@
+{
+    "@class": "com.kony.gen.viz.model.container.KVizScrollFlexForm",
+    "DNDConfig": null,
+    "_margin_": [
+        0,
+        0,
+        0,
+        0
+    ],
+    "_orientation_": 1,
+    "_padding_": [
+        0,
+        0,
+        0,
+        0
+    ],
+    "_percent_": true,
+    "_skin_": "s69b4ed58d0941d08eb2c2d25b997b7f",
+    "_title_": null,
+    "addWidgetsdone": false,
+    "allboxes": [],
+    "android": {
+        "psp": {
+            "windowSoftInputMode": 2
+        }
+    },
+    "canUpdateUI": true,
+    "canvasWidth": 1400,
+    "children": [
+        "fooTabPane"
+    ],
+    "containerweight": 100,
+    "controllerInfo": {
+        "default": {
+            "channel": "desktop",
+            "name": "fooFormController"
+        }
+    },
+    "currentLocale": "default",
+    "desktopweb": {
+        "needAppMenu": false
+    },
+    "device": "desktopweb",
+    "displayorientation": 1,
+    "enabledforidletimeout": false,
+    "id": "fooForm",
+    "info": null,
+    "initdone": false,
+    "inputaccessoryviewtype": 4,
+    "ipad": {
+        "psp": {
+            "inputAccessoryViewType": 4
+        }
+    },
+    "iphone": {
+        "psp": {
+            "inputAccessoryViewType": 4
+        }
+    },
+    "isvisible": true,
+    "kuid": "ab9ea5a590c54c0ab1370be4bbce8eae",
+    "layouttype": 2,
+    "name": "kony.ui.Form2",
+    "needappmenu": true,
+    "paddinginpixel": false,
+    "platform": "desktopweb",
+    "prevDevice": "desktopweb",
+    "prevPlatform": "desktopweb",
+    "retainscrollposition": false,
+    "shellCSS": "desktop",
+    "snapgridsize": 10,
+    "snaptogrid": true,
+    "titleBarSkin": "s10722a8a41643118e6b3040fbe63ef8",
+    "titlebar": true,
+    "type": 3,
+    "wType": "Form"
+}
