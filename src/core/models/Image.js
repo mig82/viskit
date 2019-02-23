@@ -99,32 +99,37 @@ Image.prototype.toTabbedString = function _toTabbedString() {
 	return s;
 };
 
+/*Image.prototype.toDisplayString = function _toTabbedString() {
+	var s = `${this.channel}, ${this.file}, ${this.usedBy}`;
+	return s;
+};*/
 
 /**
- * matches - Determines whether the metadata on one image matches the other.
- * Either because they both have the same name and are for the same channel or
- * because they both have the same name and one is used by a specific channel
- * while the other is stored in the commons folder.
+ * referenceMatchesFile - Determines whether the reference to an image can be
+ * covered by an image file or not.
  *
- * @param  {type} image description
- * @return {type}       description
+ * @param  Image imageRef  The metadata of a reference to an image.
+ * @param  Image imageFile The metadata of an image file.
+ * @return Boolean           description
  */
-Image.prototype.matches = function _matches(image){
-	return image instanceof Image &&
-		this.file === image.file && (
-			this.channel === image.channel || (
-				this.channel === "common" && image.usedBy ||
-				image.channel === "common" && this.usedBy
-			)
-		);
-}
+Image.referenceMatchesFile = function referenceMatchesFile(imageRef, imageFile) {
+	return imageFile instanceof Image && imageRef instanceof Image &&
+	imageFile.file === imageRef.file && (
+		imageFile.channel === imageRef.channel ||
+		imageFile.channel === "common"
+	);
+};
 
-Image.matches = function _matches(image1, image2){
-	return image1 instanceof Image &&
-		image1.matches(image2);
-}
+Image.prototype.matches = function matches(otherImage) {
+	if(this.relPath && otherImage.relPath){
+		return this.relPath === otherImage.relPath;
+	}
+	else{
+		return this.file === otherImage.file && this.channel === otherImage.channel;
+	}
+};
 
-var keys = [ //Image
+/*var keys = [ //Image
 	"_src_",
 	"imagewhenfailed",
 	"imagewhiledownloading"
@@ -145,7 +150,7 @@ var keys = [ //Image
 ]).concat([[ //Slider
 	"thumbImage",
 	"focusThumbImage"
-]]);
+]]);*/
 
 // A regex to search for images in JSON objects
 Image.regex = /^.+(\.png|\.jpg|\.ico|\.gif|\.svg)$/i;

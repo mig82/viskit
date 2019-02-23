@@ -11,7 +11,7 @@ const views = require("../core/config/views.js");
 const channels = require("../core/config/channels.js");
 const outputs = require("../reporters/console");
 const validateOptions = require("./helpers/validate-options");
-const capitalize = require("../common/string/capitalize");
+const snakeCaseToTitle = require("../common/string/snake-case-to-title");
 
 program
 	.usage("[options] <project>")
@@ -66,16 +66,23 @@ async function onAction(project, options){
 	else{
 		forOwn(images, (images, classification) => {
 
-			console.log(`${capitalize(classification)}:`.info);
+			console.log(`${snakeCaseToTitle(classification)}:`.info);
 
-			var color = theme.info;
-			if(classification == "used"){
+			var imageUses = [
+				"splash_screen_references",
+				"widget_image_references",
+				"app_icon_references",
+				"skin_background_references"
+			];
+
+			var color = theme.neutral;
+			if(imageUses.indexOf(classification) >= 0){
 				color = theme.ok;
 			}
-			else if(classification == "missing"){
+			else if(classification == "broken_references"){
 				color = theme.error;
 			}
-			else if(classification !== "all"){
+			else if(classification !== "image_files"){
 				color = theme.warn
 			}
 
@@ -89,22 +96,39 @@ async function onAction(project, options){
 			}
 		});
 
-		var countAll = images.all.length;
-		var countUsed = images.used.length;
-		var countUnused = images.unused.length;
-		var countMissing = images.missing.length;
-		var total = countUsed + countUnused - countMissing;
+		var filesCount = images.image_files.length;
+		//var countUsed = images.used.length;
+		var splashScreenRefsCount = images.splash_screen_references.length;
+		var widgetImageRefsCount = images.widget_image_references.length;
+		var appIconRefsCount = images.app_icon_references.length;
+		var skinImageRefsCount = images.skin_background_references.length;
 
-		var info = `All ${countAll} `;
-		info += countAll === total?"= ":"!" + "= ";
-		info += `Total ${total} = `;
-		info += `Used ${countUsed} + Unused ${countUnused} - Missing ${countMissing}`;
+		var unusedCount = images.unused_files.length;
+		var brokenRefsCount = images.broken_references.length;
+		//var total = countUsed + unusedCount - brokenRefsCount;
+		var countUsed = splashScreenRefsCount + widgetImageRefsCount + appIconRefsCount + skinImageRefsCount;
+		var total = countUsed + unusedCount - brokenRefsCount;
 
-		if(countAll === total){
-			console.info("Summary: %s".info, info);
+		var summary1 = `Files ${filesCount} `;
+		summary1 += filesCount === total?"= ":"!" + "= ";
+		summary1 += `Total ${total} = `;
+		summary1 += `Used ${countUsed} + `;
+		summary1 += `Unused ${unusedCount} - Missing ${brokenRefsCount}`;
+
+		var summary2 = `Files ${filesCount} `;
+		summary2 += filesCount === total?"= ":"!" + "= ";
+		summary2 += `Total ${total} = `;
+		summary2 += `Splash ${splashScreenRefsCount} + `;
+		summary2 += `Widgets ${widgetImageRefsCount} + `;
+		summary2 += `Icons ${appIconRefsCount} + `;
+		summary2 += `Skins ${skinImageRefsCount} + `;
+		summary2 += `Unused ${unusedCount} - Missing ${brokenRefsCount}`;
+
+		if(filesCount === total){
+			console.info("Summary: %s\nDetail:  %s".info, summary1, summary2);
 		}
 		else {
-			console.info("Summary: %s".warn, info);
+			console.info("Summary: %s\nDetail:  %s".warn, summary1, summary2);
 		}
 	}
 }

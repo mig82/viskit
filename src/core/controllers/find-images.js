@@ -9,27 +9,34 @@ const findSlashScreenImages = require("../operations/find-splash-screen-images")
 
 const Image = require("../models/Image");
 
-async function findUsed(projectPath, viewType, channel, viewName, verbose){
-	var splashImages = await findSlashScreenImages(projectPath,/* channel,*/ verbose);
-	var widgetImages = await findWidgetImages(projectPath, viewType, channel, viewName, verbose);
-	var appIconsImages = await findAppIconImages(projectPath, channel, verbose);
-	var skinImages = await findSkinImages(projectPath, null, verbose);
-	var all = splashImages.concat(widgetImages).concat(appIconsImages).concat(skinImages);
-	return all;
-}
-
 async function findImages(projectPath, viewType, channel, viewName, ignoreEmpty, verbose){
 
+	var splashImageRefs = await findSlashScreenImages(projectPath,/* channel,*/ verbose);
+	var widgetImageRefs = await findWidgetImages(projectPath, viewType, channel, viewName, verbose);
+	var appIconsImageRefs = await findAppIconImages(projectPath, channel, verbose);
+	var skinImageRefs = await findSkinImages(projectPath, null, verbose);
+	var usedImageRefs = splashImageRefs.concat(widgetImageRefs).concat(appIconsImageRefs).concat(skinImageRefs);
+
 	var imageFiles = await findImageFiles(projectPath, channel, verbose);
-	var usedImages = await findUsed(projectPath, viewType, channel, viewName, verbose);
-	var unusedImages = differenceWith(imageFiles, usedImages, Image.matches);
-	var missingImages = differenceWith(usedImages, imageFiles, Image.matches);
+	//var unusedImages = differenceWith(imageFiles, usedImageRefs, Image.matches);
+	var unusedImages = differenceWith(imageFiles, usedImageRefs, (imageFile, imageRef) => {
+		return Image.referenceMatchesFile(imageRef, imageFile);
+	});
+
+	//var brokenReferences = differenceWith(usedImageRefs, imageFiles, Image.matches);
+	var brokenReferences = differenceWith(usedImageRefs, imageFiles, (imageRef, imageFile) => {
+		return Image.referenceMatchesFile(imageRef, imageFile);
+	});
 
 	return {
-		all: imageFiles,
-		used: usedImages,
-		unused: unusedImages,
-		missing: missingImages
+		image_files: imageFiles,
+		splash_screen_references: splashImageRefs,
+		widget_image_references: widgetImageRefs,
+		app_icon_references: appIconsImageRefs,
+		skin_background_references: skinImageRefs,
+		//used: usedImageRefs,
+		unused_files: unusedImages,
+		broken_references: brokenReferences
 	};
 }
 

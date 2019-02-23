@@ -1,6 +1,6 @@
 const theme = {
 	ok: 'green',
-	prompt: 'grey',
+	neutral: 'grey',
 	debug: 'magenta',
 	info: 'cyan',
 	warn: 'yellow',
