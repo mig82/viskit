@@ -29,7 +29,7 @@ the Eclipse `.project` file located at its root directory.
 This is mostly a utility command on top of which others are built. It simply determines
 whether the given path points to the root directory of a Vis project or not.
 
-## Get Project version
+## Get Project Version
 
 For Vis Enterprise projects, this determines the project version by parsing the
 plugins it requires, as listed in the `konyplugins.xml` file located at its root
