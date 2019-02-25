@@ -4,7 +4,7 @@ const program = require("commander");
 const path = require('path');
 const colors = require("colors");
 const forOwn = require('lodash.forown');
-const findAllSkins = require("../core/controllers/find-skins").findAllSkins;
+const findAllSkins = require("../core/controllers/find-skins");
 const configTheme = require("../core/config/theme.js");
 colors.setTheme(configTheme);
 

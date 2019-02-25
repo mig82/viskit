@@ -11,6 +11,7 @@ const Image = require("../models/Image");
 
 async function findImages(projectPath, viewType, channel, viewName, ignoreEmpty, verbose){
 
+	//TODO: Add references to images in resources/manifest/pwa/desktopweb/manifest.json.
 	var splashImageRefs = await findSlashScreenImages(projectPath,/* channel,*/ verbose);
 	var widgetImageRefs = await findWidgetImages(projectPath, viewType, channel, viewName, verbose);
 	var appIconsImageRefs = await findAppIconImages(projectPath, channel, verbose);

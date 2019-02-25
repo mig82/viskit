@@ -16,6 +16,10 @@ program
 	.alias("cw");
 
 program
+	.command("count-skin-uses <project>", "Count the number of times each skin is used")
+	.alias("csu");
+
+program
 	.command("find-autogrow-widgets <project>", "Find any widgets with undefined or preferred width or height")
 	.alias("faw");
 
