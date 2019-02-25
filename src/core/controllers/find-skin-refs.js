@@ -8,19 +8,24 @@ const Skin = require("../models/Skin");
 const findSkins = require("../operations/find-skins");
 const findWidgets = require("../operations/find-widgets.js");
 
-async function countSkinUses(projectPath, viewType, channel, viewName, verbose){
+async function findSkinReferences(projectPath, viewType, channel, viewName, theme, verbose){
 	//TODO: take the theme name as a paramter.
-	var skins = await findSkins(projectPath, "defaultTheme", verbose)
+	if(typeof theme === "undefined"){
+		theme = "defaultTheme";
+	}
+	var skins = await findSkins(projectPath, theme, verbose)
 
 	//A map where the keys are skin names and the values are arrays of all the widgets that refer to them.
-	var skinRefs = {};
+	var validSkinRefs = {};
 	var brokenSkinRefs = {};
 
 	//A map where the keys are the unique id's of skins and the values are their names.
 	var skinIdToNameMap = {};
 
 	for (var skin of skins) {
-		skinRefs[skin.name] = [];
+
+		skin.refs = [];
+		validSkinRefs[skin.name] = skin;
 
 		let json = await fs.readJson(skin.absPath);
 		skinIdToNameMap[json.kuid] = skin.name;
@@ -41,22 +46,25 @@ async function countSkinUses(projectPath, viewType, channel, viewName, verbose){
 				let skinName = skinIdToNameMap[value];
 				if(verbose) console.log("Found skin ref at %s/%s: %s %s".debug, widget.relPath, key, skinName, value);
 
-				if(typeof skinName === "undefined" || typeof skinRefs[skinName] === "undefined"){
+				if(typeof skinName === "undefined" || typeof validSkinRefs[skinName] === "undefined"){
 					//The widget is pointing to a skin that doesn't exist.
+					if(verbose)console.log("Skin %s: %s does NOT exist".debug, value, skinName);
 					if(typeof brokenSkinRefs[value] === "undefined"){
 						brokenSkinRefs[value] = [];
 					}
 					brokenSkinRefs[value].push(`${widget.relPath}/${key}`);
-					console.log("Skin %s: %s does not exist".red, value, skinName);
 				}
 				else{
-					skinRefs[skinName].push(`${widget.relPath}/${key}`);
+					validSkinRefs[skinName].refs.push(`${widget.relPath}/${key}`);
 				}
 			}
 		});
 	}
 
-	return skinRefs;
+	return {
+		valid: validSkinRefs,
+		broken: brokenSkinRefs
+	};
 }
 
-module.exports = countSkinUses;
+module.exports = findSkinReferences;

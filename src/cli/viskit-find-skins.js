@@ -14,7 +14,7 @@ const capitalize = require("../common/string/capitalize");
 
 program
 	.usage("[options] <project>")
-	.option("-t, --theme <name>", "The name of the theme for which you wish to search for skins")
+	.option("--theme <name>", "The name of the theme for which you wish to search for skins")
 	.option(outputs.cmdOption.flag, outputs.cmdOption.desc, outputs.regex)
 	.action(onAction);
 
@@ -22,8 +22,7 @@ program.on('--help', function(){
 	console.info(colors.info(
 		"\nExamples:\n" +
 		"\tviskit find-skins path/to/workspace/FooProject\n" +
-		"\tviskit fs path/to/workspace/FooProject --theme fooTheme\n" +
-		"\tviskit fs path/to/workspace/FooProject -t fooTheme\n"
+		"\tviskit fs path/to/workspace/FooProject --theme fooTheme\n"
 	));
 	console.info(colors.info(
 		"Why?\n\n" +
