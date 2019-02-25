@@ -1,7 +1,7 @@
-const _isVisProject = require('../operations/is-vis-project');
+const isVisEnterpriseProject = require('../operations/is-vis-ent-project');
 
-async function isVisProject(projectPath, verbose){
-	return _isVisProject(projectPath, verbose);
+async function isVisEntProject(projectPath, verbose){
+	return isVisEnterpriseProject(projectPath, verbose);
 }
 
-module.exports = isVisProject;
+module.exports = isVisEntProject;
