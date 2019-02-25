@@ -1,5 +1,5 @@
 # viskit
-A command line helper for Kony Visualizer projects.
+A command line helper for Kony Visualizer (from now on Vis) projects.
 
 ## Disclaimer:
 
@@ -21,18 +21,20 @@ in the command prompt -e.g.:
 
 ## Is Project
 
-Determine whether a given path points to a Visualizer project, according to the `.project`
-file located at its root directory.
+Determine whether a given path points to a Vis Enterprise project, according to
+the Eclipse `.project` file located at its root directory.
 
     viskit is-vis-project path/to/workspace/FooApp
 
 This is mostly a utility command on top of which others are built. It simply determines
-whether the given path points to the root directory of a Visualizer project or not.
+whether the given path points to the root directory of a Vis project or not.
 
 ## Get Project version
 
-Retrieves the version of a project according to the plugins it requires, as listed in
-the `konyplugins.xml` file located at the root directory of the project.
+For Vis Enterprise projects, this determines the project version by parsing the
+plugins it requires, as listed in the `konyplugins.xml` file located at its root
+directory. For Vis Starter, it reads the `currentgaversion` property from the
+`projectProperties.json` file also located at its root directory.
 
     viskit gpv path/to/workspace/FooApp
 
@@ -133,7 +135,7 @@ point back to it as a child.
 
 ## Find Images
 
-Find and classify images in the project structure into used, unused and missing.
+Find and classify image files and references in the project structure.
 
     viskit find-images|fi path/to/workspace/FooApp
 
@@ -141,8 +143,9 @@ An image is considered _unused_ when despite it being part of the project file
 structure, it is not used as the source, loading image or "not found" image by
 any image widget, nor as the background to any container widgets.
 
-An image is considered _missing_ when despite it being referred to by a form,
-widget, property or skin, it cannot be found in the project structure
+An image reference is considered _broken_ when despite it being set in a widget,
+skin, splash screen, app icon or store art, it cannot be found in the project
+structure.
 
 ## Find Skins
 
@@ -150,44 +153,44 @@ Find all the skins defined for a given theme.
 
     viskit find-skins|fs path/to/workspace/FooApp --theme fooTheme
 
-All themes in a Visualizer project must have the exact same set of skins.
+All themes in a Vis project must have the exact same set of skins.
 A skin will typically have a different appearance from one theme to another,
 but retain its name across themes. When a skin is created in one theme, an
 equivalent of the same name is created in all themes defined in the project.
 When a skin is deleted from one theme, its equivalents are deleted from all
 themes in the project.
 
-However, a common issue when using SCM with Visualizer projects is that conflict
+However, a common issue when using SCM with Vis projects is that conflict
 resolutions may cause themes to have different sets of skins. When this occurs,
 the project is left in an inconsistent state.
 
 This command is useful to find the skins defined for each theme, and so to help
 trouble-shoot such scenarios
 
-## Set Visualizer Version
+## Set Vis Version
 
-Set the version of a Visualizer installation to match a given project.
+Set the version of a Vis installation to match a given project.
 
-    viskit set-vis-version|svv path/to/KonyVisualizerEnterpriseX.Y.Z path/to/workspace/FooApp
+    viskit set-vis-version|svv path/to/KonyVisEnterpriseX.Y.Z path/to/workspace/FooApp
 
-When working with two or more projects developed using different versions of Visualizer, it
-is very cumbersome to switch between them. Projects developed with Visualizer versions older
+When working with two or more projects developed using different versions of Vis, it
+is very cumbersome to switch between them. Projects developed with Vis versions older
 than the one you have installed can only be opened if you upgrade them. Projects developed
-with Visualizer versions more recent than the one you have installed can only be opened if
+with Vis versions more recent than the one you have installed can only be opened if
 you upgrade your installation, and then any upgrade will likely result in a version more recent
 than the one your project actually needed.
 
-This forces you to either keep multiple installations of Visualizer or to manually switch
-the plugins in your Visualizer installation. This command attempts to help you shuffle the plugins
-in your Visualizer installation in an automated and reliable way.
+This forces you to either keep multiple installations of Vis or to manually switch
+the plugins in your Vis installation. This command attempts to help you shuffle the plugins
+in your Vis installation in an automated and reliable way.
 
-Sadly it's not possible to make a single Visualizer installation service projects for 7.x and 8.x
+Sadly it's not possible to make a single Vis installation service projects for 7.x and 8.x
 but this way you can at least try to use a single 7.x installation for all your 7.x projects and
 a single 8.x installation for all your 8.x projects.
 
 **Note:** this will not work with projects of versions 6.x and below.
 
-**IMPORTANT:** This command is HIGHLY EXPERIMENTAL. Vis v8 introduced breaking changes to how Visualizer
+**IMPORTANT:** This command is HIGHLY EXPERIMENTAL. Vis v8 introduced breaking changes to how Vis
 works with the JDK, Gradle and other dependencies. You should still keep at least a v7.x and
 a v8.x installation and not try to transform a v7.x into a v8.x or vice versa. Also keep in mind
 that the most recent Vis versions will require more recent Xcode and Android SDK versions.
