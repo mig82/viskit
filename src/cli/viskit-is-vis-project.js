@@ -3,7 +3,7 @@
 const program = require("commander");
 const path = require('path');
 const colors = require("colors");
-const isVisProject = require("../core/controllers/is-vis-project");
+const isVisEntProject = require("../core/controllers/is-vis-project");
 const theme = require("../core/config/theme.js");
 colors.setTheme(theme);
 
@@ -35,7 +35,7 @@ if (!process.argv.slice(2).length) {
 
 async function onAction(project, options){
 
-	var isProject = await isVisProject(
+	var isProject = await isVisEntProject(
 		path.resolve(project),
 		process.env.verbose
 	);

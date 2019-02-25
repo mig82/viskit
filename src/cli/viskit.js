@@ -6,13 +6,13 @@ const theme = require("../core/config/theme.js");
 colors.setTheme(theme);
 
 program
-	.version('1.1.0')
+	.version('1.1')
 	.usage('[options] [command]')
 	.option('-v, --verbose', 'output everything');
 
 //IMPORTANT: Keep the commands listed in alphabetical order.
 program
-	.command("count-widgets <project>", "Count the number of widgets for each view.")
+	.command("count-widgets <project>", "Count the number of widgets for each view")
 	.alias("cw");
 
 program
@@ -20,7 +20,7 @@ program
 	.alias("faw");
 
 program
-	.command("find-images <project>", "Find and classify images in the project structure into used, unused and missing")
+	.command("find-images <project>", "Find and classify images and image references in the project structure")
 	.alias("fi");
 
 program
@@ -44,15 +44,15 @@ program
 	.alias("fw");
 
 program
-	.command("get-project-version <project>", "Retrieves the version of a project according to the plugins it uses.")
+	.command("get-project-version <project>", "Retrieves the version of a project")
 	.alias("gpv");
 
 program
-	.command("is-vis-project <project>", "Determine whether a given directory is the root of a Vis project.")
+	.command("is-vis-project <project>", "Determine whether a given directory is the root of a Vis project")
 	.alias("ivp");
 
 program
-	.command("set-vis-version <visualizer-path> <project>", "Set the version of the Vis installation to match a given project.")
+	.command("set-vis-version <visualizer-path> <project>", "Set the version of the Vis installation to match a given project")
 	.alias("svv");
 
 program.on('option:verbose', function () {

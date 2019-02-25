@@ -6,7 +6,7 @@ const colors = require('colors');
 const getXpathStringValue = require("../helpers/get-xpath-string-value");
 
 /**
- * isVisProject - Determines whether a given path points to the root of a
+ * isVisEnterpriseProject - Determines whether a given path points to the root of a
  * Visualizer project or not by looking at the
  * [Eclipse project description file]{@link http://help.eclipse.org/luna/index.jsp?topic=%2Forg.eclipse.platform.doc.isv%2Freference%2Fmisc%2Fproject_description_file.html}
  * in that location and checking that the <pre><code>nature</code></pre> element
@@ -17,13 +17,13 @@ const getXpathStringValue = require("../helpers/get-xpath-string-value");
  * @return Boolean             Whether the path provided points to a Visualizer project or not.
  */
 
-async function isVisProject(projectPath, verbose){
+async function isVisEnterpriseProject(projectPath, verbose){
 
 	var isProject = false;
 
 	var pathExists = await fs.pathExists(projectPath);
 
-	//TODO: This only applies to Vis Enterprise projects. Need isVisProject checking for projectProperties.json and isVisEntProject cheking .project
+	//TODO: This only applies to Vis Enterprise projects. Need isVisEnterpriseProject checking for projectProperties.json and isVisEntProject cheking .project
 	var projectFile = `${projectPath}/.project`;
 	if(verbose)console.log("Validating %s".debug, projectFile);
 
@@ -52,4 +52,4 @@ async function isVisProject(projectPath, verbose){
 	return isProject;
 }
 
-module.exports = isVisProject;
+module.exports = isVisEnterpriseProject;

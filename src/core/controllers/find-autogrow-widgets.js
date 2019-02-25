@@ -26,6 +26,7 @@ async function findAutogrowWidgets(projectPath, viewType, channel, viewName, sho
 
 		var widget = await fs.readJson(widgetMeta.absPath);
 
+		//TODO: Also take into account the autogrowmode property;
 		var isWidthDef = isWidgetWidthDefined(widget);
 		var isHeightDef = isWidgetHeightDefined(widget);
 		if(!isForm(widget) && (!isWidthDef || !isHeightDef)){
