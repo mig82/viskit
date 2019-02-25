@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<plugins>
+	<pluginInfo version-no="8.2.6.v201801070000_r12" plugin-id="com.kony.studio.viz.chrome.mac64" plugin-name="StudioViz Chrome"/>
+	<pluginInfo version-no="8.2.6.v201801070000_r12" plugin-id="com.kony.studio.viz.core.mac64" plugin-name="StudioViz Core"/>
+	<pluginInfo version-no="8.2.6.v201801070000_r12" plugin-id="com.kony.studio.viz.nodejs.mac64" plugin-name="StudioViz NodeJS"/>
+
+	<pluginInfo version-no="8.2.6.v201801070000_r12" plugin-id="com.kony.ide.paas.branding" plugin-name="Branding"/>
+
+	<!--How do I add these entries when the host OS is Windows?-->
+	<!--pluginInfo version-no="8.2.6.v201801070000_r12" plugin-id="com.kony.windowsphone8" plugin-name="Windows Phone 8 Plug-in"/>
+	<pluginInfo version-no="8.2.6.v201801070000_r12" plugin-id="com.kony.windows8" plugin-name="Windows 8.1 Plug-in"/>
+	<pluginInfo version-no="8.2.6.v201801070000_r12" plugin-id="com.kony.windows10" plugin-name="Windows 10 Plug-in"/>
+	<pluginInfo version-no="8.2.6.v201801070000_r12" plugin-id="com.kony.windows" plugin-name="Windows Desktop Plug-in"/-->
+</plugins>

@@ -1,11 +1,11 @@
 {
 	"name": "viskit",
-	"version": "1.0.2",
+	"version": "1.1.0",
 	"description": "A command line helper for Kony Visualizer projects.",
 	"bin": {
-		"viskit": "./viskit.js"
+		"viskit": "./src/cli/viskit.js"
 	},
-	"main": "viskit.js",
+	"main": "src/cli/viskit.js",
 	"preferGlobal": true,
 	"scripts": {
 		"test": "bash test.sh"
@@ -34,8 +34,14 @@
 		"find": "^0.2.9",
 		"fs-extra": "^7.0.1",
 		"lodash.differenceby": "^4.8.0",
+		"lodash.differencewith": "^4.5.0",
+		"lodash.findindex": "^4.6.0",
 		"lodash.forown": "^4.4.0",
-		"q": "^1.5.1"
+		"lodash.groupby": "^4.6.0",
+		"q": "^1.5.1",
+		"request": "^2.88.0",
+		"unzip": "^0.1.11",
+		"xslt-processor": "git+https://github.com/mig82/xslt-processor.git"
 	},
 	"devDependencies": {
 		"jasmine": "^3.3.1"

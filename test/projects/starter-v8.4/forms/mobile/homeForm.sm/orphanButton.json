@@ -1,0 +1,54 @@
+{
+    "@class": "com.kony.gen.viz.model.component.KVizButton",
+    "DNDConfig": null,
+    "__parentReadjusting__": false,
+    "_height_": {
+        "type": "string",
+        "value": "50dp"
+    },
+    "_left_": {
+        "type": "string",
+        "value": "42dp"
+    },
+    "_margin_": [
+        6,
+        6,
+        6,
+        6
+    ],
+    "_padding_": [
+        0,
+        0,
+        0,
+        0
+    ],
+    "_skin_": "s83504ca873e45e99d210761a50ac9f3",
+    "_text_": "Button",
+    "_top_": {
+        "type": "string",
+        "value": "381dp"
+    },
+    "_width_": {
+        "type": "string",
+        "value": "300dp"
+    },
+    "canUpdateUI": true,
+    "containerweight": 100,
+    "contentalignment": 5,
+    "displaytext": true,
+    "focusskin": "sb7abcdecf3a47eda59e63ef565cfdb1",
+    "id": "fooButton",
+    "ide_onTouchEnd": "AS_Button_ccc4cb6dd0bd40a5a4fb2f8515ada275",
+    "ide_onTouchMove": "AS_Button_a88c89782fa243c7bf52ea71c3900e8f",
+    "info": null,
+    "iscustomlayout": false,
+    "isvisible": true,
+    "kuid": "i565f167b0f84b068fa41215877d9709",
+    "name": "kony.ui.Button",
+    "parent": "homeForm",
+    "pf": "homeForm",
+    "retaincontentalignment": false,
+    "retainflexpositionproperties": false,
+    "wType": "Button",
+    "zindex": 1
+}

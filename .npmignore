@@ -3,3 +3,9 @@
 
 # Jasmine
 /spec/*
+
+# Test projects
+/test/*
+
+# Roadmap
+/ROADMAP.md
