@@ -101,6 +101,27 @@ child can be positioned on its own.
 Empty containers may be accidental, although they're sometimes used as separators,
 shadows or place-holders.
 
+## Count Skin uses
+
+Count the number of times each skin is used and find broken skin references.
+
+    viskit count-skin-uses|csu path/to/workspace/FooApp --theme fooTheme
+
+When you modify the appearance to the widgets in your project, Vis
+automatically creates new skins for you. If you then delete the widgets,
+the skins stay behind.
+
+Furthermore, if you do not give these new skins mnemonic names that you
+can later recognise as you create them, over time you risk accumulating
+a large amount of unrecognisable skins, making it very hard to know
+which ones are actually in use and which ones are not.
+
+The intent of this command is to count the number of times each skin is
+referenced. If the count of references to a skin is 0, you'll know it
+is safe to delete it. If the count is low -e.g.: 1 or 2, then perhaps
+you can delete it and instead reuse another. It also points out if any
+widgets are referencing missing skins.
+
 ## Find Widgets with Undefined Dimensions
 
 Find any widgets with undefined or preferred width or height.
