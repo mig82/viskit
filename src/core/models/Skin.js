@@ -8,6 +8,9 @@ function Skin(file, theme, relPath, absPath){
 	this.theme = theme;
 	this.relPath = relPath;
 	this.absPath = absPath;
+
+	var fileParts = file.split(".");
+	this.name = fileParts[0];
 }
 
 Skin.fromPath = (skinPath, projectPath) => {
@@ -86,5 +89,8 @@ Skin.equals = function _equals(skin1, skin2){
 	return skin1 instanceof Skin &&
 		skin1.equals(skin2);
 }
+
+//Matches any property used for widgets to refer to skins -e.g.: _skin_, placeholderskin, focusskin, etc.
+Skin.regex = /.*skin.*/i;
 
 module.exports = Skin;

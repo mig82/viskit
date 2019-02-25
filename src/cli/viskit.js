@@ -6,7 +6,7 @@ const theme = require("../core/config/theme.js");
 colors.setTheme(theme);
 
 program
-	.version('1.1')
+	.version('1.2.0')
 	.usage('[options] [command]')
 	.option('-v, --verbose', 'output everything');
 
@@ -14,6 +14,10 @@ program
 program
 	.command("count-widgets <project>", "Count the number of widgets for each view")
 	.alias("cw");
+
+program
+	.command("count-skin-uses <project>", "Count the number of times each skin is used")
+	.alias("csu");
 
 program
 	.command("find-autogrow-widgets <project>", "Find any widgets with undefined or preferred width or height")
