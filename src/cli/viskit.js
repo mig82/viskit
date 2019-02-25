@@ -6,7 +6,7 @@ const theme = require("../core/config/theme.js");
 colors.setTheme(theme);
 
 program
-	.version('1.1')
+	.version('1.2.0')
 	.usage('[options] [command]')
 	.option('-v, --verbose', 'output everything');
 
