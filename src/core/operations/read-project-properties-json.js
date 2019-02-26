@@ -2,6 +2,9 @@
 
 const path = require("path");
 const fs = require("fs-extra");
+const colors = require("colors");
+const theme = require("../config/theme.js");
+colors.setTheme(theme);
 
 const stripPathEndSlash = require("../helpers/strip-path-end-slash");
 
@@ -14,8 +17,8 @@ async function readProjectPropertiesJson(projectPath, verbose){
 		return props;
 	}
 	catch(e){
-		console.error("Could not read %s", projectPropertiesPath);
-		return null;
+		console.error("Could not read %s".error, projectPropertiesPath);
+		throw e;
 	}
 }
 

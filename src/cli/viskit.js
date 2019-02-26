@@ -12,6 +12,10 @@ program
 
 //IMPORTANT: Keep the commands listed in alphabetical order.
 program
+	.command("count-action-uses <project>", "Count the number of times each action is used")
+	.alias("cau");
+
+program
 	.command("count-widgets <project>", "Count the number of widgets for each view")
 	.alias("cw");
 
