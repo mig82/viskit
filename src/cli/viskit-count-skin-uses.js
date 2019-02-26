@@ -94,10 +94,13 @@ async function onAction(project, options){
 			//console.log("%s: %d"[color], skinName, useCount);
 			outputs.print(options.output, skin, color);
 		});
-		console.log("Total skins: %d\tTotal skin refs:%d\tSkin reuse index (higher is better):%d".neutral,
+
+		var reusePercentage = validRefsCount * 100 / skinsCount;
+		var roundedReusePercentage = Math.round(reusePercentage * 100) / 100;
+		console.log("Total skins: %d\t\tTotal skin refs: %d\tSkin reuse index (higher is better): %d%".neutral,
 			skinsCount,
 			validRefsCount,
-			Math.round(validRefsCount / skinsCount * 1000) / 1000
+			roundedReusePercentage
 		);
 
 		var brokenRefsCount = 0;

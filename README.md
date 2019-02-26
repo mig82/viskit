@@ -101,7 +101,7 @@ child can be positioned on its own.
 Empty containers may be accidental, although they're sometimes used as separators,
 shadows or place-holders.
 
-## Count Skin uses
+## Count Skin Uses
 
 Count the number of times each skin is used and find broken skin references.
 
