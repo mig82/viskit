@@ -4,7 +4,7 @@ const fs = require('fs-extra');
 const forOwn = require('lodash.forown');
 const colors = require("colors");
 
-const findSkins = require('./find-skins');
+const findSkins = require('./find-skin-files');
 const addUnique = require("../helpers/add-unique-image");
 const flattenObject = require('../../common/object/flatten');
 

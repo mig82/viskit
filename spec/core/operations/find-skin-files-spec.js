@@ -2,7 +2,7 @@
 
 const path = require('path');
 const Skin = require("../../../src/core/models/Skin");
-const findSkins = require("../../../src/core/operations/find-skins");
+const findSkins = require("../../../src/core/operations/find-skin-files");
 
 describe("\tGiven a project\n", () => {
 
