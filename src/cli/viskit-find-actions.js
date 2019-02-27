@@ -31,13 +31,27 @@ program.on('--help', function(){
 	console.info(colors.info(
 		"Why?\n\n" +
 
-		"...\n" +
-		"...\n\n" +
+		"In Vis it is possible to link app, form and widget events either to\n" +
+		"functions -in code- or to actions -using the Action Editor's low-code\n" +
+		"capabilities.\n\n" +
 
-		"...\n" +
-		"...\n\n" +
+		"When using the latter it is not uncommon for a developer to link an \n" +
+		"event to an action and then change their mind and unlink it. However,\n" +
+		"when an action is unlinked from an app, form or widget event, the JSON\n" +
+		"file defining the action stays behind.\n\n" +
 
-		"\n"
+		"Disciplined use of your SCM tools should ward against committing these\n" +
+		"unused action JSON files into your codebase. However, it's not uncommon\n" +
+		"for undisciplined developers to simply commit every new file and over\n" +
+		"time accumulate large amounts of these JSON files polluting the \n" +
+		"codebase, making it hard to tell what's in use and what's not, as well\n" +
+		"as to troubleshoot eventual issues and solve merge conflicts.\n\n" +
+
+		"This command is intended to help you find unused action JSON files so\n" +
+		"you can remove them from your codebase.\n\n" +
+
+		"This command will also find any broken references to actions which do\n" +
+		"not exist.\n\n"
 	));
 });
 
