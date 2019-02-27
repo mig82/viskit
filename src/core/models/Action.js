@@ -98,6 +98,6 @@ Action.equals = function _equals(action1, action2){
 //Matches auto-generated Vis action names -e.g.:
 // AS_Button_a8bfa9510246463ab518f540d0279e13
 // AS_AppEvents_aece05797aec4b019d9b8c0a2c492bf5
-Action.regex = /^AS_[a-z]+_[0-9a-f]{32}$/i;
+Action.regex = /^AS_[a-z]+_[0-9a-j]{32}$/i;
 
 module.exports = Action;

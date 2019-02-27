@@ -62,7 +62,7 @@ async function onAction(project, options){
 		console.log(JSON.stringify(actionRefs));
 	}
 	else{
-		var validRefsCount = 0;
+		var unusedActionsCount = 0;
 		var actionsCount = 0;
 		console.log("Valid action references".info);
 		forOwn(actionRefs.valid, (action, actionName) => {
@@ -72,25 +72,21 @@ async function onAction(project, options){
 
 			if(useCount === 0){
 				color = "red"
-			}
-			if(useCount === 1){
-				color = "yellow"
+				unusedActionsCount++;
 			}
 
 			actionsCount++;
-			validRefsCount += useCount;
 
-			action.info = `count: ${useCount}`;
+			action.info = action.refs.length>0?`Used by: ${action.refs.join(", ")}`:"Not in use";
 			//console.log("%s: %d"[color], actionName, useCount);
 			outputs.print(options.output, action, color);
 		});
 
-		var reusePercentage = validRefsCount * 100 / actionsCount;
-		var roundedReusePercentage = Math.round(reusePercentage * 100) / 100;
-		console.log("Total actions: %d\t\tTotal action refs: %d\tSkin reuse index (higher is better): %d%".neutral,
+		var usedActionsCount = actionsCount - unusedActionsCount;
+		console.log("Total actions: %d\tUsed actions: %d\t\tUnused actions: %d".neutral,
 			actionsCount,
-			validRefsCount,
-			roundedReusePercentage
+			usedActionsCount,
+			unusedActionsCount
 		);
 
 		var brokenRefsCount = 0;

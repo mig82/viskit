@@ -7,6 +7,7 @@ const forOwn = require('lodash.forown');
 const Action = require("../models/Action");
 const findActionFiles = require("../operations/find-action-files");
 const findAppActions = require("../operations/find-app-actions");
+const findWidgetActions = require("../operations/find-widget-actions");
 
 async function findActionReferences(projectPath, viewType, channel, viewName, verbose){
 
@@ -17,11 +18,22 @@ async function findActionReferences(projectPath, viewType, channel, viewName, ve
 	var validActionRefs = {};
 	var brokenActionRefs = {};
 
+	//An array for the action names which do not match Vis auto-generated names.
+	var nonCompliantActionNames = [];
+
 	for (var actionModel of actionFiles) {
 		actionModel.refs = []; //An array to hold all the refernces to this file we find.
 		validActionRefs[actionModel.name] = actionModel;
+
+		if(!Action.regex.test(actionModel.name)){
+			nonCompliantActionNames.push(actionModel.name);
+		}
 	}
-	console.log(validActionRefs);
+	if(verbose)console.log("Found %d of %d non-compliant action names".debug,
+		nonCompliantActionNames.length,
+		actionFiles.length,
+		nonCompliantActionNames
+	);
 
 	//Parse projectProperties.json and look for
 	//	"appEvents": {
@@ -32,16 +44,16 @@ async function findActionReferences(projectPath, viewType, channel, viewName, ve
 	var appActionsRefs = await findAppActions(projectPath, channel, verbose);
 
 	//Parse each widget and look for attributes like "onclick": "AS_Button_a8bfa9510246463ab518f540d0279e13"
-	var widgetActions = await findWidgetActions(projectPath, viewType, channel, viewName, verbose);
+	var widgetActionRefs = await findWidgetActions(projectPath, viewType, channel, viewName, nonCompliantActionNames, verbose);
 
-	for (var actionRef of appActionsRefs) {
+	var actionRefs = appActionsRefs.concat(widgetActionRefs);
+	for (var actionRef of actionRefs) {
 		if(validActionRefs[actionRef.actionName]){
 			validActionRefs[actionRef.actionName].refs.push(actionRef.ref);
 		}
 		else{
 			if(verbose)console.log("Found broken ref to %s at %s".debug, actionRef.actionName, actionRef.ref);
 		}
-
 	}
 
 	return {
