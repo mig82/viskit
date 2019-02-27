@@ -12,6 +12,11 @@ define({
         var self = this;
         kony.print("Form1 postShow")
     },
+    /** onTextChange defined for fooTextField **/
+    AS_TextField_d7c5129e329e4c3b81487f7589116440: function AS_TextField_d7c5129e329e4c3b81487f7589116440(eventobject, changedtext) {
+        var self = this;
+        kony.print("fooTextField onTextChange")
+    },
     /** onDone defined for fooTextField **/
     AS_TextField_i652a4d48c7f4db9a030a23d1ba215cf: function AS_TextField_i652a4d48c7f4db9a030a23d1ba215cf(eventobject, changedtext) {
         var self = this;

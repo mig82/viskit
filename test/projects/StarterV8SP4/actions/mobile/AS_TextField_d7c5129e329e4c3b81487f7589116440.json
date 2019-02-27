@@ -1,0 +1,27 @@
+{
+    "AS_TextField_d7c5129e329e4c3b81487f7589116440": {
+        "id": "AS_TextField_d7c5129e329e4c3b81487f7589116440",
+        "type": "ACTION_SEQUENCE",
+        "params": [{
+            "datatype": "collection",
+            "name": "eventobject"
+        }, {
+            "datatype": "string",
+            "name": "changedtext"
+        }],
+        "contextObj": {
+            "name": "Form1",
+            "type": "forms",
+            "platform": "",
+            "KUID": "d5ee1424284b42eabe53def93e30b528"
+        },
+        "language": "js",
+        "actions": [{
+            "id": "ADD_SNIPPET__deaa6dd5621e4102be3f1df26b556f61",
+            "type": "ADD_SNIPPET",
+            "codeSnippet": "kony.print(\"fooTextField onTextChange\")",
+            "parentId": null,
+            "callbackType": null
+        }]
+    }
+}
