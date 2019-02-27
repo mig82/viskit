@@ -62,10 +62,14 @@ async function findActionReferences(projectPath, viewType, channel, viewName, un
 		}
 		else{
 			if(verbose)console.log("Broken ref to action %s at %s".debug, actionRef.actionName, actionRef.ref);
-			if(typeof brokenActionRefs[actionRef.actionName] === "undefined"){
-				brokenActionRefs[actionRef.actionName] = [];
+
+			//Do not return the broken references if the user just wants to see the unused ones.
+			if(!unusedOnly){
+				if(typeof brokenActionRefs[actionRef.actionName] === "undefined"){
+					brokenActionRefs[actionRef.actionName] = [];
+				}
+				brokenActionRefs[actionRef.actionName].push(actionRef.ref);
 			}
-			brokenActionRefs[actionRef.actionName].push(actionRef.ref);
 		}
 	}
 

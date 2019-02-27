@@ -91,15 +91,17 @@ async function onAction(project, options){
 			unusedActionsCount
 		);
 
-		var brokenRefsCount = 0;
-		console.log("Broken action references".info);
-		forOwn(actionRefs.broken, (references, actionId) => {
-			brokenRefsCount += references.length;
-			references.forEach(ref => {
-				console.log("%s\t%s".warn, actionId, ref);
+		if(!options.unusedOnly){
+			var brokenRefsCount = 0;
+			console.log("Broken action references".info);
+			forOwn(actionRefs.broken, (references, actionId) => {
+				brokenRefsCount += references.length;
+				references.forEach(ref => {
+					console.log("%s\t%s".warn, actionId, ref);
+				});
 			});
-		});
-		console.log("Total broken action refs: %d".neutral, brokenRefsCount);
+			console.log("Total broken action refs: %d".neutral, brokenRefsCount);
+		}
 	}
 }
 
