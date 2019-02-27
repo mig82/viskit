@@ -12,16 +12,16 @@ program
 
 //IMPORTANT: Keep the commands listed in alphabetical order.
 program
-	.command("count-action-uses <project>", "Count the number of times each action is used")
-	.alias("cau");
-
-program
 	.command("count-widgets <project>", "Count the number of widgets for each view")
 	.alias("cw");
 
 program
 	.command("count-skin-uses <project>", "Count the number of times each skin is used")
 	.alias("csu");
+
+program
+	.command("find-actions <project>", "Find where each action is used")
+	.alias("fa");
 
 program
 	.command("find-autogrow-widgets <project>", "Find any widgets with undefined or preferred width or height")

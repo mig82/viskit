@@ -9,7 +9,7 @@ const findActionFiles = require("../operations/find-action-files");
 const findAppActions = require("../operations/find-app-actions");
 const findWidgetActions = require("../operations/find-widget-actions");
 
-async function findActionReferences(projectPath, viewType, channel, viewName, verbose){
+async function findActionReferences(projectPath, viewType, channel, viewName, unusedOnly, verbose){
 
 	//Find all action editor files -e.g.: [studio]actions/mobile/AS_AppEvents_aece05797aec4b019d9b8c0a2c492bf5.json
 	var actionFiles = await findActionFiles(projectPath, channel, verbose);
@@ -49,10 +49,23 @@ async function findActionReferences(projectPath, viewType, channel, viewName, ve
 	var actionRefs = appActionsRefs.concat(widgetActionRefs);
 	for (var actionRef of actionRefs) {
 		if(validActionRefs[actionRef.actionName]){
-			validActionRefs[actionRef.actionName].refs.push(actionRef.ref);
+			// If the user only wishes to see the unused ones,
+			// then finding a ref to an action removes it from the result.
+			if(unusedOnly){
+				delete validActionRefs[actionRef.actionName];
+			}
+			// If the user wishes to see all actions and their references,
+			// then we add all refs found to the array for each action.
+			else{
+				validActionRefs[actionRef.actionName].refs.push(actionRef.ref);
+			}
 		}
 		else{
-			if(verbose)console.log("Found broken ref to %s at %s".debug, actionRef.actionName, actionRef.ref);
+			if(verbose)console.log("Broken ref to action %s at %s".debug, actionRef.actionName, actionRef.ref);
+			if(typeof brokenActionRefs[actionRef.actionName] === "undefined"){
+				brokenActionRefs[actionRef.actionName] = [];
+			}
+			brokenActionRefs[actionRef.actionName].push(actionRef.ref);
 		}
 	}
 

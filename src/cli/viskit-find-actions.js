@@ -14,18 +14,19 @@ const validateOptions = require("./helpers/validate-options");
 
 program
 	.usage("[options] <project>")
+	.option("-u, --unused-only", "Only show actions for which no reference has been found")
 	.option(views.cmdTypeOption.flag, views.cmdTypeOption.desc, views.regex)
 	.option(channels.cmdOption.flag, channels.cmdOption.desc, channels.regex)
 	.option(views.cmdNameOption.flag, views.cmdNameOption.desc)
 	.option(outputs.cmdOption.flag, outputs.cmdOption.desc, outputs.regex)
-
 	.action(onAction);
 
 program.on('--help', function(){
 	console.info(colors.info(
 		"\nExamples:\n" +
-		"\tviskit count-action-uses path/to/workspace/FooProject\n" +
-		"\tviskit csu path/to/workspace/FooProject --theme fooTheme\n"
+		"\tviskit find-actions path/to/workspace/FooProject\n" +
+		"\tviskit fa path/to/workspace/FooProject --unused-only\n" +
+		"\tviskit fa path/to/workspace/FooProject -u -o r"
 	));
 	console.info(colors.info(
 		"Why?\n\n" +
@@ -55,6 +56,7 @@ async function onAction(project, options){
 		options.viewType,
 		options.channel,
 		options.viewName,
+		options.unusedOnly,
 		process.env.verbose
 	);
 
@@ -64,7 +66,7 @@ async function onAction(project, options){
 	else{
 		var unusedActionsCount = 0;
 		var actionsCount = 0;
-		console.log("Valid action references".info);
+		console.log("Actions and action references".info);
 		forOwn(actionRefs.valid, (action, actionName) => {
 
 			var color = "green";
