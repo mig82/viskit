@@ -1,0 +1,24 @@
+{
+    "AS_Button_a8bfa9510246463ab518f540d0279e13": {
+        "id": "AS_Button_a8bfa9510246463ab518f540d0279e13",
+        "type": "ACTION_SEQUENCE",
+        "params": [{
+            "datatype": "collection",
+            "name": "eventobject"
+        }],
+        "contextObj": {
+            "name": "Form1",
+            "type": "forms",
+            "platform": "",
+            "KUID": "d5ee1424284b42eabe53def93e30b528"
+        },
+        "language": "js",
+        "actions": [{
+            "id": "ADD_SNIPPET__g6bcdabf1f3143a2ab1616edbc17e190",
+            "type": "ADD_SNIPPET",
+            "codeSnippet": "kony.print(\"Button clicked\");",
+            "parentId": null,
+            "callbackType": null
+        }]
+    }
+}

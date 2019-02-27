@@ -96,6 +96,7 @@
     "name": "kony.ui.Form2",
     "needappmenu": false,
     "paddinginpixel": false,
+    "postshow": "AS_Form_cb62e9621751426182a4b457429b9f7a",
     "retaincontentalignment": false,
     "retainflexpositionproperties": false,
     "retainscrollposition": false,

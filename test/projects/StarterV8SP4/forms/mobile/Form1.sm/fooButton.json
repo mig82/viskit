@@ -43,6 +43,8 @@
     "isvisible": true,
     "kuid": "d5918e5375384c11945bcdc4b4d69cc7",
     "name": "kony.ui.Button",
+    "onclick": "AS_Button_a8bfa9510246463ab518f540d0279e13",
+    "ontouchend": "AS_Button_icfa4e0af4b54dafb28ac7ca3933e8a0",
     "parent": "Form1",
     "pf": "Form1",
     "retaincontentalignment": false,

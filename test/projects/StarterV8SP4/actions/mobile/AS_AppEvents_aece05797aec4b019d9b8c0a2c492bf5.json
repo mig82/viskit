@@ -1,0 +1,18 @@
+{
+    "AS_AppEvents_aece05797aec4b019d9b8c0a2c492bf5": {
+        "id": "AS_AppEvents_aece05797aec4b019d9b8c0a2c492bf5",
+        "type": "ACTION_SEQUENCE",
+        "params": [{
+            "datatype": "collection",
+            "name": "eventobject"
+        }],
+        "language": "js",
+        "actions": [{
+            "id": "ADD_SNIPPET__d92c812928c347dbbefe2e40db96ee80",
+            "type": "ADD_SNIPPET",
+            "codeSnippet": "kony.print(\"Pre app init\");",
+            "parentId": null,
+            "callbackType": null
+        }]
+    }
+}

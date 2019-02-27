@@ -1,9 +1,13 @@
+"use strict";
+
 var Skin = require("../../../src/core/models/Skin");
 
 describe("\tGiven a path to a skin\n", () => {
 
 	var skinFile1;
-	var projectPathFoo;
+	var projectPathFoo, projectPathBar;
+	var theme1;
+	var relativePath1;
 
 	beforeAll(() => {
 

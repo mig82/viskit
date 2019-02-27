@@ -5,11 +5,11 @@ const colors = require('colors');
 const forOwn = require('lodash.forown');
 
 const Skin = require("../models/Skin");
-const findSkins = require("../operations/find-skins");
+const findSkins = require("../operations/find-skin-files");
 const findWidgets = require("../operations/find-widgets.js");
 
 async function findSkinReferences(projectPath, viewType, channel, viewName, theme, verbose){
-	//TODO: take the theme name as a paramter.
+
 	if(typeof theme === "undefined"){
 		theme = "defaultTheme";
 	}

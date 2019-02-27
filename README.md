@@ -101,7 +101,7 @@ child can be positioned on its own.
 Empty containers may be accidental, although they're sometimes used as separators,
 shadows or place-holders.
 
-## Count Skin uses
+## Count Skin Uses
 
 Count the number of times each skin is used and find broken skin references.
 
@@ -187,6 +187,34 @@ the project is left in an inconsistent state.
 
 This command is useful to find the skins defined for each theme, and so to help
 trouble-shoot such scenarios
+
+## Find Actions
+
+Find event references to actions, *unused* actions and *broken* action references.
+
+    viskit find-actions|fa path/to/workspace/FooApp
+
+In Vis it is possible to link app, form and widget events either to
+functions -in code- or to actions -using the **Action Editor**'s low-code
+capabilities.
+
+When using the latter it is not uncommon for a developer to *link* an
+event to an action and then change their mind and *unlink* it. However,
+when an action is unlinked from an app, form or widget event, the JSON
+file defining the action stays behind.
+
+Disciplined use of your SCM tools should ward against committing these
+unused action JSON files into your codebase. However, it's not uncommon
+for undisciplined developers to simply commit every new file and over
+time accumulate large amounts of these JSON files polluting the
+codebase, making it hard to tell what's in use and what's not, as well
+as to troubleshoot eventual issues and solve merge conflicts.
+
+This command is intended to help you find *unused* action JSON files so
+you can remove them from your codebase.
+
+This command will also find any *broken* references to actions which do not
+exist.
 
 ## Set Vis Version
 
