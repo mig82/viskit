@@ -6,7 +6,7 @@ const theme = require("../core/config/theme.js");
 colors.setTheme(theme);
 
 program
-	.version('1.2.0')
+	.version('1.3.0')
 	.usage('[options] [command]')
 	.option('-v, --verbose', 'output everything');
 
@@ -20,7 +20,7 @@ program
 	.alias("csu");
 
 program
-	.command("find-actions <project>", "Find where each action is used")
+	.command("find-actions <project>", "Find references to actions, unused actions and broken action references")
 	.alias("fa");
 
 program
