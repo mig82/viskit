@@ -1,0 +1,12 @@
+# Ignore all the hidden work directories Vis Starter adds to the workspace.
+/.backup/
+/.cloud/
+/.cordova/
+/.exports/
+/.fp/
+/.imports/
+/.intellisense/
+/.nativebindings/
+/.userlibs/
+/.webapps/
+/__appextensions__/
