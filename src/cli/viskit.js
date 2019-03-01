@@ -2,11 +2,11 @@
 
 const program = require("commander");
 const colors = require("colors");
-const theme = require("../core/config/theme.js");
+const theme = require("../core/config/theme");
 colors.setTheme(theme);
 
 program
-	.version('1.3.1')
+	.version('1.3.2')
 	.usage('[options] [command]')
 	.option('-v, --verbose', 'output everything');
 
