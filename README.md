@@ -6,6 +6,10 @@ A command line helper for Kony Visualizer (from now on Vis) projects.
 Viskit is meant to be a **community project**, not part of the official Kony platform, and so
 it is **NOT supported by Kony in any way.**
 
+# Requirements
+
+This project makes heavy use of `async` functions so it requires Node 7.6 or higher.
+
 # Installation
 
 If you already have NPM installed all you have to do is open a command prompt and run:
