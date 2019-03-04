@@ -42,6 +42,8 @@ The following is a list of features I'd like *Viskit* to address hopefully in th
 
 ## Widgets
 
+* Find unused segment, map and grid calendar templates.
+* Find widgets of a specific type.
 * Find deprecated widgets -e.g. VBox and HBox.
 * Transform deprecated widgets -i.e. Transform VBox and HBox into FlexContainers.
 * Detect widgets with non-mnemonic names -meaning the UUID names give by Visualizer by default.
