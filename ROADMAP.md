@@ -58,3 +58,9 @@ The following is a list of features I'd like *Viskit* to address hopefully in th
 ## Plugin Handling
 
 * Revert back to the plugins backed up by the `svv` command.
+
+## Other
+
+* Push preview reviews to Jira or Trello.
+* Pull information from the app to generate a template README.md
+* Detect code repetition: http://www.harukizaemon.com/simian/index.html
