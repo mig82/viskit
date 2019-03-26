@@ -20,7 +20,7 @@ function findFontFiles(projectPath, channel, verbose){
 		searchPath += "[a-z0-9-_]+\\.(ttf|otf)$";
 	}
 	else {
-		searchPath = "resources/fonts";
+		searchPath = "resources/fonts/";
 		searchPath += channel?channel:".*" + "/[a-z0-9-_]+\\.(ttf|otf)$";
 	}
 

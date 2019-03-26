@@ -64,6 +64,10 @@ program
 	.alias("ivp");
 
 program
+	.command("set-fonts <project>", "Set the font for a theme and channel")
+	.alias("sf");
+
+program
 	.command("set-vis-version <visualizer-path> <project>", "Set the version of the Vis installation to match a given project")
 	.alias("svv");
 
