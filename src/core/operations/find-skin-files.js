@@ -17,7 +17,7 @@ function findSkins(projectPath, themeName, verbose){
 	searchPath += themeName?themeName:".*" + "/.*\\.json$";
 	var searchPathRegex = new RegExp(searchPath);
 
-	if(verbose) console.log(colors.debug("Looking for skins:\n\tRegexp: %s\n\tProject themes: %s"),
+	if(verbose) console.log(colors.debug("Looking for skin files:\n\tRegexp: %s\n\tProject themes: %s"),
 		searchPathRegex,
 		projectRootPath
 	);

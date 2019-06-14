@@ -28,8 +28,8 @@ program
 	.alias("faw");
 
 program
-	.command("find-fonts <project>", "Find and classify fonts and font references in the project structure")
-	.alias("ff");
+	.command("find-font-references <project>", "Find all references to the fonts used in the project")
+	.alias("ffr");
 
 program
 	.command("find-images <project>", "Find and classify images and image references in the project structure")

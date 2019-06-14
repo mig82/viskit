@@ -4,7 +4,7 @@ const program = require("commander");
 const path = require('path');
 const colors = require("colors");
 const forOwn = require('lodash.forown');
-const findFontRefs = require("../core/controllers/find-font-refs");
+const findFontReferences = require("../core/controllers/find-font-refs");
 const theme = require("../core/config/theme.js");
 colors.setTheme(theme);
 const views = require("../core/config/views.js");
@@ -14,19 +14,22 @@ const validateOptions = require("./helpers/validate-options");
 
 program
 	.usage("[options] <project>")
-	.option("-u, --unused-only", "Only show fonts for which no reference has been found")
-	.option(views.cmdTypeOption.flag, views.cmdTypeOption.desc, views.regex)
+	.option("--theme <name>", "The name of the theme for which you wish to search for font references")
+	//TODO: Add an option to filter by widget type.
 	.option(channels.cmdOption.flag, channels.cmdOption.desc, channels.regex)
-	.option(views.cmdNameOption.flag, views.cmdNameOption.desc)
+	.option("--except <font1[,font2...]>", "A comma separated list of the fonts that should not be listed")
 	.option(outputs.cmdOption.flag, outputs.cmdOption.desc, outputs.regex)
 	.action(onAction);
 
 program.on('--help', function(){
 	console.info(colors.info(
 		"\nExamples:\n" +
-		"\tviskit find-fonts path/to/workspace/FooProject\n" +
-		"\tviskit fa path/to/workspace/FooProject --unused-only\n" +
-		"\tviskit fa path/to/workspace/FooProject -u -o r"
+		"\tviskit find-font-references path/to/workspace/FooProject\n" +
+		"\tviskit ffr path/to/workspace/FooProject\n" +
+		"\tviskit ffr path/to/workspace/FooProject --theme Millenials\n" +
+		"\tviskit ffr path/to/workspace/FooProject --channel mobile\n" +
+		"\tviskit ffr path/to/workspace/FooProject --theme Millenials -c tablet\n" +
+		"\tviskit ffr path/to/workspace/FooProject -c desktop --except OpenSans-Regular,OpenSans-Bold,FontAwesome"
 	));
 	console.info(colors.info(
 		"Why?\n\n" +
@@ -46,12 +49,11 @@ async function onAction(project, options){
 
 	validateOptions(options);
 
-	var fontRefs = await findFontRefs(
+	var fontRefs = await findFontReferences(
 		path.resolve(project),
-		options.viewType,
 		options.channel,
-		options.viewName,
-		options.unusedOnly,
+		options.theme,
+		options.except?options.except.split(","):[],
 		process.env.verbose
 	);
 
@@ -60,7 +62,8 @@ async function onAction(project, options){
 	}
 	else{
 		fontRefs.forEach(ref => {
-			console.log(ref);
+			//console.log(ref);
+			outputs.print(options.output, ref, "info");
 		});
 	}
 }

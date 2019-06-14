@@ -3,15 +3,33 @@
 //Private non-static?
 var projectPathRegex = undefined;
 
-function Font(name, format, channel, subChannel, widgetType, relPath, absPath){
+
+/**
+ * Font - description
+ *
+ * @param  {String} name       The name of the font family.
+ * @param  {String} format     description
+ * @param  {String} channel    description
+ * @param  {String} platform   description
+ * @param  {String} widgetType description
+ * @param  {String} relPath    The relative path to the skin JSON file with the reference to this font.
+ * @param  {String} absPath    description
+ * @return {Font}            description
+ */
+function Font(name, format, channel, platform, widgetType, relPath, absPath){
 
 	this.name = name;
 	this.format = format;
 	this.channel = channel;
-	this.subChannel = subChannel;
+	this.platform = platform;
 	this.widgetType = widgetType;
 	this.relPath = relPath;
 	this.absPath = absPath;
+
+	//defaultTheme/tabPressedButtonSkin.json
+	var relPathParts = relPath.split("/");
+	this.theme = relPathParts[0];
+	this.skin = relPathParts[1].split(".")[0];
 }
 
 Font.fromPath = (fontPath, projectPath) => {
@@ -30,29 +48,29 @@ Font.fromPath = (fontPath, projectPath) => {
 	var pathParts = relPath.split('/');
 	//console.log(pathParts);
 
-	var subChannel, channel;
+	var platform, channel;
 	// resources/VisualizerFontIcon.ttf
 	if(pathParts.length === 2){
 		channel = "common";
 	}
 	// resources/fonts/iPhone/Karbon-Regular.ttf
 	else if(pathParts.length === 4){
-		subChannel = pathParts[2];
+		platform = pathParts[2];
 		if(["Android", "iPhone", "SPA Android", "SPA Blackberry",
-			"SPA iPhone", "SPA Windows", "WinPhone8"].indexOf(subChannel) >= 0){
+			"SPA iPhone", "SPA Windows", "WinPhone8"].indexOf(platform) >= 0){
 			channel = "mobile";
 		}
 		else if(["Android Tablet", "iPad", "SPA Android Tablet",
-			"SPA iPad", "SPA Windows Tablet", "Windows8"].indexOf(subChannel) >= 0){
+			"SPA iPad", "SPA Windows Tablet", "Windows8"].indexOf(platform) >= 0){
 			channel = "tablet";
 		}
-		else if("Android Wear OS" === subChannel){
+		else if("Android Wear OS" === platform){
 			channel = "androidwear";
 		}
-		else if("Apple Watch OS" === subChannel){
+		else if("Apple Watch OS" === platform){
 			channel = "watch";
 		}
-		else if(["Desktop_web", "Kiosk"].indexOf(subChannel) >= 0){
+		else if(["Desktop_web", "Kiosk"].indexOf(platform) >= 0){
 			channel = "desktop";
 		}
 	}
@@ -64,7 +82,7 @@ Font.fromPath = (fontPath, projectPath) => {
 	var name = fileParts[0];
 	var format = fileParts[1];
 
-	return new Font(name, format, channel, subChannel, null, relPath, fontPath);
+	return new Font(name, format, channel, platform, null, relPath, fontPath);
 }
 
 Font.setProjectPath = function _setProjectPath(projectPath, force){
@@ -100,8 +118,10 @@ Font.resetProjectPath = function _resetProjectPath(){
 }
 
 Font.prototype.toTabbedString = function _toTabbedString() {
-	var s = `${this.channel}\t${this.file}`;
-	if(this.info) s+= `\t${this.info}`;
+
+	//var s = `${this.channel}\t${this.file}`;
+	//if(this.info) s+= `\t${this.info}`;
+	var s = `${this.channel}\t${this.platform}\t${this.theme}\t${this.skin}\t${this.widgetType}\t${this.name}`;
 	return s;
 };
 
@@ -123,6 +143,10 @@ Font.equals = function _equals(font1, font2){
 }
 
 //Matches any property used for skins to refer to fonts -e.g.: foo/bar/font_name.
-Font.regex = /.*font_.*/i;
+//Font.regex = /.*font_.*/i;
+Font.colorRegex = /.*font_color.*/i;
+Font.familyRegex = /.*font_name.*/i;
+Font.styleRegex = /.*font_style.*/i;
+Font.weightRegex = /.*font_weight.*/i;
 
 module.exports = Font;
