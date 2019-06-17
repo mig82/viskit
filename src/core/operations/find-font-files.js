@@ -16,7 +16,7 @@ function findFontFiles(projectPath, channel, verbose){
 	var searchPath;
 
 	if(channel === "common"){
-		searchPath = "resources/";
+		searchPath = "resources/fonts/.*/";
 		searchPath += "[a-z0-9-_]+\\.(ttf|otf)$";
 	}
 	else {
