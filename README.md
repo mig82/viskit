@@ -216,6 +216,21 @@ you can remove them from your codebase.
 This command will also find any *broken* references to actions which do not
 exist.
 
+## Find Font References
+
+Find all references to the fonts used in the project.
+
+    viskit find-font-references|ffr path/to/workspace/FooApp --theme fooTheme
+
+Any given project will typically have its own style guide specifying every aspect of the
+application's look & feel. The typography — i.e. the font family to be used — is one of such
+aspects. However, it's not uncommon for development teams working on large projects to miss
+a label here and a button there which are not using the required font family.
+
+This command will help you scan your project to find which fonts you are actually using and
+where, so you'll be able to quickly identify if there are any widgets where you're using
+the wrong typography.
+
 ## Set Vis Version
 
 Set the version of a Vis installation to match a given project.

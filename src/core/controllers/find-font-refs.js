@@ -10,6 +10,7 @@ const findSkinFonts = require("../operations/find-skin-fonts");
 
 async function findFontReferences(projectPath, channel, theme, except, verbose){
 
+	//TODO: Create another command option to find font files and read the font names from them.
 	/*var fontsFiles = await findFontFiles(projectPath, "common", verbose);
 	var existingFonts = fontsFiles.map(fontFile => {
 		return fontFile.name;
