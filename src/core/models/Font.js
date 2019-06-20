@@ -16,9 +16,14 @@ var projectPathRegex = undefined;
  * @param  {String} absPath    description
  * @return {Font}            description
  */
-function Font(name, format, channel, platform, widgetType, relPath, absPath){
+function Font(name, color, style, size, weight, format, channel, platform, widgetType, relPath, absPath){
 
 	this.name = name;
+	this.color = color;
+	this.style = style;
+	this.size = size;
+	this.weight = weight;
+
 	this.format = format;
 	this.channel = channel;
 	this.platform = platform;
@@ -82,7 +87,19 @@ Font.fromPath = (fontPath, projectPath) => {
 	var name = fileParts[0];
 	var format = fileParts[1];
 
-	return new Font(name, format, channel, platform, null, relPath, fontPath);
+	return new Font(
+		name,
+		null, //color,
+		null, //style,
+		null, //size,
+		null, //weight,
+		format,
+		channel,
+		platform,
+		null,
+		relPath,
+		fontPath
+	);
 }
 
 Font.setProjectPath = function _setProjectPath(projectPath, force){
@@ -121,7 +138,8 @@ Font.prototype.toTabbedString = function _toTabbedString() {
 
 	//var s = `${this.channel}\t${this.file}`;
 	//if(this.info) s+= `\t${this.info}`;
-	var s = `${this.channel}\t${this.platform}\t${this.theme}\t${this.skin}\t${this.widgetType}\t${this.name}`;
+	var s = `${this.channel}\t${this.platform}\t${this.theme}\t${this.skin}\t${this.widgetType}`;
+	s += `\t${this.name}\t${this.color}\t${this.style}\t${this.size}\t${this.weight}`;
 	return s;
 };
 

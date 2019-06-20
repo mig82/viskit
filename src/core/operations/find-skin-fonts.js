@@ -36,55 +36,78 @@ async function findSkinFonts(projectPath, channel, theme, except, verbose){
 
 	for(const skin of skins){
 		var json = await fs.readJson(skin.absPath);
-		json = flattenObject(json);
+		//json = flattenObject(json);
 		//if(verbose)console.log("Flattened skin:\n%o".debug, json);
 
+		/*Get the font properties at the root.
+			"font_name": "Helvetica",
+			"font_color": "000000ff",
+			"font_size": 118,
+			"font_style": "normal",
+			"font_weight": "normal"
+		*/
+
+		//Capture whether the font size is specified in px or %.
+		var units = json.fontSizeInPx?"px":"%";
+
+		if(json.font_name && except.indexOf(json.font_name) < 0){
+			var baseFont = new Font(
+				json.font_name,
+				json.font_color,
+				`${json.font_size}${units}`,
+				json.font_style,
+				json.font_weight,
+				null, //format
+				"common", //channel
+				"common", //platform
+				json.wType, //widgetType
+				skin.relPath.split("/").slice(1).join("/"), //defaultTheme/redFlexSkin.json
+				skin.absPath
+			);
+			if(verbose)console.log("Found font ref match in skin at %s: %o".debug, skin.relPath, baseFont);
+			skinFonts.push(baseFont);
+		}
+
 		forOwn(json, (value, key) => {
-			if(typeof value === "string" && Font.familyRegex.test(key)){
+
+			//Get the fonts for each specific channel.
+			if(typeof value === "object" //An object representing the skin's properties for a platform.
+				&& value.font_name
+				&& !/None/i.test(value.font_name) //Some font_name values are set to None.
+				&& value.isForked //If not forked, then the base font is in use and this object is not relevant.
+			){
 				//if(verbose)console.log("Found font ref in skin at %s/%s: %s".debug, skin.relPath, key, value);
 
 				// Let's keep record of all the platforms found so that if these values change in the future it
 				// will be easier to debug why we can't find what we're looking for.
-				var platform = "";
-				var keyParts = key.split("/");
-				//The key will either be font_name of [channel]/font_name -e.g. ipad/font_name
-				switch (keyParts.length) {
-					case 1:
-						platform = "common"
-						break;
-					case 2:
-						platform = keyParts[0];
-						break;
-					default:
-						console.log(`Unrecognised font property '${key}'`.error);
-						platform = keyParts[0];
-				}
-				platforms.add(platform);
+				// The key will be ipad, spawinphone8, spaan, etc.
+				platforms.add(key);
 
-				var fontChannel = getChannelFromPlatform(platform);
-				if ( (channel === "common" || fontChannel === channel) && except.indexOf(value)<0 ){
-					if(verbose)console.log("Found font ref match in skin at %s/%s: %s".debug, skin.relPath, key, value);
-					/*skinFonts.push({
-						skin: skin.relPath.split("/").slice(1).join("/"),
-						wType: json.wType,
-						channel: fontChannel, //mobile|tablet|watch|androidwear|desktop
-						platform: platform, //android|kiosk|spaan|spaandroidtablet etc.
-						font: value
-					});*/
-					skinFonts.push(new Font(
-						value, //font family name
+				var fontChannel = getChannelFromPlatform(key);
+				if ( (channel === "common" || fontChannel === channel) && except.indexOf(value) < 0 ){
+					if(verbose)console.log("Found font ref match in skin at %s/%s: %o".debug, skin.relPath, key, value);
+
+					var font = new Font(
+						value.font_name,
+						value.font_color,
+						`${value.font_size}${units}`,
+						value.font_style,
+						value.font_weight,
 						null, //format
 						fontChannel,
-						platform,
+						key, //platform
 						json.wType,
 						skin.relPath.split("/").slice(1).join("/"), //defaultTheme/redFlexSkin.json
 						skin.absPath
-					));
+					);
+					//if(verbose)console.log("Found font ref match in skin at %s/%s: %o".debug, skin.relPath, key, font);
+
+					skinFonts.push(font);
 				}
 			}
 		});
 	}
-	console.log(`This project has fonts for the following platforms: ${JSON.stringify(Array.from(platforms))}`.warn);
+	if(verbose)console.log(`Platforms found: ${JSON.stringify(Array.from(platforms))}`.debug);
 	return skinFonts;
 }
 
