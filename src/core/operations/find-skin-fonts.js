@@ -51,6 +51,7 @@ async function findSkinFonts(projectPath, channel, theme, except, verbose){
 		var units = json.fontSizeInPx?"px":"%";
 
 		if(json.font_name && except.indexOf(json.font_name) < 0){
+
 			var baseFont = new Font(
 				json.font_name,
 				json.font_color,
@@ -84,7 +85,10 @@ async function findSkinFonts(projectPath, channel, theme, except, verbose){
 				platforms.add(key);
 
 				var fontChannel = getChannelFromPlatform(key);
-				if ( (channel === "common" || fontChannel === channel) && except.indexOf(value) < 0 ){
+
+				//console.log(`${except} ${value.font_name} ${except.indexOf(value.font_name)}`)
+
+				if ( (channel === "common" || fontChannel === channel) && except.indexOf(value.font_name) < 0 ){
 					if(verbose)console.log("Found font ref match in skin at %s/%s: %o".debug, skin.relPath, key, value);
 
 					var font = new Font(
