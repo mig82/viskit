@@ -24,9 +24,9 @@ const hexToDecimal = require("../helpers/hex-to-decimal");
 function Font(name, color, style, size, weight, format, channel, platform, widgetType, relPath, absPath){
 
 	this.name = name;
-	this.color = color?"#"+color.substring(0,6):null;
+	this.color = color?"#"+color.substring(0,6):undefined;
 
-	var alpha = color?color.substring(6):null;
+	var alpha = color?color.substring(6):undefined;
 	if(alpha){
 		var decAlpha = hexToDecimal(alpha);
 		this.opacity = `α${Math.round(decAlpha*100/255)}%`;

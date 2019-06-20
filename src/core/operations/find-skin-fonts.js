@@ -71,13 +71,14 @@ async function findSkinFonts(projectPath, channel, theme, except, verbose){
 
 		forOwn(json, (value, key) => {
 
+			//if(typeof value === "object" && value.font_name){console.log("Found font ref in skin at %s/%s: %o", skin.relPath, key, value);}
+
 			//Get the fonts for each specific channel.
 			if(typeof value === "object" //An object representing the skin's properties for a platform.
 				&& value.font_name
-				&& !/None/i.test(value.font_name) //Some font_name values are set to None.
-				&& value.isForked //If not forked, then the base font is in use and this object is not relevant.
+				//&& !/None/i.test(value.font_name) //Some font_name values are set to None.
+				//&& value.isForked //If not forked, then the base font is in use and this object is not relevant.
 			){
-				//if(verbose)console.log("Found font ref in skin at %s/%s: %s".debug, skin.relPath, key, value);
 
 				// Let's keep record of all the platforms found so that if these values change in the future it
 				// will be easier to debug why we can't find what we're looking for.
