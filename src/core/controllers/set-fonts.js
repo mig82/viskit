@@ -21,6 +21,7 @@ async function setFonts(font, projectPath, channel, theme, fontsWhitelist, force
 	if(typeof theme === "undefined"){
 		theme = "defaultTheme";
 	}
+	console.log("channel:"+channel)
 
 	//Find all the skin files which we'll have to update.
 	var skinFiles = await findSkinFiles(projectPath, theme, verbose);
@@ -31,6 +32,21 @@ async function setFonts(font, projectPath, channel, theme, fontsWhitelist, force
 
 		//Read the skin's JSON file.
 		var json = await fs.readJson(skinFile.absPath);
+
+		//console.log(json.font_name)
+		if(typeof channel === "undefined" || channel === "common" //If common or not passed
+		&& font !== json.font_name //And if the font is not already the one we want to set.
+		&& fontsWhitelist.indexOf(json.font_name) < 0 ){ //And if the font is not white-listed.
+
+			//Then set the default font at the root of the skin.
+			if(verbose)console.log((`Setting ${skinFile.theme}/${skinFile.name}`+
+				`\tplatform:common`+
+				`\ttype:${json.wType}`+
+				`\tfrom:${json.font_name}`+
+				`\tto:${font}`).debug);
+			json.font_name = font;
+			dirty = true; //Write to file only if one or more platform fonts are set.
+		}
 
 		//Get the fonts for each specific channel.
 		forOwn(json, (value, key) => {
@@ -44,6 +60,7 @@ async function setFonts(font, projectPath, channel, theme, fontsWhitelist, force
 				&& font !== value.font_name //And if the font is not already the one we want to set.
 				&& fontsWhitelist.indexOf(value.font_name) < 0 ){ //And if the font is not white-listed.
 
+					//Then set the font for the specific platform.
 					if(verbose)console.log((`Setting ${skinFile.theme}/${skinFile.name}`+
 						`\tplatform:${key}`+
 						`\ttype:${json.wType}`+

@@ -50,7 +50,7 @@ async function findSkinFonts(projectPath, channel, theme, except, verbose){
 		//Capture whether the font size is specified in px or %.
 		var units = json.fontSizeInPx?"px":"%";
 
-		if(json.font_name && except.indexOf(json.font_name) < 0){
+		if((typeof channel === "undefined" || channel === "common") && json.font_name && except.indexOf(json.font_name) < 0){
 
 			var baseFont = new Font(
 				json.font_name,
