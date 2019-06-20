@@ -69,16 +69,12 @@ async function findSkinFonts(projectPath, channel, theme, except, verbose){
 			skinFonts.push(baseFont);
 		}
 
+		//Get the fonts for each specific channel.
 		forOwn(json, (value, key) => {
+			/* Where the key is something like spaip, spaan, desktopweb, etc,
+			* and value is the object that holds font_name, font_color and the other font properties*/
 
-			//if(typeof value === "object" && value.font_name){console.log("Found font ref in skin at %s/%s: %o", skin.relPath, key, value);}
-
-			//Get the fonts for each specific channel.
-			if(typeof value === "object" //An object representing the skin's properties for a platform.
-				&& value.font_name
-				//&& !/None/i.test(value.font_name) //Some font_name values are set to None.
-				//&& value.isForked //If not forked, then the base font is in use and this object is not relevant.
-			){
+			if(typeof value === "object" && value.font_name){
 
 				// Let's keep record of all the platforms found so that if these values change in the future it
 				// will be easier to debug why we can't find what we're looking for.
