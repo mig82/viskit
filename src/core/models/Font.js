@@ -2,12 +2,17 @@
 
 //Private non-static?
 var projectPathRegex = undefined;
+const hexToDecimal = require("../helpers/hex-to-decimal");
 
 
 /**
  * Font - description
  *
- * @param  {String} name       The name of the font family.
+ * @param  {String} name       description
+ * @param  {String} color      The RGBA hexadecimal color code ff0000ff for 100% opaque red.
+ * @param  {String} style      description
+ * @param  {String} size       description
+ * @param  {String} weight     description
  * @param  {String} format     description
  * @param  {String} channel    description
  * @param  {String} platform   description
@@ -19,7 +24,14 @@ var projectPathRegex = undefined;
 function Font(name, color, style, size, weight, format, channel, platform, widgetType, relPath, absPath){
 
 	this.name = name;
-	this.color = color;
+	this.color = color?"#"+color.substring(0,6):null;
+
+	var alpha = color?color.substring(6):null;
+	if(alpha){
+		var decAlpha = hexToDecimal(alpha);
+		this.opacity = `α${Math.round(decAlpha*100/255)}%`;
+	}
+
 	this.style = style;
 	this.size = size;
 	this.weight = weight;
@@ -139,7 +151,7 @@ Font.prototype.toTabbedString = function _toTabbedString() {
 	//var s = `${this.channel}\t${this.file}`;
 	//if(this.info) s+= `\t${this.info}`;
 	var s = `${this.channel}\t${this.platform}\t${this.theme}\t${this.skin}\t${this.widgetType}`;
-	s += `\t${this.name}\t${this.color}\t${this.style}\t${this.size}\t${this.weight}`;
+	s += `\t${this.name}\t${this.color}\t${this.opacity}\t${this.style}\t${this.size}\t${this.weight}`;
 	return s;
 };
 
