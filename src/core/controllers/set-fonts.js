@@ -6,44 +6,70 @@ const forOwn = require('lodash.forown');
 
 const findFontFiles = require("../operations/find-font-files");
 const findSkinFiles = require("../operations/find-skin-files");
+const getChannelFromPlatform = require("../config/channels").getChannelFromPlatform;
 
-async function setFonts(font, projectPath, channel, theme, fontsWhitelist, verbose){
+async function setFonts(font, projectPath, channel, theme, fontsWhitelist, force, verbose){
 	//console.log(`Channel: ${channel}`)
-	console.log(`Except: ${fontsWhitelist}`)
-	var fontsFiles = await findFontFiles(projectPath, channel?channel:"common", verbose);
+	if(verbose)console.log(`Excepted fonts: ${JSON.stringify(fontsWhitelist)}`.debug);
+
+	/*var fontsFiles = await findFontFiles(projectPath, channel?channel:"common", verbose);
 	var existingFonts = fontsFiles.map(fontFile => {
 		return fontFile.name;
 	});
-	if(verbose)console.log(`Font files found: ${JSON.stringify(existingFonts)}`.debug);
+	if(verbose)console.log(`Font files found: ${JSON.stringify(existingFonts)}`.debug);*/
 
 	if(typeof theme === "undefined"){
 		theme = "defaultTheme";
 	}
 
-	if(channel === "desktop"){
-		channel = "desktopweb";
-	}
+	//Find all the skin files which we'll have to update.
 	var skinFiles = await findSkinFiles(projectPath, theme, verbose);
+
 	for (var skinFile of skinFiles) {
+
+		var dirty = false;
+
+		//Read the skin's JSON file.
 		var json = await fs.readJson(skinFile.absPath);
-		if(channel){
-			if(json[channel] && json[channel].font_name && fontsWhitelist.indexOf(json[channel].font_name) < 0){
-				if(verbose)console.log(`Setting skin: ${skinFile.relPath}\ttype: ${json.wType}\tfont: ${json[channel].font_name}`);
-				json[channel].font_name = font;
-				try{
-					await fs.writeJson(skinFile.absPath, json, {
-						spaces: 2
-					});
-				}
-				catch(e){
-					console.error(`Error updating skin file ${skinFile.relPath}: ${e}`.error);
+
+		//Get the fonts for each specific channel.
+		forOwn(json, (value, key) => {
+			/* Where the key is something like spaip, spaan, desktopweb, etc,
+			* and value is the object that holds font_name, font_color and the other font properties*/
+
+			if(typeof value === "object" && value.font_name){
+
+				if ( (typeof channel === "undefined" //If no channel was specified
+				|| channel === getChannelFromPlatform(key)) //Or if the channel specified matches the skin platform
+				&& font !== value.font_name //And if the font is not already the one we want to set.
+				&& fontsWhitelist.indexOf(value.font_name) < 0 ){ //And if the font is not white-listed.
+
+					if(verbose)console.log((`Setting ${skinFile.theme}/${skinFile.name}`+
+						`\tplatform:${key}`+
+						`\ttype:${json.wType}`+
+						`\tfrom:${json[key].font_name}`+
+						`\tto:${font}`).debug);
+					json[key].font_name = font;
+					dirty = true; //Write to file only if one or more platform fonts are set.
 				}
 			}
-		}
-		else{
-			//TODO: forOwn()
-		}
+		});
 
+		if(dirty && force){
+			//if(verbose)console.log(`Updating ${skinFile.relPath}`.debug);
+			try{
+				await fs.writeJson(skinFile.absPath, json, {
+					spaces: 2
+				});
+				//if(verbose)console.log(`Updated ${skinFile.relPath}`.debug);
+			}
+			catch(e){
+				console.error(`Error updating skin file ${skinFile.relPath}: ${e}`.error);
+			}
+		}
+		else if(dirty){ // and !force
+			//if(verbose)console.log(`Will not update without force option`.debug);
+		}
 	}
 
 
