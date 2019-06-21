@@ -31,22 +31,36 @@ resources/customlibs/lib/windows10/
 resources/customlibs/lib/winphone10/
 
 # Other Visualizer auto-generated files.
-/.webmeta
 /.meta
-middleware.properties
+/middleware.properties
+
+# IMPORTANT: This must NEVER be placed in SCM because it stores the app's key and secret.
+/mBaas.properties
 
 # Visualizer headless build configuration files
 HeadlessBuild.properties
 HeadlessBuild-Global.properties
 
-# Out-of-the-box NFI bindings for Sync
-/nativeapi.json
+# Do not ignore this file. It stores mappings for all NFI's. The out-of-the-box
+# NFI's can be regenerated during build, but the user-defined ones can't, so this
+# file is necessary if the project uses user-defined NFI's.
+!/nativeapi.json
+
+# Out-of-the-box NFI bindings for the standard SDK.
 /nativebindings/Android/*/Kony_SDKCommons-Android-*.zip
+/nativebindings/iOS/*/Kony_SDKCommons-iOS-*.zip
+
+# Out-of-the-box NFI bindings for Sync
 /nativebindings/Android/*/Kony_SyncV2-Android-*.zip
 /nativebindings/Android/*/Kony_SyncV2-Android-*/tern.json
-/nativebindings/iOS/*/Kony_SDKCommons-iOS-*.zip
 /nativebindings/iOS/*/Kony_SyncV2-iOS-*.zip
 /nativebindings/iOS/*/Kony_SyncV2-iOS-*/tern.json
+
+# Out-of-the-box NFI bindings for File Storage, from v8 SP4 onwards
+/nativebindings/Android/*/Kony_FileStorage-Android-*.zip
+/nativebindings/Android/*/Kony_FileStorage-Android-*/tern.json
+/nativebindings/iOS/*/Kony_FileStorage-iOS-*.zip
+/nativebindings/iOS/*/Kony_FileStorage-iOS-*/tern.json
 
 # Out-of-the-box Kony SDK Commons
 /nativebindings/Android/4.0/Kony_SDKCommons-Android-*
@@ -113,6 +127,11 @@ resources/customlibs/jsXml/binary.util.xml
 resources/customlibs/jsXml/binarydata.js
 resources/customlibs/jsXml/binarydata.xml
 
+# Offline objects stuff
+resources/customlibs/jsSrc/*/WindowsOfflineObjects.*
+resources/customlibs/jsXml/*/WindowsOfflineObjects.*
+resources/customlibs/lib/sdkcommon/offlineobjects.zip
+
 # Auto-generated project setting files. Generated the first time you save project settings, even if no changes were made.
 /_clouddata/
 /appSettings.xml
@@ -126,6 +145,12 @@ syncclientcode.zip
 
 # Log files
 *.log
+
+# App preview and Vis review annotations
+/annotations
+
+# Vis copies every font from every channel to the fonts root folder at build time.
+/resources/*.ttf
 
 # Viskit code review tool. Read more at https://www.npmjs.com/package/viskit
 /.viskit
