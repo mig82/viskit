@@ -1,0 +1,67 @@
+{
+    "@class": "com.kony.gen.viz.model.component.KVizTextBox2",
+    "DNDConfig": null,
+    "__parentReadjusting__": false,
+    "_height_": {
+        "type": "string",
+        "value": "40dp"
+    },
+    "_left_": {
+        "type": "string",
+        "value": "35dp"
+    },
+    "_margin_": [
+        0,
+        0,
+        0,
+        0
+    ],
+    "_padding_": [
+        3,
+        0,
+        0,
+        0
+    ],
+    "_placeholder_": "Placeholder",
+    "_skin_": "s5c4a3f3ceca4767b3915ead794a8d51",
+    "_text_": "",
+    "_top_": {
+        "type": "string",
+        "value": "270dp"
+    },
+    "_width_": {
+        "type": "string",
+        "value": "300dp"
+    },
+    "autocapitalize": "none",
+    "autocomplete": false,
+    "autocorrect": false,
+    "autofilter": false,
+    "canUpdateUI": true,
+    "containerheight": "",
+    "containerheightmode": 1,
+    "containerweight": 100,
+    "contentalignment": 4,
+    "focusskin": "s2ebfdd773d1415abca680c1bfc0ffc9",
+    "id": "fooTextField",
+    "info": null,
+    "iphone": {},
+    "iscustomlayout": false,
+    "isvisible": true,
+    "keyboardtype": "A",
+    "kuid": "e3df22c98d6c4fd0a22d0a9230dbd09b",
+    "mode": "A",
+    "name": "kony.ui.TextBox2",
+    "ondone": "AS_TextField_i652a4d48c7f4db9a030a23d1ba215cf",
+    "parent": "Form1",
+    "pf": "Form1",
+    "placeholderskin": "s2ebfdd773d1415abca680c1bfc0ffc9",
+    "retaincontentalignment": false,
+    "retainflexpositionproperties": false,
+    "securetextentry": false,
+    "textinputmode": "A",
+    "tooltip": "",
+    "viewtype": "default",
+    "wType": "TextField",
+    "zindex": 1
+}
