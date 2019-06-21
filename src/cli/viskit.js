@@ -6,7 +6,7 @@ const theme = require("../core/config/theme");
 colors.setTheme(theme);
 
 program
-	.version('1.3.3')
+	.version('1.4')
 	.usage('[options] [command]')
 	.option('-v, --verbose', 'output everything');
 
@@ -26,6 +26,10 @@ program
 program
 	.command("find-autogrow-widgets <project>", "Find any widgets with undefined or preferred width or height")
 	.alias("faw");
+
+program
+	.command("find-font-references <project>", "Find all references to the fonts used in the project")
+	.alias("ffr");
 
 program
 	.command("find-images <project>", "Find and classify images and image references in the project structure")
@@ -58,6 +62,10 @@ program
 program
 	.command("is-vis-project <project>", "Determine whether a given directory is the root of a Vis project")
 	.alias("ivp");
+
+program
+	.command("set-fonts <project>", "Set the font for a theme and channel")
+	.alias("sf");
 
 program
 	.command("set-vis-version <visualizer-path> <project>", "Set the version of the Vis installation to match a given project")

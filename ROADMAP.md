@@ -4,7 +4,6 @@ The following is a list of features I'd like *Viskit* to address hopefully in th
 
 ## Actions
 
-* Find unused actions -meaning actions which are part of the project structure but are not pointed to by any app, form or widget event.
 * Find actions with non-mnemonic names -meaning actions with the UUID names that Visualizer gives them by default.
 * Rename actions to human-readable mnemonic names -so that developers can better tell what those actions are for when looking at the project structure.
 
@@ -43,14 +42,14 @@ The following is a list of features I'd like *Viskit* to address hopefully in th
 
 ## Widgets
 
+* Find unused segment, map and grid calendar templates.
+* Find widgets of a specific type.
 * Find deprecated widgets -e.g. VBox and HBox.
 * Transform deprecated widgets -i.e. Transform VBox and HBox into FlexContainers.
 * Detect widgets with non-mnemonic names -meaning the UUID names give by Visualizer by default.
 
 ## Skins
 
-* Detect unused skins.
-* Detect different count of skins across themes
 * Whitelist color, to define the project's color palette.
 * Detect unsanctioned colors -meaning any font, border, background or font color other than the whitelisted ones.
 * Detect skins that may be duplicates, equal or very similar in every way, except name.
@@ -59,3 +58,9 @@ The following is a list of features I'd like *Viskit* to address hopefully in th
 ## Plugin Handling
 
 * Revert back to the plugins backed up by the `svv` command.
+
+## Other
+
+* Push preview reviews to Jira or Trello.
+* Pull information from the app to generate a template README.md
+* Detect code repetition: http://www.harukizaemon.com/simian/index.html
