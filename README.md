@@ -223,13 +223,34 @@ Find all references to the fonts used in the project.
     viskit find-font-references|ffr path/to/workspace/FooApp --theme fooTheme
 
 Any given project will typically have its own style guide specifying every aspect of the
-application's look & feel. The typography — i.e. the font family to be used — is one of such
-aspects. However, it's not uncommon for development teams working on large projects to miss
-a label here and a button there which are not using the required font family.
+application's look & feel. The font family to be used is one of such aspects. However, it's
+not uncommon for development teams working on large projects to miss a label here and a button
+there which are not using the required font family.
 
 This command will help you scan your project to find which fonts you are actually using and
 where, so you'll be able to quickly identify if there are any widgets where you're using
 the wrong typography.
+
+## Set Fonts
+
+    viskit set-fonts|sf OpenSans-Regular path/to/workspace/FooApp --except OpenSans-Bold,FontAwesome
+
+Any given project will typically have its own style guide specifying every aspect of the
+application's look & feel. The font family to be used is one of such aspects. However, it's
+not uncommon for development teams working on large projects to miss a label here and a button
+there which are not using the required font family.
+
+This command allows you to do bulk updates of all the skins in your project to set them to the
+desired font family. You should use it to set the default font for all your skins and use the
+`--except` option to avoid changing any icon fonts as well as fonts which you know are already
+correct —e.g.: If you've already set some fonts to OpenSans-Bold and want all others set to
+OpenSans-Regular.
+
+You should use it along with the `find-font-references` command to query what fonts you have,
+make the necessary changes and then query the results.
+
+**Note** that by default the command runs in *dry-run mode*. Meaning it only tells you what it would do
+but does not really do it unless you use the `--force` option.
 
 ## Set Vis Version
 

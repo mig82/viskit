@@ -35,9 +35,9 @@ program.on('--help', function(){
 		"Why?\n\n" +
 
 		"Any given project will typically have its own style guide specifying every aspect of the\n" +
-		"application's look & feel. The typography — i.e. the font family to be used — is one of such\n" +
-		"aspects. However, it's not uncommon for development teams working on large projects to miss\n" +
-		"a label here and a button there which are not using the required font family.\n\n" +
+		"application's look & feel. The font family to be used is one of such aspects. However, it's\n" +
+		"not uncommon for development teams working on large projects to miss a label here and a button\n" +
+		"there which are not using the required font family.\n\n" +
 
 		"This command will help you scan your project to find which fonts you are actually using and\n" +
 		"where, so you'll be able to quickly identify if there are any widgets where you're using\n" +

@@ -25,14 +25,28 @@ program.on('--help', function(){
 	console.info(colors.info(
 		"\nExamples:\n" +
 		"\tviskit set-fonts OpenSans-Regular path/to/workspace/FooProject\n" +
-		"\tviskit sf OpenSans-Regular path/to/workspace/FooProject --theme defaultTheme --except FontAwesome\n" +
-		"\tviskit sf OpenSans-Regular path/to/workspace/FooProject --theme Millennials --except FontAwesome,VisualizerFontIcon\n"
+		"\tviskit sf OpenSans-Regular path/to/workspace/FooProject --theme Millennials --except FontAwesome\n" +
+		"\tviskit sf OpenSans-Regular path/to/workspace/FooProject --channel mobile --except OpenSans-Bold,FontAwesome\n" +
+		"\tviskit sf OpenSans-Regular path/to/workspace/FooProject -c desktop --except OpenSans-Bold,FontAwesome --force\n"
 	));
 	console.info(colors.info(
 		"Why?\n\n" +
 
-		"...\n" +
-		"...\n\n"
+		"Any given project will typically have its own style guide specifying every aspect of the\n" +
+		"application's look & feel. The font family to be used is one of such aspects. However, it's\n" +
+		"not uncommon for development teams working on large projects to miss a label here and a button\n" +
+		"there which are not using the required font family.\n\n" +
+
+		"This command allows you to do bulk updates of all the skins in your project to set them to the\n" +
+		"desired font family. You should use it to set the default font for all your skins and use the \n" +
+		"--except".emphasis + " option to avoid changing any icon fonts as well as fonts which you know are already\n" +
+		"correct —e.g.: If you've already set some fonts to OpenSans-Bold and want all others set to\nOpenSans-Regular.\n\n" +
+
+		"You should use it along with the " + "find-font-references".emphasis +" command to query what fonts you have,\n" +
+		"make the necessary changes and then query the results.\n\n" +
+
+		"Note".bold + " that by default the command runs in dry-run mode. Meaning it only tells you what it would do\n" +
+		"but does not really do it unless you use the " + "--force".emphasis + " option.\n\n"
 	));
 });
 
@@ -63,7 +77,7 @@ async function onAction(font, project, options){
 	}
 	else{
 		results.forEach(ref => {
-			console.log(ref);
+			console.log(ref.message[ref.color]);
 		});
 	}
 }
