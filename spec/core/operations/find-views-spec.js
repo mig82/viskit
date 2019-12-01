@@ -16,7 +16,9 @@ describe("\tGiven a project\n", () => {
 		allForms = [
 			"forms/mobile/Form1.sm/Form1.json",
 			"forms/mobile/journeyA/Form2.sm/Form2.json",
-			"forms/mobile/journeyA/journeyA1/Form3.sm/Form3.json"
+			"forms/mobile/journeyA/journeyA1/Form3.sm/Form3.json",
+			"forms/mobile/journeyA/journeyA1/Form4.sm/Form4.json",
+			"forms/mobile/journeyB/Form5.sm/Form5.json"
 		];
 
 		allTemplates = [
