@@ -31,6 +31,7 @@ describe("\tGiven a project\n", () => {
 		];
 
 		allComponents = [
+			"userwidgets/com.mig82.viskit.BarComponent/userwidgetmodel.sm/userwidgetmodel.json",
 			"userwidgets/com.mig82.viskit.FooComponent/userwidgetmodel.sm/userwidgetmodel.json"
 		];
 
