@@ -64,7 +64,7 @@ program
 	.alias("ivp");
 
 program
-	.command("set-fonts <project>", "Set the font for a theme and channel")
+	.command("set-fonts <project>", "Set the font for all skins in a theme and channel")
 	.alias("sf");
 
 program
