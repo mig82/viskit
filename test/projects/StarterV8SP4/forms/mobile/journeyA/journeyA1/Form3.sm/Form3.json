@@ -29,7 +29,9 @@
         "needAppMenu": false
     },
     "canUpdateUI": true,
-    "children": [],
+    "children": [
+        "FooComponent"
+    ],
     "containerweight": 100,
     "controllerInfo": {
         "default": {

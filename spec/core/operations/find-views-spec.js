@@ -28,8 +28,12 @@ describe("\tGiven a project\n", () => {
 			"templates/tablet/segments/SampleSectionHeaderTemplate.sm/SampleSectionHeaderTemplate.json"
 		];
 
-		//TODO: Add pop-ups and components.
-		allViews = allForms.concat(allTemplates);
+		allComponents = [
+			"userwidgets/com.mig82.viskit.FooComponent/userwidgetmodel.sm/userwidgetmodel.json"
+		];
+
+		//TODO: Add pop-ups. They're no longer supported, but older projects may still use them.
+		allViews = allForms.concat(allTemplates).concat(allComponents);
 
 	});
 
@@ -50,5 +54,13 @@ describe("\tGiven a project\n", () => {
 			var views = await findViews(projectPath, "forms");
 			var viewRelPaths = views.map((view) => {return view.relPath});
 			expect(viewRelPaths).toEqual(allForms);
+	});
+
+	it( "\tWhen we search for views specifying type 'component'\n" +
+		"\tThen we get the full list of all the components", async () => {
+
+			var views = await findViews(projectPath, "userwidgets");
+			var viewRelPaths = views.map((view) => {return view.relPath});
+			expect(viewRelPaths).toEqual(allComponents);
 	});
 });
