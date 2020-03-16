@@ -56,11 +56,15 @@ program
 	.alias("fw");
 
 program
-	.command("get-project-version <project>", "Retrieves the version of a project")
+	.command("get-project-version <project>", "Retrieves the version of a Vis Classic project")
 	.alias("gpv");
 
 program
-	.command("is-vis-project <project>", "Determine whether a given directory is the root of a Vis project")
+	.command("get-quantum-version <project>", "Retrieves the version of a Vis Quantum project")
+	.alias("gqv");
+
+program
+	.command("is-classic-project <project>", "Determine whether a given directory is the root of a Vis project")
 	.alias("ivp");
 
 program

@@ -3,7 +3,8 @@
 const program = require("commander");
 const path = require('path');
 const colors = require("colors");
-const isVisEntProject = require("../core/controllers/is-vis-project");
+const outputs = require("../reporters/console");
+const getProjectVersion = require("../core/controllers/get-quantum-version");
 const theme = require("../core/config/theme.js");
 colors.setTheme(theme);
 
@@ -11,19 +12,21 @@ colors.setTheme(theme);
 
 program
 	.usage("[options] <project>")
+	.option(outputs.cmdOption.flag, outputs.cmdOption.desc, outputs.regex)
 	.action(onAction);
 
 program.on('--help', function(){
 	console.log(colors.info(
 		"\nExamples:\n" +
-		"\tviskit is-vis-project path/to/workspace/FooProject\n" +
-		"\tviskit ivp path/to/workspace/FooProject\n"
+		"\tviskit get-quantum-version path/to/workspace/FooProject\n" +
+		"\tviskit gqv path/to/workspace/FooProject\n"
 	));
 	console.log(colors.info(
 		"Why?\n\n" +
 
-		"This is mostly a utility command on top of which others are built. It simply determines\n" +
-		"whether the given path points to the root directory of a Visualizer project or not.\n"
+		"This helps you determine which Vis Quantum version you would need in order to \n" +
+		"open a project "+"without".emphasis+" upgrading it. This is specially relevant when\n" +
+		"multiple developers must collaborate on a project.\n\n"
 	));
 });
 
@@ -35,18 +38,18 @@ if (!process.argv.slice(2).length) {
 
 async function onAction(project, options){
 
-	var isProject = await isVisEntProject(
+	var projectVersion = await getProjectVersion(
 		path.resolve(project),
 		process.env.verbose
 	);
 
 	if(options.output === "j"){
 		console.log(JSON.stringify({
-			isProject: isProject
+			version: projectVersion
 		}));
 	}
 	else{
-		console.info("%s".info, isProject);
+		console.info("Created: %s\nCurrent: %s".info, projectVersion.created, projectVersion.current);
 	}
 }
 

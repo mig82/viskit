@@ -33,12 +33,22 @@ the Eclipse `.project` file located at its root directory.
 This is mostly a utility command on top of which others are built. It simply determines
 whether the given path points to the root directory of a Vis project or not.
 
-## Get Project Version
+## Get Vis Quantum Version
 
-For Vis Enterprise projects, this determines the project version by parsing the
-plugins it requires, as listed in the `konyplugins.xml` file located at its root
-directory. For Vis Starter, it reads the `currentgaversion` property from the
-`projectProperties.json` file also located at its root directory.
+For Vis Quantum projects, this determines the project version by parsing the
+`projectProperties.json` file located in its root directory.
+
+    viskit gqv path/to/workspace/FooApp
+
+This helps you determine which Vis version you would need in order to
+open a project _without_ upgrading it. This is specially relevant when
+multiple developers must collaborate on a project.
+
+## Get Vis Classic Version
+
+For Vis Classic projects, this determines the project version by parsing the
+plugins it requires, as listed in the `konyplugins.xml` file located in its root
+directory.
 
     viskit gpv path/to/workspace/FooApp
 
@@ -262,12 +272,12 @@ Set the version of a Vis installation to match a given project.
 
     viskit set-vis-version|svv path/to/KonyVisEnterpriseX.Y.Z path/to/workspace/FooApp
 
-When working with two or more projects developed using different versions of Vis, it
+When working with two or more projects developed using different versions of Vis **Classic**, it
 is very cumbersome to switch between them. Projects developed with Vis versions older
 than the one you have installed can only be opened if you upgrade them. Projects developed
 with Vis versions more recent than the one you have installed can only be opened if
-you upgrade your installation, and then any upgrade will likely result in a version more recent
-than the one your project actually needed.
+you upgrade your installation, and then any upgrade may result in a more recent version
+than the one your project actually needs.
 
 This forces you to either keep multiple installations of Vis or to manually switch
 the plugins in your Vis installation. This command attempts to help you shuffle the plugins
