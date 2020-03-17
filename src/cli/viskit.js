@@ -28,6 +28,10 @@ program
 	.alias("faw");
 
 program
+	.command("find-dupe-i18ns <project>", "Find any duplicated translations")
+	.alias("fdi");
+
+program
 	.command("find-font-references <project>", "Find all references to the fonts used in the project")
 	.alias("ffr");
 
@@ -72,7 +76,7 @@ program
 	.alias("sf");
 
 program
-	.command("set-vis-version <visualizer-path> <project>", "Set the version of the Vis installation to match a given project")
+	.command("set-vis-version <visualizer-path> <project>", "Set the version of the Vis Classic installation to match a given project")
 	.alias("svv");
 
 program.on('option:verbose', function () {
