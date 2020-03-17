@@ -23,12 +23,12 @@ in the command prompt -e.g.:
 
     viskit --version
 
-## Is Project
+## Is Classic Project
 
 Determine whether a given path points to a Vis Enterprise project, according to
 the Eclipse `.project` file located at its root directory.
 
-    viskit is-vis-project path/to/workspace/FooApp
+    viskit is-classic-project|ivp path/to/workspace/FooApp
 
 This is mostly a utility command on top of which others are built. It simply determines
 whether the given path points to the root directory of a Vis project or not.
@@ -38,7 +38,8 @@ whether the given path points to the root directory of a Vis project or not.
 For Vis Quantum projects, this determines the project version by parsing the
 `projectProperties.json` file located in its root directory.
 
-    viskit gqv path/to/workspace/FooApp
+    viskit get-quantum-version path/to/workspace/FooApp
+	viskit gqv path/to/workspace/FooApp
 
 This helps you determine which Vis version you would need in order to
 open a project _without_ upgrading it. This is specially relevant when
@@ -50,7 +51,8 @@ For Vis Classic projects, this determines the project version by parsing the
 plugins it requires, as listed in the `konyplugins.xml` file located in its root
 directory.
 
-    viskit gpv path/to/workspace/FooApp
+    viskit get-project-version path/to/workspace/FooApp
+	viskit gpv path/to/workspace/FooApp
 
 This helps you determine which Vis version you would need in order to
 open a project _without_ upgrading it. This is specially relevant when
@@ -247,6 +249,8 @@ the wrong typography.
 
 ## Set Fonts
 
+Set the font family for all skins in a theme and channel.
+
     viskit set-fonts|sf OpenSans-Regular path/to/workspace/FooApp --except OpenSans-Bold,FontAwesome
 
 Any given project will typically have its own style guide specifying every aspect of the
@@ -265,6 +269,14 @@ make the necessary changes and then query the results.
 
 **Note** that by default the command runs in *dry-run mode*. Meaning it only tells you what it would do
 but does not really do it unless you use the `--force` option.
+
+## Find Duplicate Translations
+
+Find any duplicated translations for a given locale.
+
+    viskit find-dupe-i18ns|fdi path/to/workspace/FooApp --locale es_ES
+
+As projects grow, it's likely that each developer will create the i18n keys they need to deliver. This may result in several i18n keys to localise the exact same text. This command helps detect duplicate translations.
 
 ## Set Vis Version
 
