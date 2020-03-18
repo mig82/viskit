@@ -82,7 +82,7 @@ async function findDupesI18ns(projectPath, localeName, verbose){
 		var i18n = await fs.readJson(i18nPath);
 
 		if(i18n){
-			console.log(`Available locales are: ${keys(i18n.locales)}`.info);
+			if(verbose)console.log(`Available locales are: ${keys(i18n.locales)}`.info);
 			var locale = i18n.locales[localeName];
 
 			if(typeof locale === "object"){
@@ -99,7 +99,8 @@ async function findDupesI18ns(projectPath, localeName, verbose){
 		}
 	}
 	catch(e){
-		console.error(`File ${i18nPath} does not exist or this process does not have sufficient permissions to read it.`.red);
+		console.error(`File ${i18nPath} does not exist, is badly formatted or`.red +
+		` this process does not have sufficient permissions to read it.\n${e.message}`.red);
 	}
 	return dupes;
 }
