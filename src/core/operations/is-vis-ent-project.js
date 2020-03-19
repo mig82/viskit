@@ -2,6 +2,7 @@
 
 const fs = require('fs-extra');
 const colors = require('colors');
+const path = require('path');
 
 const getXpathStringValue = require("../helpers/get-xpath-string-value");
 
@@ -19,36 +20,42 @@ const getXpathStringValue = require("../helpers/get-xpath-string-value");
 
 async function isVisEnterpriseProject(projectPath, verbose){
 
+	if(verbose)console.log("Validating whether Vis Enterprise...".debug);
 	var isProject = false;
+	var propsPath = path.resolve(`${projectPath}/.project`);
+	var pathExists = await fs.pathExists(propsPath);
 
-	var pathExists = await fs.pathExists(projectPath);
+	if(pathExists){
+		if(verbose)console.log("File %s exists. Trying to load...".debug, propsPath);
 
-	//TODO: This only applies to Vis Enterprise projects. Need isVisEnterpriseProject checking for projectProperties.json and isVisEntProject cheking .project
-	var projectFile = `${projectPath}/.project`;
-	if(verbose)console.log("Validating %s".debug, projectFile);
+		try{
+			var projectXmlContent = await fs.readFile(propsPath, 'utf8');
+			if(verbose)console.log(colors.debug(projectXmlContent));
 
-	try{
-		var projectXmlContent = await fs.readFile(projectFile, 'utf8');
-		if(verbose)console.log(colors.debug(projectXmlContent));
+			/* <?xml version="1.0" encoding="UTF-8"?>
+			<projectDescription>
+				<name>EuropeModelBank</name>
+				<comment></comment>
+				<projects></projects>
+				<buildSpec></buildSpec>
+				<natures>
+					<nature>com.pat.tool.keditor.nature.kprojectnature</nature>
+				</natures>
+			</projectDescription> */
 
-		/* <?xml version="1.0" encoding="UTF-8"?>
-		<projectDescription>
-			<name>EuropeModelBank</name>
-			<comment></comment>
-			<projects></projects>
-			<buildSpec></buildSpec>
-			<natures>
-				<nature>com.pat.tool.keditor.nature.kprojectnature</nature>
-			</natures>
-		</projectDescription> */
-
-		var nature = getXpathStringValue(projectXmlContent, "//nature");
-		if(verbose) console.log("Project nature: %s".debug, nature);
-		isProject = nature === "com.pat.tool.keditor.nature.kprojectnature";
+			var nature = getXpathStringValue(projectXmlContent, "//nature");
+			if(verbose) console.log("Project nature: %s".debug, nature);
+			isProject = nature === "com.pat.tool.keditor.nature.kprojectnature";
+		}
+		catch(e){
+			if(verbose)console.error(e.message.debug);
+		}
 	}
-	catch(e){
-		if(verbose)console.error(e.message);
+	else{
+		if(verbose)console.log("File %s does not exist.".debug, propsPath);
 	}
+
+	if(verbose)console.log("Done validating whether Vis Enterprise...".debug);
 	return isProject;
 }
 

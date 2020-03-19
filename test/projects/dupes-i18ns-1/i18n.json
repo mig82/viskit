@@ -1,0 +1,81 @@
+{
+    "keys": [
+        "Business Credit Card",
+        "Credit Card",
+		"product.CREDIT_CARD",
+		"action.BACK",
+        "action.CANCEL",
+        "action.LOGIN",
+        "action.SUBMIT",
+        "desc.SAVINGS_FEATURE_1",
+        "desc.SAVINGS_FEATURE_2",
+        "desc.SAVINGS_FEATURE_3"
+    ],
+    "locales": {
+        "cs_CZ": {
+            "i18nStrings": {
+                "Business Credit Card": "Obchodní kreditní karta",
+                "Credit Card": "Kreditní Karta",
+				"product.CREDIT_CARD": "Kreditní Karta",
+				"action.BACK": "Vrátit se",
+                "action.CANCEL": "Zrušit",
+                "action.LOGIN": "Pokračovat",
+                "action.SUBMIT": "Sjednat",
+                "desc.SAVINGS_FEATURE_1": "Za spořící účet nic neplatíte.",
+                "desc.SAVINGS_FEATURE_2": "Spořící účet můžete rozdělit na více spořících cílů (obálky).",
+                "desc.SAVINGS_FEATURE_3": "Penize můžete kdykoliv na cokoliv použít"
+            },
+            "isCustomLocale": false,
+            "isSelected": true,
+            "layoutConfig": {
+                "mirrorContentAlignment": false,
+                "mirrorFlexPositionProperties": false,
+                "mirrorFlowHorizontalAlignment": false
+            }
+        },
+        "en_US": {
+            "i18nStrings": {
+                "Business Credit Card": "Business Credit Card",
+                "Credit Card": "Credit Card",
+				"product.CREDIT_CARD": "credit card",
+				"action.BACK": "Back",
+                "action.CANCEL": "Cancel",
+                "action.LOGIN": "Log in",
+                "action.SUBMIT": "Submit",
+                "desc.SAVINGS_FEATURE_1": "Savings feature",
+                "desc.SAVINGS_FEATURE_2": "  savings feature!",
+                "desc.SAVINGS_FEATURE_3": "savings    feature."
+
+            },
+            "isCustomLocale": false,
+            "isSelected": true,
+            "layoutConfig": {
+                "mirrorContentAlignment": false,
+                "mirrorFlexPositionProperties": false,
+                "mirrorFlowHorizontalAlignment": false
+            }
+        },
+        "es_ES": {
+            "i18nStrings": {
+                "Business Credit Card": "Tarjeta de Crédito Corporativa",
+                "Credit Card": "Tarjeta de Crédito",
+				"product.CREDIT_CARD": "TaRjEtA de crédito.",
+				"action.BACK": "Regresar",
+                "action.CANCEL": "Cancelar",
+                "action.LOGIN": "Entrar",
+                "action.SUBMIT": "",
+                "desc.SAVINGS_FEATURE_1": "",
+                "desc.SAVINGS_FEATURE_2": "",
+                "desc.SAVINGS_FEATURE_3": ""
+
+            },
+            "isCustomLocale": false,
+            "isSelected": true,
+            "layoutConfig": {
+                "mirrorContentAlignment": false,
+                "mirrorFlexPositionProperties": false,
+                "mirrorFlowHorizontalAlignment": false
+            }
+        }
+    }
+}

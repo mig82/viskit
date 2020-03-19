@@ -6,7 +6,7 @@ const theme = require("../core/config/theme");
 colors.setTheme(theme);
 
 program
-	.version('1.4')
+	.version('2.0-rc1')
 	.usage('[options] [command]')
 	.option('-v, --verbose', 'output everything');
 
@@ -26,6 +26,14 @@ program
 program
 	.command("find-autogrow-widgets <project>", "Find any widgets with undefined or preferred width or height")
 	.alias("faw");
+
+program
+	.command("find-dupe-i18ns <project>", "Find any duplicated translations")
+	.alias("fdi");
+
+program
+	.command("find-dupe-skins <project>", "Find any duplicate skins")
+	.alias("fds");
 
 program
 	.command("find-font-references <project>", "Find all references to the fonts used in the project")
@@ -56,19 +64,23 @@ program
 	.alias("fw");
 
 program
-	.command("get-project-version <project>", "Retrieves the version of a project")
+	.command("get-project-version <project>", "Retrieves the version of a Vis Classic project")
 	.alias("gpv");
 
 program
-	.command("is-vis-project <project>", "Determine whether a given directory is the root of a Vis project")
+	.command("get-quantum-version <project>", "Retrieves the version of a Vis Quantum project")
+	.alias("gqv");
+
+program
+	.command("is-classic-project <project>", "Determine whether a given directory is the root of a Vis project")
 	.alias("ivp");
 
 program
-	.command("set-fonts <project>", "Set the font for a theme and channel")
+	.command("set-fonts <project>", "Set the font for all skins in a theme and channel")
 	.alias("sf");
 
 program
-	.command("set-vis-version <visualizer-path> <project>", "Set the version of the Vis installation to match a given project")
+	.command("set-vis-version <visualizer-path> <project>", "Set the version of the Vis Classic installation to match a given project")
 	.alias("svv");
 
 program.on('option:verbose', function () {

@@ -23,24 +23,36 @@ in the command prompt -e.g.:
 
     viskit --version
 
-## Is Project
+## Is Classic Project
 
 Determine whether a given path points to a Vis Enterprise project, according to
 the Eclipse `.project` file located at its root directory.
 
-    viskit is-vis-project path/to/workspace/FooApp
+    viskit is-classic-project|ivp path/to/workspace/FooApp
 
 This is mostly a utility command on top of which others are built. It simply determines
 whether the given path points to the root directory of a Vis project or not.
 
-## Get Project Version
+## Get Vis Quantum Version
 
-For Vis Enterprise projects, this determines the project version by parsing the
-plugins it requires, as listed in the `konyplugins.xml` file located at its root
-directory. For Vis Starter, it reads the `currentgaversion` property from the
-`projectProperties.json` file also located at its root directory.
+For Vis Quantum projects, this determines the project version by parsing the
+`projectProperties.json` file located in its root directory.
 
-    viskit gpv path/to/workspace/FooApp
+    viskit get-quantum-version path/to/workspace/FooApp
+	viskit gqv path/to/workspace/FooApp
+
+This helps you determine which Vis version you would need in order to
+open a project _without_ upgrading it. This is specially relevant when
+multiple developers must collaborate on a project.
+
+## Get Vis Classic Version
+
+For Vis Classic projects, this determines the project version by parsing the
+plugins it requires, as listed in the `konyplugins.xml` file located in its root
+directory.
+
+    viskit get-project-version path/to/workspace/FooApp
+	viskit gpv path/to/workspace/FooApp
 
 This helps you determine which Vis version you would need in order to
 open a project _without_ upgrading it. This is specially relevant when
@@ -237,6 +249,8 @@ the wrong typography.
 
 ## Set Fonts
 
+Set the font family for all skins in a theme and channel.
+
     viskit set-fonts|sf OpenSans-Regular path/to/workspace/FooApp --except OpenSans-Bold,FontAwesome
 
 Any given project will typically have its own style guide specifying every aspect of the
@@ -256,18 +270,44 @@ make the necessary changes and then query the results.
 **Note** that by default the command runs in *dry-run mode*. Meaning it only tells you what it would do
 but does not really do it unless you use the `--force` option.
 
+## Find Duplicate Skins
+
+Find any duplicated skins for a given theme.
+
+    viskit find-dupe-skins|fds path/to/workspace/FooApp --theme defaultTheme
+
+As projects grow, it's likely that each developer will create whatever skins they need in order
+to deliver. This may result in several skins being exactly the same. As these duplicates proliferate,
+they put additional unnecessary IO and memory overhead on your project, both to load and to build.
+
+This command helps detect such duplicate skins by calculating an MD5 signature for the skin's JSON file
+whilst ignoring the skin's unique identifier.
+
+**Note** that it can only detect exact duplicates. It cannot detect near duplicates —e.g. where the two
+skins have slightly different font sizes or slightly different background colours.
+
+## Find Duplicate Translations
+
+Find any duplicated translations for a given locale.
+
+    viskit find-dupe-i18ns|fdi path/to/workspace/FooApp --locale es_ES
+
+As projects grow, it's likely that each developer will create whatever i18n keys they need
+in order to deliver. This may result in several i18n keys to localise the exact same text.
+This command helps detect duplicate translations.
+
 ## Set Vis Version
 
 Set the version of a Vis installation to match a given project.
 
     viskit set-vis-version|svv path/to/KonyVisEnterpriseX.Y.Z path/to/workspace/FooApp
 
-When working with two or more projects developed using different versions of Vis, it
+When working with two or more projects developed using different versions of Vis **Classic**, it
 is very cumbersome to switch between them. Projects developed with Vis versions older
 than the one you have installed can only be opened if you upgrade them. Projects developed
 with Vis versions more recent than the one you have installed can only be opened if
-you upgrade your installation, and then any upgrade will likely result in a version more recent
-than the one your project actually needed.
+you upgrade your installation, and then any upgrade may result in a more recent version
+than the one your project actually needs.
 
 This forces you to either keep multiple installations of Vis or to manually switch
 the plugins in your Vis installation. This command attempts to help you shuffle the plugins
