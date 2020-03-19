@@ -391,8 +391,7 @@
     "nativeContainerProperties": {
         "isEnableJSContainer": true,
         "isEnableJSContainerAndroid": true,
-        "isEnableJSContaineriOS": true,
-        "isModified": false
+        "isEnableJSContaineriOS": true
     },
     "objects3D": "false",
     "passwordkey": "",
