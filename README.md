@@ -270,13 +270,31 @@ make the necessary changes and then query the results.
 **Note** that by default the command runs in *dry-run mode*. Meaning it only tells you what it would do
 but does not really do it unless you use the `--force` option.
 
+## Find Duplicate Skins
+
+Find any duplicated skins for a given theme.
+
+    viskit find-dupe-skins|fds path/to/workspace/FooApp --theme defaultTheme
+
+As projects grow, it's likely that each developer will create whatever skins they need in order
+to deliver. This may result in several skins being exactly the same. As these duplicates proliferate,
+they put additional unnecessary IO and memory overhead on your project, both to load and to build.
+
+This command helps detect such duplicate skins by calculating an MD5 signature for the skin's JSON file
+whilst ignoring the skin's unique identifier.
+
+**Note** that it can only detect exact duplicates. It cannot detect near duplicates —e.g. where the two
+skins have slightly different font sizes or slightly different background colours.
+
 ## Find Duplicate Translations
 
 Find any duplicated translations for a given locale.
 
     viskit find-dupe-i18ns|fdi path/to/workspace/FooApp --locale es_ES
 
-As projects grow, it's likely that each developer will create the i18n keys they need to deliver. This may result in several i18n keys to localise the exact same text. This command helps detect duplicate translations.
+As projects grow, it's likely that each developer will create whatever i18n keys they need
+in order to deliver. This may result in several i18n keys to localise the exact same text.
+This command helps detect duplicate translations.
 
 ## Set Vis Version
 

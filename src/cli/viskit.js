@@ -32,6 +32,10 @@ program
 	.alias("fdi");
 
 program
+	.command("find-dupe-skins <project>", "Find any duplicate skins")
+	.alias("fds");
+
+program
 	.command("find-font-references <project>", "Find all references to the fonts used in the project")
 	.alias("ffr");
 
